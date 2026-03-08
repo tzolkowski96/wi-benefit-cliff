@@ -2,7 +2,7 @@
 
 A free tool that shows Wisconsin families exactly how a raise or income change affects their total public benefits. Models seven programs simultaneously, calculates gradual FoodShare reductions (not just binary cutoffs), and identifies "safe raise zones" where income can increase without triggering benefit losses.
 
-**[Try it →](https://YOUR_USERNAME.github.io/wi-benefit-cliff/)**
+**[Try it →](https://tzolkowski96.github.io/wi-benefit-cliff/)**
 
 ## The Problem
 
@@ -64,7 +64,7 @@ React + TypeScript + Vite + Tailwind CSS. Progressive Web App on GitHub Pages.
 ## Development
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/wi-benefit-cliff.git
+git clone https://github.com/tzolkowski96/wi-benefit-cliff.git
 cd wi-benefit-cliff
 npm install
 npm run dev
@@ -94,10 +94,9 @@ To update for a new year: edit the numbers in these files, run the test scenario
 This project is useful only if the data is accurate. Contributions that improve data accuracy are the highest priority:
 
 1. **Threshold corrections** — if you find a number that doesn't match a published DHS or DCF source, open an issue with the source link.
-2. **Additional deductions** — the FoodShare formula currently excludes excess shelter and dependent care deductions. Adding optional inputs for these would improve accuracy.
-3. **Spanish translation** — the i18n scaffolding is in place (`src/i18n/es.ts`). Strings need translation by a native speaker, not machine translation.
-4. **Hmong translation** — third language priority for Dane County demographics.
-5. **Accessibility audit** — screen reader testing, keyboard navigation testing, color contrast verification.
+2. **Hmong translation** — third language priority for Dane County demographics. The i18n system is ready; add `src/i18n/hmn.ts` following the pattern in `en.ts`.
+3. **Spanish translation review** — the Spanish translation (`src/i18n/es.ts`) is complete but should be reviewed by a native speaker.
+4. **Accessibility audit** — screen reader testing, keyboard navigation testing, color contrast verification.
 
 ## Who This Is For
 

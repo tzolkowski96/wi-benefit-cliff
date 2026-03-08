@@ -1,5 +1,6 @@
 import type { ProgramResult, FormState } from '../types/index.ts'
 import type { FormUpdater } from '../hooks/useUrlState.ts'
+import { useI18n } from '../hooks/useI18n.ts'
 import { formatMoney } from '../utils/format.ts'
 
 const CUSTOM_VALUE_KEYS: Record<string, keyof FormState> = {
@@ -14,12 +15,10 @@ interface Props {
   update: FormUpdater
 }
 
-function cliffTypeBadge(type: string) {
-  const labels: Record<string, string> = {
-    hard: 'Hard cliff',
-    gradual: 'Gradual',
-    tier_shift: 'Tier shift',
-  }
+function CliffTypeBadge({ type }: { type: string }) {
+  const { t } = useI18n()
+  const labelKey = `cliffType.${type}` as const
+  const label = t(labelKey as 'cliffType.hard' | 'cliffType.gradual' | 'cliffType.tier_shift')
   const colors: Record<string, string> = {
     hard: 'bg-[#9B2226]/10 text-[#9B2226]',
     gradual: 'bg-[#2D6A4F]/10 text-[#2D6A4F]',
@@ -27,16 +26,18 @@ function cliffTypeBadge(type: string) {
   }
   return (
     <span className={`inline-block text-[10px] font-semibold font-mono uppercase tracking-wider px-1.5 py-0.5 rounded-sm ${colors[type] ?? ''}`}>
-      {labels[type] ?? type}
+      {label}
     </span>
   )
 }
 
-function statusBadge(prog: ProgramResult) {
+function StatusBadge({ prog }: { prog: ProgramResult }) {
+  const { t } = useI18n()
+
   if (!prog.currentlyEligible) {
     return (
       <span className="inline-flex items-center gap-1 text-xs font-bold font-mono px-2.5 py-1 rounded-sm bg-[#f5f5f5] text-[#aaa]">
-        N/A
+        {t('result.na')}
       </span>
     )
   }
@@ -54,25 +55,27 @@ function statusBadge(prog: ProgramResult) {
   if (prog.lost) {
     return (
       <span className="inline-flex items-center gap-1 text-xs font-bold font-mono px-2.5 py-1 rounded-sm bg-[#FDE8E8] text-[#9B2226]">
-        <span aria-hidden="true">&darr;</span> LOST
+        <span aria-hidden="true">&darr;</span> {t('result.lost')}
       </span>
     )
   }
 
   return (
     <span className="inline-flex items-center gap-1 text-xs font-bold font-mono px-2.5 py-1 rounded-sm bg-[#EDF6ED] text-[#2D6A4F]">
-      <span aria-hidden="true">&#10003;</span> KEEP
+      <span aria-hidden="true">&#10003;</span> {t('result.keep')}
     </span>
   )
 }
 
 export default function ProgramBreakdown({ programs, state, update }: Props) {
+  const { t } = useI18n()
+
   if (programs.length === 0) return null
 
   return (
     <section className="bg-white border border-[#ddd] rounded-sm p-6 mb-5">
       <h2 className="text-xs font-semibold uppercase tracking-[0.08em] text-[#666] mb-4 font-mono m-0">
-        Program Breakdown
+        {t('section.breakdown')}
       </h2>
 
       <div className="space-y-0">
@@ -84,7 +87,7 @@ export default function ProgramBreakdown({ programs, state, update }: Props) {
             <div
               key={prog.key}
               className={`py-3 border-b border-[#eee] last:border-b-0 ${
-                !prog.currentlyEligible ? 'opacity-45' : ''
+                !prog.currentlyEligible ? 'opacity-60' : ''
               }`}
             >
               {/* Mobile: stacked layout */}
@@ -96,16 +99,16 @@ export default function ProgramBreakdown({ programs, state, update }: Props) {
                   <div className="text-[11px] text-[#888]">
                     {prog.key === 'wisconsin_shares' && prog.entryLimit && prog.exitLimit ? (
                       <>
-                        Entry: {formatMoney(prog.entryLimit)}/mo &middot; Continuation: {formatMoney(prog.exitLimit)}/mo
+                        {t('program.entry')}: {formatMoney(prog.entryLimit)}/mo &middot; {t('program.continuation')}: {formatMoney(prog.exitLimit)}/mo
                       </>
                     ) : (
-                      <>Cutoff: {formatMoney(prog.limit)}/mo ({prog.basis})</>
+                      <>{t('program.cutoff')}: {formatMoney(prog.limit)}/mo ({prog.basis})</>
                     )}
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  {cliffTypeBadge(prog.cliffType)}
-                  {statusBadge(prog)}
+                  <CliffTypeBadge type={prog.cliffType} />
+                  <StatusBadge prog={prog} />
                 </div>
               </div>
 
@@ -122,19 +125,19 @@ export default function ProgramBreakdown({ programs, state, update }: Props) {
                           </span>
                         )}
                         {prog.monthlyLoss === 0 && (
-                          <span className="text-[#2D6A4F] ml-1">no change</span>
+                          <span className="text-[#2D6A4F] ml-1">{t('result.noChange')}</span>
                         )}
                       </>
                     ) : null
                   ) : (
                     <div>
                       <span className="text-[#888] italic">
-                        Eligibility shown — dollar value varies by individual
+                        {t('program.eligibilityOnly')}
                       </span>
                       {/* Inline custom value input */}
                       {customKey && (
                         <div className="mt-1.5 flex items-center gap-1.5">
-                          <span className="text-[11px] text-[#999] font-sans not-italic">Know your monthly value?</span>
+                          <span className="text-[11px] text-[#999] font-sans not-italic">{t('form.customValuePrompt')}</span>
                           <span className="text-[#888]">$</span>
                           <input
                             type="number"
@@ -163,11 +166,9 @@ export default function ProgramBreakdown({ programs, state, update }: Props) {
       {/* Tier 2 note */}
       {programs.some((p) => !p.calculable && p.currentlyEligible) && (
         <div className="mt-4 pt-3 border-t border-[#eee] text-[11px] text-[#999] leading-relaxed">
-          Programs marked "Eligibility shown" may have significant financial value but it varies
-          too much by individual circumstances to estimate. The net impact shown above only
-          includes programs with calculable values.
+          {t('tier2.note')}
           <br />
-          <em>Optional.</em> Enter your actual monthly savings to include in the net impact calculation.
+          <em>{t('tier2.optionalNote')}</em>
         </div>
       )}
     </section>

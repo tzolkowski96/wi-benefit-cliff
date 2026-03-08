@@ -1,4 +1,5 @@
 import type { ProgramResult } from '../types/index.ts'
+import { useI18n } from '../hooks/useI18n.ts'
 import { formatMoney } from '../utils/format.ts'
 
 interface Props {
@@ -8,6 +9,8 @@ interface Props {
 }
 
 export default function CliffChart({ programs, currentMonthlyIncome, newMonthlyIncome }: Props) {
+  const { t } = useI18n()
+
   // Only show programs that are either eligible or have limits worth displaying
   const displayPrograms = programs
     .filter((p) => p.key !== 'school_meals_reduced' || p.currentlyEligible)
@@ -25,7 +28,7 @@ export default function CliffChart({ programs, currentMonthlyIncome, newMonthlyI
   return (
     <section className="bg-white border border-[#ddd] rounded-sm p-6 mb-5">
       <h2 className="text-xs font-semibold uppercase tracking-[0.08em] text-[#666] mb-4 font-mono m-0">
-        Income vs. Eligibility Thresholds
+        {t('section.chart')}
       </h2>
 
       {/* Visual chart */}
@@ -49,10 +52,10 @@ export default function CliffChart({ programs, currentMonthlyIncome, newMonthlyI
                   {prog.lost
                     ? (prog.cliffType === 'tier_shift' && prog.currentTier && prog.newTier
                         ? `${prog.currentTier.toUpperCase()} \u2192 ${prog.newTier.toUpperCase()}`
-                        : 'LOST \u2193')
+                        : `${t('result.lost')} \u2193`)
                     : !prog.currentlyEligible
-                      ? 'Not eligible'
-                      : `${formatMoney(prog.distanceToCliff)} buffer`
+                      ? t('result.notEligible')
+                      : `${formatMoney(prog.distanceToCliff)} ${t('result.buffer')}`
                   }
                 </span>
               </div>
@@ -101,32 +104,32 @@ export default function CliffChart({ programs, currentMonthlyIncome, newMonthlyI
         <div className="flex flex-wrap gap-x-4 gap-y-1 mt-4 text-[11px] text-[#888]">
           <div className="flex items-center gap-1">
             <div className="w-3 h-[3px] bg-[#1a1a1a] rounded-sm" />
-            Current ({formatMoney(currentMonthlyIncome)})
+            {t('chart.current')} ({formatMoney(currentMonthlyIncome)})
           </div>
           {newMonthlyIncome !== currentMonthlyIncome && (
             <div className="flex items-center gap-1">
               <div className="w-3 h-[3px] bg-[#E8A838] rounded-sm" />
-              After raise ({formatMoney(newMonthlyIncome)})
+              {t('chart.afterRaise')} ({formatMoney(newMonthlyIncome)})
             </div>
           )}
           <div className="flex items-center gap-1">
             <div className="w-0.5 h-3 bg-[#666] rounded-sm" />
-            Eligibility cutoff
+            {t('chart.cutoff')}
           </div>
         </div>
       </div>
 
       {/* Screen reader table fallback */}
       <table className="sr-only">
-        <caption>Income position relative to benefit program eligibility thresholds</caption>
+        <caption>{t('chart.srCaption')}</caption>
         <thead>
           <tr>
-            <th scope="col">Program</th>
-            <th scope="col">Eligibility Cutoff</th>
-            <th scope="col">Current Income</th>
-            <th scope="col">After Raise</th>
-            <th scope="col">Buffer</th>
-            <th scope="col">Status</th>
+            <th scope="col">{t('print.program')}</th>
+            <th scope="col">{t('chart.cutoff')}</th>
+            <th scope="col">{t('chart.current')}</th>
+            <th scope="col">{t('chart.afterRaise')}</th>
+            <th scope="col">{t('result.buffer')}</th>
+            <th scope="col">{t('print.status')}</th>
           </tr>
         </thead>
         <tbody>
@@ -136,11 +139,11 @@ export default function CliffChart({ programs, currentMonthlyIncome, newMonthlyI
               <td>{formatMoney(prog.limit)}/mo</td>
               <td>{formatMoney(currentMonthlyIncome)}/mo</td>
               <td>{formatMoney(newMonthlyIncome)}/mo</td>
-              <td>{prog.currentlyEligible ? formatMoney(prog.distanceToCliff) : 'N/A'}</td>
+              <td>{prog.currentlyEligible ? formatMoney(prog.distanceToCliff) : t('result.na')}</td>
               <td>
                 {prog.lost
-                  ? (prog.cliffType === 'tier_shift' ? `${prog.currentTier} to ${prog.newTier}` : 'Lost')
-                  : prog.currentlyEligible ? 'Keep' : 'Not eligible'}
+                  ? (prog.cliffType === 'tier_shift' ? `${prog.currentTier} to ${prog.newTier}` : t('result.lost'))
+                  : prog.currentlyEligible ? t('result.keep') : t('result.notEligible')}
               </td>
             </tr>
           ))}

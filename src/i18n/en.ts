@@ -18,9 +18,15 @@ export const en = {
   'form.raise.hourly': 'Hourly raise amount',
   'form.raise.monthly': 'Monthly raise amount',
   'form.monthlyEquivalent': 'monthly equivalent',
+  'form.deductionsToggle': 'Optional: improve FoodShare accuracy',
+  'form.deductionsHelp': 'Adding your housing and childcare costs may increase your estimated FoodShare benefit.',
+  'form.rent': 'Monthly rent/mortgage',
+  'form.childcare': 'Monthly childcare costs',
+  'form.deductionsNote': 'Utility costs are estimated using Wisconsin\'s Heating Standard Utility Allowance ($538/mo). The shelter deduction is capped at $712/mo.',
+  'form.customValuePrompt': 'Know your monthly value?',
 
   // Results
-  'result.netImpact': 'Net Monthly Impact',
+  'result.netImpact': 'Net Impact',
   'result.raise': 'Raise',
   'result.lostBenefits': 'Lost Benefits',
   'result.netAnnual': 'Annual Impact',
@@ -29,13 +35,30 @@ export const en = {
   'result.notEligible': 'Not eligible',
   'result.na': 'N/A',
   'result.buffer': 'buffer',
+  'result.noChange': 'no change',
   'result.freeToReduced': 'FREE \u2192 REDUCED',
+  'result.annualCalcImpact': 'in calculable impact',
+  'result.includesUserEntered': 'includes {amount} user-entered',
+  'result.notIncluded': 'Not included above:',
+  'result.variesByIndividual': 'eligibility lost but dollar value varies by individual.',
+
+  // Cliff type badges
+  'cliffType.hard': 'Hard cliff',
+  'cliffType.gradual': 'Gradual',
+  'cliffType.tier_shift': 'Tier shift',
 
   // Sections
   'section.chart': 'Income vs. Eligibility Thresholds',
   'section.breakdown': 'Program Breakdown',
   'section.safeRaise': 'Safe Raise Zones',
+  'section.breakEven': 'What Raise Do I Need?',
   'section.additionalRisks': 'Additional Benefits at Risk',
+
+  // Chart
+  'chart.current': 'Current',
+  'chart.afterRaise': 'After raise',
+  'chart.cutoff': 'Eligibility cutoff',
+  'chart.srCaption': 'Income position relative to benefit program eligibility thresholds',
 
   // Warnings
   'warning.cliffTitle': 'Cliff Warning',
@@ -44,22 +67,37 @@ export const en = {
   'warning.headsUp': 'Heads up',
   'warning.stillAhead': 'but still come out ahead',
   'warning.budgetTransition': 'Worth taking, but budget for the transition.',
+  'warning.considerSmaller': 'Consider a smaller raise that keeps you below the cliff, or a larger raise that clears the gap.',
 
   // Safe raise
   'safeRaise.description': 'Maximum raise you can take without losing each benefit you currently have:',
   'safeRaise.upTo': 'up to',
   'safeRaise.bottomLine': 'Bottom line',
   'safeRaise.safeMessage': 'You can safely take up to {amount}/mo without losing any current benefits.',
+  'safeRaise.exceedsMessage': 'Your current raise exceeds this.',
+  'safeRaise.atThreshold': 'You are at or above the lowest eligibility threshold. Any raise may trigger a cliff.',
+
+  // Break-even
+  'breakEven.description': 'Minimum raise to break even after crossing each benefit cliff, accounting for all simultaneous losses:',
+  'breakEven.cliffAt': 'cliff at',
+  'breakEven.clearAll': 'To clear all cliffs:',
+  'breakEven.raiseAtLeast': 'A raise of at least',
+  'breakEven.offsetAll': 'would offset all benefit losses.',
+  'breakEven.needAtLeast': 'You need at least',
+  'breakEven.toBreakEven': 'to break even after crossing this cliff.',
 
   // Programs
   'program.cutoff': 'Cutoff',
   'program.value': 'value',
+  'program.entry': 'Entry',
+  'program.continuation': 'Continuation',
   'program.entryCutoff': 'Entry cutoff (to start receiving)',
   'program.continuationCutoff': 'Continuation cutoff (to keep if enrolled)',
-  'program.eligibilityOnly': 'Eligibility shown — dollar value varies by individual',
+  'program.eligibilityOnly': 'Eligibility shown \u2014 dollar value varies by individual',
 
   // Tier 2 note
-  'tier2.note': 'These programs may have significant financial value but it varies too much by individual circumstances to estimate. The net impact shown above only includes programs with calculable values.',
+  'tier2.note': 'Programs marked "Eligibility shown" may have significant financial value but it varies too much by individual circumstances to estimate. The net impact shown above only includes programs with calculable values.',
+  'tier2.optionalNote': 'Optional. Enter your actual monthly savings to include in the net impact calculation.',
 
   // FoodShare note
   'foodshare.note': 'Your actual FoodShare amount may be higher if you have high rent or childcare costs. This estimate uses a simplified formula.',
@@ -80,6 +118,18 @@ export const en = {
   'print.title': 'Benefit Cliff Analysis Summary',
   'print.generated': 'Generated',
   'print.button': 'Print Summary',
+  'print.householdDetails': 'Household Details',
+  'print.netImpact': 'Calculable Net Impact',
+  'print.safeRaise': 'Maximum Safe Raise',
+  'print.breakEven': 'Break-Even Raises',
+  'print.program': 'Program',
+  'print.threshold': 'Threshold',
+  'print.type': 'Type',
+  'print.valueImpact': 'Value Impact',
+  'print.status': 'Status',
+  'print.cliffAt': 'Cliff At',
+  'print.breakEvenCol': 'Break Even',
+  'print.hourlyCol': 'Hourly',
 
   // Disclaimer
   'disclaimer.text': 'This calculator provides estimates based on 2025 income eligibility thresholds published by UW-Madison Division of Extension. Estimated benefit values are approximations. Actual eligibility depends on additional factors including assets, deductions, household composition, and immigration status. This tool does not replace official eligibility determinations.',

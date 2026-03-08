@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 import type { ProgramResult, FormState } from '../types/index.ts'
+import { useI18n } from '../hooks/useI18n.ts'
 import { computeBreakEvenData } from '../utils/breakeven.ts'
 import { formatMoney } from '../utils/format.ts'
 import { monthlyToHourly } from '../utils/wage.ts'
@@ -20,6 +21,7 @@ function formatHourly(monthly: number): string {
 }
 
 export default function BreakEvenCalculator({ programs, state }: Props) {
+  const { t } = useI18n()
   const {
     householdSize, numberOfChildren, currentMonthlyIncome,
     monthlyRent, monthlyChildcareCosts, raiseMonthly,
@@ -38,11 +40,10 @@ export default function BreakEvenCalculator({ programs, state }: Props) {
   return (
     <section className="bg-white border border-[#ddd] rounded-sm p-6 mb-5">
       <h2 className="text-xs font-semibold uppercase tracking-[0.08em] text-[#666] mb-3 font-mono m-0">
-        What Raise Do I Need?
+        {t('section.breakEven')}
       </h2>
       <p className="text-[13px] text-[#666] mb-4 leading-relaxed">
-        Minimum raise to break even after crossing each benefit cliff,
-        accounting for all simultaneous losses:
+        {t('breakEven.description')}
       </p>
 
       <div className="space-y-0">
@@ -57,7 +58,7 @@ export default function BreakEvenCalculator({ programs, state }: Props) {
               <div className="min-w-0">
                 <span className="text-[13px] font-medium">{row.name}</span>
                 <span className="text-[11px] text-[#999] ml-2">
-                  cliff at +{formatMoney(row.cliffDistance)}/mo
+                  {t('breakEven.cliffAt')} +{formatMoney(row.cliffDistance)}/mo
                 </span>
               </div>
               <div className={`font-mono text-[13px] font-semibold whitespace-nowrap ${getRaiseColor(row.breakEvenMonthly)}`}>
@@ -77,28 +78,28 @@ export default function BreakEvenCalculator({ programs, state }: Props) {
       {/* Bottom line */}
       {clearAllRaise !== null && (
         <div className="mt-4 px-4 py-3 bg-[#F8F6F3] rounded-sm text-[13px] leading-relaxed">
-          <strong>{rows.length > 1 ? 'To clear all cliffs:' : 'Bottom line:'}</strong>{' '}
+          <strong>{rows.length > 1 ? t('breakEven.clearAll') : `${t('safeRaise.bottomLine')}:`}</strong>{' '}
           {rows.length > 1 ? (
             <>
-              A raise of at least{' '}
+              {t('breakEven.raiseAtLeast')}{' '}
               <strong className={`font-mono ${getRaiseColor(clearAllRaise)}`}>
                 +{formatMoney(clearAllRaise)}/mo
               </strong>
               <span className="text-[11px] text-[#999] ml-1">
                 (+${formatHourly(clearAllRaise)}/hr)
               </span>
-              {' '}would offset all benefit losses.
+              {' '}{t('breakEven.offsetAll')}
             </>
           ) : (
             <>
-              You need at least{' '}
+              {t('breakEven.needAtLeast')}{' '}
               <strong className={`font-mono ${getRaiseColor(clearAllRaise)}`}>
                 +{formatMoney(clearAllRaise)}/mo
               </strong>
               <span className="text-[11px] text-[#999] ml-1">
                 (+${formatHourly(clearAllRaise)}/hr)
               </span>
-              {' '}to break even after crossing this cliff.
+              {' '}{t('breakEven.toBreakEven')}
             </>
           )}
         </div>

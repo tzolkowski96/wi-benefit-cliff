@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import type { FormState } from '../types/index.ts'
 import type { FormUpdater } from '../hooks/useUrlState.ts'
+import { useI18n } from '../hooks/useI18n.ts'
 import { hourlyToMonthly, monthlyToHourly } from '../utils/wage.ts'
 import { formatMoney } from '../utils/format.ts'
 
@@ -10,6 +11,7 @@ interface Props {
 }
 
 export default function HouseholdForm({ state, update }: Props) {
+  const { t } = useI18n()
   const { householdSize, numberOfChildren, incomeType, hourlyWage, monthlyIncome, raiseAmount, monthlyRent, monthlyChildcareCosts } = state
   const hasDeductions = monthlyRent > 0 || monthlyChildcareCosts > 0
   const [deductionsOpen, setDeductionsOpen] = useState(hasDeductions)
@@ -18,16 +20,16 @@ export default function HouseholdForm({ state, update }: Props) {
   return (
     <section className="bg-white border border-[#ddd] rounded-sm p-6 mb-5">
       <h2 className="text-xs font-semibold uppercase tracking-[0.08em] text-[#666] mb-4 font-mono m-0">
-        Your Household
+        {t('form.sectionLabel')}
       </h2>
 
       {/* Row 1: Household size + Children */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
         <fieldset className="border-0 p-0 m-0">
           <legend className="text-xs font-semibold uppercase tracking-[0.05em] text-[#555] mb-1.5 font-mono">
-            Household size
+            {t('form.householdSize')}
           </legend>
-          <div className="flex gap-1 flex-wrap" role="radiogroup" aria-label="Household size">
+          <div className="flex gap-1 flex-wrap" role="radiogroup" aria-label={t('form.householdSize')}>
             {[1, 2, 3, 4, 5, 6, 7, 8].map((n) => (
               <button
                 key={n}
@@ -49,9 +51,9 @@ export default function HouseholdForm({ state, update }: Props) {
 
         <fieldset className="border-0 p-0 m-0">
           <legend className="text-xs font-semibold uppercase tracking-[0.05em] text-[#555] mb-1.5 font-mono">
-            Children under 18
+            {t('form.numberOfChildren')}
           </legend>
-          <div className="flex gap-1 flex-wrap" role="radiogroup" aria-label="Number of children under 18">
+          <div className="flex gap-1 flex-wrap" role="radiogroup" aria-label={t('form.numberOfChildren')}>
             {Array.from({ length: maxChildren + 1 }, (_, i) => i).map((n) => (
               <button
                 key={n}
@@ -77,9 +79,9 @@ export default function HouseholdForm({ state, update }: Props) {
       {/* Income type toggle */}
       <div className="mb-4">
         <span className="block text-xs font-semibold uppercase tracking-[0.05em] text-[#555] mb-1.5 font-mono">
-          Income type
+          {t('form.incomeType')}
         </span>
-        <div className="flex gap-2" role="radiogroup" aria-label="Income type">
+        <div className="flex gap-2" role="radiogroup" aria-label={t('form.incomeType')}>
           {(['hourly', 'monthly'] as const).map((type) => (
             <button
               key={type}
@@ -93,7 +95,7 @@ export default function HouseholdForm({ state, update }: Props) {
                   : 'bg-white text-[#333] border border-[#ccc] hover:border-[#999]'
                 }`}
             >
-              {type === 'hourly' ? 'Hourly' : 'Monthly'}
+              {type === 'hourly' ? t('form.incomeType.hourly') : t('form.incomeType.monthly')}
             </button>
           ))}
         </div>
@@ -103,7 +105,7 @@ export default function HouseholdForm({ state, update }: Props) {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label htmlFor="income-input" className="block text-xs font-semibold uppercase tracking-[0.05em] text-[#555] mb-1.5 font-mono">
-            {incomeType === 'hourly' ? 'Current hourly wage' : 'Current monthly income'}
+            {incomeType === 'hourly' ? t('form.hourlyWage') : t('form.monthlyIncome')}
           </label>
           <div className="relative">
             <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#888] text-base font-semibold">$</span>
@@ -132,7 +134,7 @@ export default function HouseholdForm({ state, update }: Props) {
               if (incomeType === 'hourly') update({ hourlyWage: val })
               else update({ monthlyIncome: val })
             }}
-            aria-label={incomeType === 'hourly' ? 'Hourly wage slider' : 'Monthly income slider'}
+            aria-label={incomeType === 'hourly' ? t('form.hourlyWage') : t('form.monthlyIncome')}
             className="w-full mt-1.5 accent-[#1a1a1a]"
           />
           <div className="text-xs text-[#888] mt-0.5 font-mono">
@@ -144,7 +146,7 @@ export default function HouseholdForm({ state, update }: Props) {
 
         <div>
           <label htmlFor="raise-input" className="block text-xs font-semibold uppercase tracking-[0.05em] text-[#555] mb-1.5 font-mono">
-            {incomeType === 'hourly' ? 'Hourly raise amount' : 'Monthly raise amount'}
+            {incomeType === 'hourly' ? t('form.raise.hourly') : t('form.raise.monthly')}
           </label>
           <div className="relative">
             <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#888] text-base font-semibold">$</span>
@@ -165,7 +167,7 @@ export default function HouseholdForm({ state, update }: Props) {
             step={incomeType === 'hourly' ? 0.25 : 25}
             value={raiseAmount}
             onChange={(e) => update({ raiseAmount: Number(e.target.value) })}
-            aria-label={incomeType === 'hourly' ? 'Hourly raise slider' : 'Monthly raise slider'}
+            aria-label={incomeType === 'hourly' ? t('form.raise.hourly') : t('form.raise.monthly')}
             className="w-full mt-1.5 accent-[#1a1a1a]"
           />
           <div className="text-xs text-[#888] mt-0.5 font-mono">
@@ -183,20 +185,21 @@ export default function HouseholdForm({ state, update }: Props) {
           onClick={() => setDeductionsOpen(!deductionsOpen)}
           className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.05em] text-[#888] font-mono cursor-pointer hover:text-[#555] bg-transparent border-0 p-0"
           aria-expanded={deductionsOpen}
+          aria-controls="deduction-inputs"
         >
           <span className={`inline-block transition-transform ${deductionsOpen ? 'rotate-90' : ''}`} aria-hidden="true">&#9654;</span>
-          Optional: improve FoodShare accuracy
+          {t('form.deductionsToggle')}
         </button>
 
         {deductionsOpen && (
-          <div className="mt-3">
+          <div id="deduction-inputs" className="mt-3">
             <p className="text-[12px] text-[#888] mb-3 leading-relaxed">
-              Adding your housing and childcare costs may increase your estimated FoodShare benefit.
+              {t('form.deductionsHelp')}
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label htmlFor="rent-input" className="block text-xs font-semibold uppercase tracking-[0.05em] text-[#555] mb-1.5 font-mono">
-                  Monthly rent/mortgage
+                  {t('form.rent')}
                 </label>
                 <div className="relative">
                   <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#888] text-base font-semibold">$</span>
@@ -213,7 +216,7 @@ export default function HouseholdForm({ state, update }: Props) {
               </div>
               <div>
                 <label htmlFor="childcare-input" className="block text-xs font-semibold uppercase tracking-[0.05em] text-[#555] mb-1.5 font-mono">
-                  Monthly childcare costs
+                  {t('form.childcare')}
                 </label>
                 <div className="relative">
                   <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#888] text-base font-semibold">$</span>
@@ -230,8 +233,7 @@ export default function HouseholdForm({ state, update }: Props) {
               </div>
             </div>
             <p className="text-[11px] text-[#999] mt-2 leading-relaxed">
-              Utility costs are estimated using Wisconsin's Heating Standard Utility Allowance ($538/mo).
-              The shelter deduction is capped at $712/mo.
+              {t('form.deductionsNote')}
             </p>
           </div>
         )}

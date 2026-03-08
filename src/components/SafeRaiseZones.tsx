@@ -1,4 +1,5 @@
 import type { ProgramResult } from '../types/index.ts'
+import { useI18n } from '../hooks/useI18n.ts'
 import { formatMoney } from '../utils/format.ts'
 
 interface Props {
@@ -8,6 +9,7 @@ interface Props {
 }
 
 export default function SafeRaiseZones({ programs, raiseMonthly, safeRaiseMax }: Props) {
+  const { t } = useI18n()
   const eligiblePrograms = programs.filter((p) => p.currentlyEligible)
 
   if (eligiblePrograms.length === 0) return null
@@ -15,10 +17,10 @@ export default function SafeRaiseZones({ programs, raiseMonthly, safeRaiseMax }:
   return (
     <section className="bg-white border border-[#ddd] rounded-sm p-6 mb-5">
       <h2 className="text-xs font-semibold uppercase tracking-[0.08em] text-[#666] mb-3 font-mono m-0">
-        Safe Raise Zones
+        {t('section.safeRaise')}
       </h2>
       <p className="text-[13px] text-[#666] mb-4 leading-relaxed">
-        Maximum raise you can take without losing each benefit you currently have:
+        {t('safeRaise.description')}
       </p>
 
       <div className="space-y-0">
@@ -34,7 +36,7 @@ export default function SafeRaiseZones({ programs, raiseMonthly, safeRaiseMax }:
               <span className="text-[13px] font-medium">{prog.name}</span>
               <span className={`font-mono text-[13px] font-semibold ${isOver ? 'text-[#9B2226]' : 'text-[#2D6A4F]'}`}>
                 {isOver && <span aria-hidden="true">&times; </span>}
-                up to +{formatMoney(safeAmount)}/mo
+                {t('safeRaise.upTo')} +{formatMoney(safeAmount)}/mo
               </span>
             </div>
           )
@@ -43,18 +45,16 @@ export default function SafeRaiseZones({ programs, raiseMonthly, safeRaiseMax }:
 
       {/* Bottom line summary */}
       <div className="mt-4 px-4 py-3 bg-[#F8F6F3] rounded-sm text-[13px] leading-relaxed">
-        <strong>Bottom line:</strong>{' '}
+        <strong>{t('safeRaise.bottomLine')}:</strong>{' '}
         {safeRaiseMax > 0 ? (
           <>
-            You can safely take up to{' '}
-            <strong className="font-mono">+{formatMoney(safeRaiseMax)}/mo</strong>{' '}
-            without losing any current benefits.
+            {t('safeRaise.safeMessage').replace('{amount}', `+${formatMoney(safeRaiseMax)}`)}
             {raiseMonthly > safeRaiseMax && (
-              <span className="text-[#9B2226]"> Your current raise exceeds this.</span>
+              <span className="text-[#9B2226]"> {t('safeRaise.exceedsMessage')}</span>
             )}
           </>
         ) : (
-          <>You are at or above the lowest eligibility threshold. Any raise may trigger a cliff.</>
+          <>{t('safeRaise.atThreshold')}</>
         )}
       </div>
     </section>

@@ -1,4 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
   <rect width="32" height="32" rx="4" fill="#1a1a1a"/>
-  <text x="16" y="22" font-family="sans-serif" font-size="18" font-weight="bold" fill="#E8A838" text-anchor="middle">BC</text>
+  <rect x="5" y="17.5" width="3.5" height="9.5" rx="0.5" fill="#2D6A4F"/>
+  <rect x="10" y="13.75" width="3.5" height="13.25" rx="0.5" fill="#2D6A4F"/>
+  <rect x="15" y="10" width="3.5" height="17" rx="0.5" fill="#E8A838"/>
+  <rect x="20" y="12.5" width="3.5" height="14.5" rx="0.5" fill="#E8A838"/>
+  <rect x="25" y="16.25" width="3.5" height="10.75" rx="0.5" fill="#9B2226"/>
+  <line x1="3.75" y1="15" x2="29.75" y2="15" stroke="#F8F6F3" stroke-width="0.25" stroke-dasharray="1 0.5" opacity="0.5"/>
 </svg>

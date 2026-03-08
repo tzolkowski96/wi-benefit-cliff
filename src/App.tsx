@@ -1,5 +1,6 @@
 import { useUrlState } from './hooks/useUrlState.ts'
 import { useCliffAnalysis } from './hooks/useCliffAnalysis.ts'
+import { useI18n } from './hooks/useI18n.ts'
 import HouseholdForm from './components/HouseholdForm.tsx'
 import NetImpactBanner from './components/NetImpactBanner.tsx'
 import CliffWarning from './components/CliffWarning.tsx'
@@ -11,6 +12,7 @@ import PrintSummary from './components/PrintSummary.tsx'
 
 export default function App() {
   const [formState, updateForm] = useUrlState()
+  const { t, lang, setLang } = useI18n()
   const analysis = useCliffAnalysis({
     householdSize: formState.householdSize,
     numberOfChildren: formState.numberOfChildren,
@@ -33,7 +35,7 @@ export default function App() {
         href="#main-content"
         className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:p-2 focus:bg-white focus:text-[#1a1a1a]"
       >
-        Skip to content
+        {t('a11y.skipToContent')}
       </a>
 
       {/* Header */}
@@ -42,25 +44,54 @@ export default function App() {
           <div className="flex items-start justify-between">
             <div>
               <div className="text-[11px] font-semibold tracking-[0.12em] uppercase text-[#E8A838] font-mono mb-2">
-                Wisconsin Public Benefits
+                {t('app.subtitle')}
               </div>
               <h1 className="text-[28px] font-bold leading-tight tracking-tight m-0">
-                Benefit Cliff Calculator
+                {t('app.title')}
               </h1>
             </div>
-            <button
-              type="button"
-              onClick={() => window.print()}
-              className="hidden sm:flex items-center gap-1.5 mt-1 px-3 py-1.5 text-xs font-mono font-medium text-[#F8F6F3] border border-[#555] rounded-sm hover:border-[#E8A838] hover:text-[#E8A838] cursor-pointer"
-            >
-              <span aria-hidden="true">&#9113;</span> Print Summary
-            </button>
+            <div className="flex items-center gap-3 mt-1">
+              {/* Language toggle */}
+              <div className="flex text-xs font-mono font-medium" role="radiogroup" aria-label="Language">
+                <button
+                  type="button"
+                  role="radio"
+                  aria-checked={lang === 'en'}
+                  onClick={() => setLang('en')}
+                  className={`px-2 py-1 border border-r-0 rounded-l-sm cursor-pointer ${
+                    lang === 'en'
+                      ? 'bg-[#E8A838] text-[#1a1a1a] border-[#E8A838]'
+                      : 'text-[#999] border-[#555] hover:text-[#F8F6F3]'
+                  }`}
+                >
+                  EN
+                </button>
+                <button
+                  type="button"
+                  role="radio"
+                  aria-checked={lang === 'es'}
+                  onClick={() => setLang('es')}
+                  className={`px-2 py-1 border rounded-r-sm cursor-pointer ${
+                    lang === 'es'
+                      ? 'bg-[#E8A838] text-[#1a1a1a] border-[#E8A838]'
+                      : 'text-[#999] border-[#555] hover:text-[#F8F6F3]'
+                  }`}
+                >
+                  ES
+                </button>
+              </div>
+              <button
+                type="button"
+                onClick={() => window.print()}
+                className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono font-medium text-[#F8F6F3] border border-[#555] rounded-sm hover:border-[#E8A838] hover:text-[#E8A838] cursor-pointer"
+              >
+                <span aria-hidden="true">&#9113;</span> {t('print.button')}
+              </button>
+            </div>
           </div>
           <p className="text-sm text-gray-400 mt-2 mb-0 leading-relaxed max-w-[600px]">
-            See how a raise affects your family's total benefits across
-            FoodShare, BadgerCare Plus, Wisconsin Shares, WHEAP, and school
-            meals. Based on 2025 eligibility thresholds from UW-Madison
-            Extension.
+            {t('app.description')}{' '}
+            {t('app.source')}
           </p>
         </div>
       </header>
@@ -85,17 +116,11 @@ export default function App() {
 
         {/* Disclaimer */}
         <footer className="text-[11px] text-[#999] leading-relaxed px-1 mt-4">
-          <strong>Disclaimer:</strong> This calculator provides estimates based on 2025
-          income eligibility thresholds published by UW-Madison Division of Extension.
-          Estimated benefit values are approximations. Actual eligibility depends on
-          additional factors including assets, deductions, household composition, and
-          immigration status. This tool does not replace official eligibility
-          determinations through{' '}
+          <strong>Disclaimer:</strong> {t('disclaimer.text')}{' '}
           <a href="https://access.wisconsin.gov" target="_blank" rel="noopener noreferrer" className="text-[#666] underline">
-            ACCESS Wisconsin
-          </a>.
-          Contact your county financial educator or call 211 (877-847-2211) for
-          personalized guidance.
+            {t('disclaimer.accessWi')}
+          </a>{' '}
+          {t('disclaimer.contact')}
         </footer>
 
         {/* Mobile print button */}
@@ -104,7 +129,7 @@ export default function App() {
           onClick={() => window.print()}
           className="sm:hidden w-full mt-6 py-3 text-sm font-mono font-medium text-[#1a1a1a] border border-[#ccc] rounded-sm hover:border-[#1a1a1a] cursor-pointer"
         >
-          <span aria-hidden="true">&#9113; </span>Print Summary
+          <span aria-hidden="true">&#9113; </span>{t('print.button')}
         </button>
       </main>
 
