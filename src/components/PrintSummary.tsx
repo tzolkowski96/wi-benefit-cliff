@@ -1,5 +1,7 @@
 import type { FormState, CliffAnalysis } from '../types/index.ts'
 import { formatMoney, formatMoneyWithSign } from '../utils/format.ts'
+import { monthlyToHourly } from '../utils/wage.ts'
+import { computeBreakEvenData } from '../utils/breakeven.ts'
 
 interface Props {
   state: FormState
@@ -108,6 +110,58 @@ export default function PrintSummary({ state, analysis }: Props) {
             : <>At or above the lowest eligibility threshold. Any raise may trigger a cliff.</>}
         </p>
       </div>
+
+      {/* Break-even raises */}
+      {(() => {
+        const { rows, clearAllRaise } = computeBreakEvenData(
+          programs,
+          {
+            householdSize: state.householdSize,
+            numberOfChildren: state.numberOfChildren,
+            currentMonthlyIncome: state.currentMonthlyIncome,
+            monthlyRent: state.monthlyRent,
+            monthlyChildcareCosts: state.monthlyChildcareCosts,
+          },
+          {
+            customBadgerCareAdultValue: state.customBadgerCareAdultValue,
+            customBadgerCareChildValue: state.customBadgerCareChildValue,
+            customWisconsinSharesValue: state.customWisconsinSharesValue,
+          },
+        )
+        if (rows.length === 0) return null
+        return (
+          <div className="mb-4 p-3 border border-[#ddd]">
+            <h2 className="text-xs font-bold uppercase tracking-wider mb-2">Break-Even Raises</h2>
+            <table className="w-full border-collapse text-[11px] mb-2">
+              <thead>
+                <tr className="border-b border-[#999]">
+                  <th className="text-left py-1 font-bold">Program</th>
+                  <th className="text-right py-1 font-bold">Cliff At</th>
+                  <th className="text-right py-1 font-bold">Break Even</th>
+                  <th className="text-right py-1 font-bold">Hourly</th>
+                </tr>
+              </thead>
+              <tbody>
+                {rows.map((row) => (
+                  <tr key={row.name} className="border-b border-[#eee]">
+                    <td className="py-1">{row.name}</td>
+                    <td className="py-1 font-mono text-right">+{formatMoney(row.cliffDistance)}/mo</td>
+                    <td className="py-1 font-mono text-right">+{formatMoney(row.breakEvenMonthly)}/mo</td>
+                    <td className="py-1 font-mono text-right">+${monthlyToHourly(row.breakEvenMonthly).toFixed(2)}/hr</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            {clearAllRaise !== null && (
+              <p className="text-[11px]">
+                {rows.length > 1
+                  ? <>To clear all cliffs: <strong className="font-mono">+{formatMoney(clearAllRaise)}/mo</strong> (+${monthlyToHourly(clearAllRaise).toFixed(2)}/hr)</>
+                  : <>Break-even raise: <strong className="font-mono">+{formatMoney(clearAllRaise)}/mo</strong> (+${monthlyToHourly(clearAllRaise).toFixed(2)}/hr)</>}
+              </p>
+            )}
+          </div>
+        )
+      })()}
 
       {/* Disclaimer */}
       <div className="text-[10px] text-[#999] leading-relaxed border-t border-[#ddd] pt-3">

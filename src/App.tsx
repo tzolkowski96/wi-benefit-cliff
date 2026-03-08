@@ -6,6 +6,7 @@ import CliffWarning from './components/CliffWarning.tsx'
 import CliffChart from './components/CliffChart.tsx'
 import ProgramBreakdown from './components/ProgramBreakdown.tsx'
 import SafeRaiseZones from './components/SafeRaiseZones.tsx'
+import BreakEvenCalculator from './components/BreakEvenCalculator.tsx'
 import PrintSummary from './components/PrintSummary.tsx'
 
 export default function App() {
@@ -80,6 +81,7 @@ export default function App() {
           raiseMonthly={formState.raiseMonthly}
           safeRaiseMax={analysis.safeRaiseMax}
         />
+        <BreakEvenCalculator programs={analysis.programs} state={formState} />
 
         {/* Disclaimer */}
         <footer className="text-[11px] text-[#999] leading-relaxed px-1 mt-4">
