@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/wi-benefit-cliff/sw.js', { scope: '/wi-benefit-cliff/' })})}
