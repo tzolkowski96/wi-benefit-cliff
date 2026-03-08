@@ -1,0 +1,151 @@
+import type { ProgramResult } from '../types/index.ts'
+import { formatMoney } from '../utils/format.ts'
+
+interface Props {
+  programs: ProgramResult[]
+  currentMonthlyIncome: number
+  newMonthlyIncome: number
+}
+
+export default function CliffChart({ programs, currentMonthlyIncome, newMonthlyIncome }: Props) {
+  // Only show programs that are either eligible or have limits worth displaying
+  const displayPrograms = programs
+    .filter((p) => p.key !== 'school_meals_reduced' || p.currentlyEligible)
+    .sort((a, b) => a.limit - b.limit)
+
+  if (displayPrograms.length === 0) return null
+
+  const maxIncome = Math.max(
+    newMonthlyIncome * 1.3,
+    ...displayPrograms.map((p) => p.limit * 1.1),
+  )
+
+  const pct = (val: number) => Math.min((val / maxIncome) * 100, 100)
+
+  return (
+    <section className="bg-white border border-[#ddd] rounded-sm p-6 mb-5">
+      <h2 className="text-xs font-semibold uppercase tracking-[0.08em] text-[#666] mb-4 font-mono m-0">
+        Income vs. Eligibility Thresholds
+      </h2>
+
+      {/* Visual chart */}
+      <div className="relative pb-3" aria-hidden="true">
+        {displayPrograms.map((prog) => {
+          const limitPct = pct(prog.limit)
+          const currentPct = pct(currentMonthlyIncome)
+          const newPct = pct(newMonthlyIncome)
+
+          return (
+            <div key={prog.key} className="mb-2.5">
+              <div className="flex justify-between items-center mb-1">
+                <span className={`text-[13px] font-medium ${prog.currentlyEligible ? 'text-[#1a1a1a]' : 'text-[#aaa]'}`}>
+                  {prog.name}
+                </span>
+                <span className={`text-[11px] font-mono ${
+                  prog.lost ? 'text-[#9B2226] font-bold'
+                    : prog.currentlyEligible ? 'text-[#666]'
+                    : 'text-[#bbb]'
+                }`}>
+                  {prog.lost
+                    ? (prog.cliffType === 'tier_shift' && prog.currentTier && prog.newTier
+                        ? `${prog.currentTier.toUpperCase()} \u2192 ${prog.newTier.toUpperCase()}`
+                        : 'LOST \u2193')
+                    : !prog.currentlyEligible
+                      ? 'Not eligible'
+                      : `${formatMoney(prog.distanceToCliff)} buffer`
+                  }
+                </span>
+              </div>
+              <div className="relative h-6 bg-[#f0f0f0] rounded-sm overflow-visible">
+                {/* Eligible zone fill */}
+                <div
+                  className="absolute left-0 top-0 bottom-0 rounded-l-sm"
+                  style={{
+                    width: `${Math.min(limitPct, 100)}%`,
+                    backgroundColor: prog.currentlyEligible ? `${prog.color}18` : '#f5f5f5',
+                  }}
+                />
+                {/* Cliff line */}
+                <div
+                  className="absolute top-[-2px] bottom-[-2px] w-0.5 opacity-70"
+                  style={{ left: `${Math.min(limitPct, 100)}%`, backgroundColor: prog.color }}
+                />
+                {/* Current income marker */}
+                <div
+                  className="absolute top-0.5 bottom-0.5 w-[3px] bg-[#1a1a1a] rounded-sm z-[2]"
+                  style={{ left: `${Math.min(currentPct, 99)}%` }}
+                />
+                {/* New income marker */}
+                {newMonthlyIncome !== currentMonthlyIncome && (
+                  <div
+                    className="absolute top-0.5 bottom-0.5 w-[3px] rounded-sm z-[2]"
+                    style={{
+                      left: `${Math.min(newPct, 99)}%`,
+                      backgroundColor: prog.lost ? '#9B2226' : '#E8A838',
+                    }}
+                  />
+                )}
+                {/* Limit label */}
+                <span
+                  className="absolute top-1 text-[10px] font-mono font-medium whitespace-nowrap"
+                  style={{ left: `${Math.min(limitPct, 100)}%`, transform: 'translateX(6px)', color: prog.color }}
+                >
+                  {formatMoney(prog.limit)}
+                </span>
+              </div>
+            </div>
+          )
+        })}
+
+        {/* Legend */}
+        <div className="flex flex-wrap gap-x-4 gap-y-1 mt-4 text-[11px] text-[#888]">
+          <div className="flex items-center gap-1">
+            <div className="w-3 h-[3px] bg-[#1a1a1a] rounded-sm" />
+            Current ({formatMoney(currentMonthlyIncome)})
+          </div>
+          {newMonthlyIncome !== currentMonthlyIncome && (
+            <div className="flex items-center gap-1">
+              <div className="w-3 h-[3px] bg-[#E8A838] rounded-sm" />
+              After raise ({formatMoney(newMonthlyIncome)})
+            </div>
+          )}
+          <div className="flex items-center gap-1">
+            <div className="w-0.5 h-3 bg-[#666] rounded-sm" />
+            Eligibility cutoff
+          </div>
+        </div>
+      </div>
+
+      {/* Screen reader table fallback */}
+      <table className="sr-only">
+        <caption>Income position relative to benefit program eligibility thresholds</caption>
+        <thead>
+          <tr>
+            <th scope="col">Program</th>
+            <th scope="col">Eligibility Cutoff</th>
+            <th scope="col">Current Income</th>
+            <th scope="col">After Raise</th>
+            <th scope="col">Buffer</th>
+            <th scope="col">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {displayPrograms.map((prog) => (
+            <tr key={prog.key}>
+              <td>{prog.name}</td>
+              <td>{formatMoney(prog.limit)}/mo</td>
+              <td>{formatMoney(currentMonthlyIncome)}/mo</td>
+              <td>{formatMoney(newMonthlyIncome)}/mo</td>
+              <td>{prog.currentlyEligible ? formatMoney(prog.distanceToCliff) : 'N/A'}</td>
+              <td>
+                {prog.lost
+                  ? (prog.cliffType === 'tier_shift' ? `${prog.currentTier} to ${prog.newTier}` : 'Lost')
+                  : prog.currentlyEligible ? 'Keep' : 'Not eligible'}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </section>
+  )
+}
