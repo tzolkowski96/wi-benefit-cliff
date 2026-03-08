@@ -67,7 +67,7 @@ export default function HouseholdForm({ state, update }: Props) {
                     ? 'bg-[#1a1a1a] text-white border-2 border-[#1a1a1a]'
                     : 'bg-white text-[#333] border border-[#ccc] hover:border-[#999]'
                   }
-                  ${householdSize === 1 && n > 0 ? 'opacity-30 cursor-not-allowed' : ''}`}
+                  ${householdSize === 1 && n > 0 ? 'opacity-50 cursor-not-allowed text-[#999]' : ''}`}
               >
                 {n}
               </button>

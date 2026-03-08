@@ -29,7 +29,7 @@ export default function PrintSummary({ state, analysis }: Props) {
           <div>{t('form.numberOfChildren')}: <strong>{state.numberOfChildren}</strong></div>
           <div>{t('form.monthlyIncome')}: <strong>{formatMoney(state.currentMonthlyIncome)}</strong></div>
           <div>{t('form.raise.monthly')}: <strong>{formatMoney(state.raiseMonthly)}</strong></div>
-          <div>New monthly income: <strong>{formatMoney(state.currentMonthlyIncome + state.raiseMonthly)}</strong></div>
+          <div>{t('print.newMonthlyIncome')}: <strong>{formatMoney(state.currentMonthlyIncome + state.raiseMonthly)}</strong></div>
           {state.monthlyRent > 0 && <div>{t('form.rent')}: <strong>{formatMoney(state.monthlyRent)}</strong></div>}
           {state.monthlyChildcareCosts > 0 && <div>{t('form.childcare')}: <strong>{formatMoney(state.monthlyChildcareCosts)}</strong></div>}
         </div>
@@ -43,10 +43,10 @@ export default function PrintSummary({ state, analysis }: Props) {
         </div>
         <div className="text-[11px] mt-1 text-[#666]">
           {t('result.raise')}: +{formatMoney(calculableImpact.raise)}/mo
-          {foodshareLoss > 0 && <> | FoodShare: -{formatMoney(foodshareLoss)}</>}
-          {schoolMealLoss > 0 && <> | School meals: -{formatMoney(schoolMealLoss)}</>}
-          {wheapLoss > 0 && <> | WHEAP: -{formatMoney(wheapLoss)}</>}
-          {customLosses > 0 && <> | User-entered: -{formatMoney(customLosses)}</>}
+          {foodshareLoss > 0 && <> | {t('print.foodshareLoss')}: -{formatMoney(foodshareLoss)}</>}
+          {schoolMealLoss > 0 && <> | {t('print.schoolMealLoss')}: -{formatMoney(schoolMealLoss)}</>}
+          {wheapLoss > 0 && <> | {t('print.wheapLoss')}: -{formatMoney(wheapLoss)}</>}
+          {customLosses > 0 && <> | {t('print.userEnteredLoss')}: -{formatMoney(customLosses)}</>}
         </div>
       </div>
 

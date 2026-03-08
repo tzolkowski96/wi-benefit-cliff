@@ -136,6 +136,11 @@ export const es: Record<I18nKey, string> = {
   'print.cliffAt': 'L\u00edmite En',
   'print.breakEvenCol': 'Equilibrio',
   'print.hourlyCol': 'Por Hora',
+  'print.newMonthlyIncome': 'Nuevo ingreso mensual',
+  'print.foodshareLoss': 'FoodShare',
+  'print.schoolMealLoss': 'Comidas escolares',
+  'print.wheapLoss': 'WHEAP',
+  'print.userEnteredLoss': 'Ingresado por usuario',
 
   // Disclaimer
   'disclaimer.text': 'Esta calculadora proporciona estimaciones basadas en los umbrales de elegibilidad de ingresos de 2025 publicados por la Divisi\u00f3n de Extensi\u00f3n de UW-Madison. Los valores estimados de beneficios son aproximaciones. La elegibilidad real depende de factores adicionales incluyendo activos, deducciones, composici\u00f3n del hogar y estatus migratorio. Esta herramienta no reemplaza las determinaciones oficiales de elegibilidad.',

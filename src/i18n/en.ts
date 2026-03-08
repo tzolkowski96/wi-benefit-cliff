@@ -130,6 +130,11 @@ export const en = {
   'print.cliffAt': 'Cliff At',
   'print.breakEvenCol': 'Break Even',
   'print.hourlyCol': 'Hourly',
+  'print.newMonthlyIncome': 'New monthly income',
+  'print.foodshareLoss': 'FoodShare',
+  'print.schoolMealLoss': 'School meals',
+  'print.wheapLoss': 'WHEAP',
+  'print.userEnteredLoss': 'User-entered',
 
   // Disclaimer
   'disclaimer.text': 'This calculator provides estimates based on 2025 income eligibility thresholds published by UW-Madison Division of Extension. Estimated benefit values are approximations. Actual eligibility depends on additional factors including assets, deductions, household composition, and immigration status. This tool does not replace official eligibility determinations.',
