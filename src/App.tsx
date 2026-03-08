@@ -15,6 +15,8 @@ export default function App() {
     numberOfChildren: formState.numberOfChildren,
     currentMonthlyIncome: formState.currentMonthlyIncome,
     raiseMonthly: formState.raiseMonthly,
+    monthlyRent: formState.monthlyRent,
+    monthlyChildcareCosts: formState.monthlyChildcareCosts,
   })
 
   const newMonthlyIncome = formState.currentMonthlyIncome + formState.raiseMonthly

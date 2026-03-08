@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import type { FormState } from '../types/index.ts'
 import type { FormUpdater } from '../hooks/useUrlState.ts'
 import { hourlyToMonthly, monthlyToHourly } from '../utils/wage.ts'
@@ -9,7 +10,9 @@ interface Props {
 }
 
 export default function HouseholdForm({ state, update }: Props) {
-  const { householdSize, numberOfChildren, incomeType, hourlyWage, monthlyIncome, raiseAmount } = state
+  const { householdSize, numberOfChildren, incomeType, hourlyWage, monthlyIncome, raiseAmount, monthlyRent, monthlyChildcareCosts } = state
+  const hasDeductions = monthlyRent > 0 || monthlyChildcareCosts > 0
+  const [deductionsOpen, setDeductionsOpen] = useState(hasDeductions)
   const maxChildren = Math.max(0, householdSize - 1)
 
   return (
@@ -171,6 +174,67 @@ export default function HouseholdForm({ state, update }: Props) {
               : `\u2248 $${monthlyToHourly(raiseAmount).toFixed(2)}/hr`}
           </div>
         </div>
+      </div>
+
+      {/* Collapsible deduction inputs */}
+      <div className="mt-4 border-t border-[#eee] pt-4">
+        <button
+          type="button"
+          onClick={() => setDeductionsOpen(!deductionsOpen)}
+          className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.05em] text-[#888] font-mono cursor-pointer hover:text-[#555] bg-transparent border-0 p-0"
+          aria-expanded={deductionsOpen}
+        >
+          <span className={`inline-block transition-transform ${deductionsOpen ? 'rotate-90' : ''}`} aria-hidden="true">&#9654;</span>
+          Optional: improve FoodShare accuracy
+        </button>
+
+        {deductionsOpen && (
+          <div className="mt-3">
+            <p className="text-[12px] text-[#888] mb-3 leading-relaxed">
+              Adding your housing and childcare costs may increase your estimated FoodShare benefit.
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label htmlFor="rent-input" className="block text-xs font-semibold uppercase tracking-[0.05em] text-[#555] mb-1.5 font-mono">
+                  Monthly rent/mortgage
+                </label>
+                <div className="relative">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#888] text-base font-semibold">$</span>
+                  <input
+                    id="rent-input"
+                    type="number"
+                    min={0}
+                    step={50}
+                    value={monthlyRent}
+                    onChange={(e) => update({ monthlyRent: Math.max(0, Math.round(Number(e.target.value))) })}
+                    className="w-full py-2.5 pl-7 pr-3 border border-[#ccc] rounded-sm text-lg font-semibold font-mono outline-none focus:border-[#1a1a1a] focus:ring-1 focus:ring-[#1a1a1a]"
+                  />
+                </div>
+              </div>
+              <div>
+                <label htmlFor="childcare-input" className="block text-xs font-semibold uppercase tracking-[0.05em] text-[#555] mb-1.5 font-mono">
+                  Monthly childcare costs
+                </label>
+                <div className="relative">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#888] text-base font-semibold">$</span>
+                  <input
+                    id="childcare-input"
+                    type="number"
+                    min={0}
+                    step={50}
+                    value={monthlyChildcareCosts}
+                    onChange={(e) => update({ monthlyChildcareCosts: Math.max(0, Math.round(Number(e.target.value))) })}
+                    className="w-full py-2.5 pl-7 pr-3 border border-[#ccc] rounded-sm text-lg font-semibold font-mono outline-none focus:border-[#1a1a1a] focus:ring-1 focus:ring-[#1a1a1a]"
+                  />
+                </div>
+              </div>
+            </div>
+            <p className="text-[11px] text-[#999] mt-2 leading-relaxed">
+              Utility costs are estimated using Wisconsin's Heating Standard Utility Allowance ($538/mo).
+              The shelter deduction is capped at $712/mo.
+            </p>
+          </div>
+        )}
       </div>
     </section>
   )

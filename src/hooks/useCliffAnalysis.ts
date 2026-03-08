@@ -23,7 +23,7 @@ import {
 } from '../utils/calculations.ts'
 
 export function useCliffAnalysis(inputs: HouseholdInputs): CliffAnalysis {
-  const { householdSize, numberOfChildren, currentMonthlyIncome, raiseMonthly } = inputs
+  const { householdSize, numberOfChildren, currentMonthlyIncome, raiseMonthly, monthlyRent, monthlyChildcareCosts } = inputs
 
   return useMemo(() => {
     const newMonthlyIncome = currentMonthlyIncome + raiseMonthly
@@ -49,6 +49,8 @@ export function useCliffAnalysis(inputs: HouseholdInputs): CliffAnalysis {
         newMonthlyIncome,
         householdSize,
         numberOfChildren,
+        monthlyRent,
+        monthlyChildcareCosts,
       )
 
       programs.push(result)
@@ -105,7 +107,7 @@ export function useCliffAnalysis(inputs: HouseholdInputs): CliffAnalysis {
       safeRaiseMax,
       cliffWarning: netMonthly < 0,
     }
-  }, [householdSize, numberOfChildren, currentMonthlyIncome, raiseMonthly])
+  }, [householdSize, numberOfChildren, currentMonthlyIncome, raiseMonthly, monthlyRent, monthlyChildcareCosts])
 }
 
 // ---------------------------------------------------------------------------
@@ -118,6 +120,8 @@ function analyzeProgram(
   newIncome: number,
   householdSize: number,
   numberOfChildren: number,
+  monthlyRent: number,
+  monthlyChildcareCosts: number,
 ): ProgramResult {
   const limit = prog.getLimit(householdSize)
 
@@ -139,7 +143,7 @@ function analyzeProgram(
   // Dispatch by program type
   switch (prog.key) {
     case 'foodshare':
-      return analyzeFoodShare(base, currentIncome, newIncome, householdSize, limit)
+      return analyzeFoodShare(base, currentIncome, newIncome, householdSize, limit, monthlyRent, monthlyChildcareCosts)
 
     case 'school_meals_free':
       return analyzeSchoolMealsFree(base, currentIncome, newIncome, householdSize, numberOfChildren)
@@ -180,12 +184,14 @@ function analyzeFoodShare(
   newIncome: number,
   householdSize: number,
   grossLimit: number,
+  monthlyRent: number,
+  monthlyChildcareCosts: number,
 ): ProgramResult {
   const currentlyEligible = currentIncome <= grossLimit
   const eligibleAfterRaise = newIncome <= grossLimit
 
-  const currentBenefit = calculateFoodShareBenefit(currentIncome, householdSize)
-  const newBenefit = calculateFoodShareBenefit(newIncome, householdSize)
+  const currentBenefit = calculateFoodShareBenefit(currentIncome, householdSize, monthlyRent, monthlyChildcareCosts)
+  const newBenefit = calculateFoodShareBenefit(newIncome, householdSize, monthlyRent, monthlyChildcareCosts)
   const loss = Math.max(0, currentBenefit - newBenefit)
 
   return {

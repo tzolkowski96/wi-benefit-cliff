@@ -19,6 +19,8 @@ const DEFAULTS: FormState = {
   raiseAmount: 2.0,
   currentMonthlyIncome: 2773,
   raiseMonthly: 346,
+  monthlyRent: 0,
+  monthlyChildcareCosts: 0,
 }
 
 function parseUrl(): Partial<FormState> {
@@ -54,6 +56,18 @@ function parseUrl(): Partial<FormState> {
     if (!isNaN(val) && val >= 0) result.raiseAmount = val
   }
 
+  const rent = params.get('rent')
+  if (rent) {
+    const val = parseInt(rent, 10)
+    if (!isNaN(val) && val >= 0) result.monthlyRent = val
+  }
+
+  const care = params.get('care')
+  if (care) {
+    const val = parseInt(care, 10)
+    if (!isNaN(val) && val >= 0) result.monthlyChildcareCosts = val
+  }
+
   return result
 }
 
@@ -74,6 +88,8 @@ function buildInitialState(): FormState {
 
   const currentMonthlyIncome = incomeType === 'hourly' ? hourlyToMonthly(hourlyWage) : monthlyIncome
   const raiseMonthly = incomeType === 'hourly' ? hourlyToMonthly(raiseAmount) : Math.round(raiseAmount)
+  const monthlyRent = fromUrl.monthlyRent ?? DEFAULTS.monthlyRent
+  const monthlyChildcareCosts = fromUrl.monthlyChildcareCosts ?? DEFAULTS.monthlyChildcareCosts
 
   return {
     householdSize,
@@ -84,6 +100,8 @@ function buildInitialState(): FormState {
     raiseAmount,
     currentMonthlyIncome,
     raiseMonthly,
+    monthlyRent,
+    monthlyChildcareCosts,
   }
 }
 
@@ -100,6 +118,10 @@ function writeUrl(state: FormState) {
     params.set('inc', String(state.monthlyIncome))
     params.set('raise', String(state.raiseAmount))
   }
+
+  // Only include deductions in URL when non-zero
+  if (state.monthlyRent > 0) params.set('rent', String(state.monthlyRent))
+  if (state.monthlyChildcareCosts > 0) params.set('care', String(state.monthlyChildcareCosts))
 
   const newUrl = window.location.pathname + '?' + params.toString()
   history.replaceState(null, '', newUrl)

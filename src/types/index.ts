@@ -11,6 +11,8 @@ export interface HouseholdInputs {
   numberOfChildren: number     // 0 to householdSize-1
   currentMonthlyIncome: number // gross monthly
   raiseMonthly: number         // monthly raise amount
+  monthlyRent: number          // for FoodShare shelter deduction
+  monthlyChildcareCosts: number // for FoodShare dependent care deduction
 }
 
 export type IncomeType = 'hourly' | 'monthly'
@@ -20,6 +22,8 @@ export interface FormState extends HouseholdInputs {
   hourlyWage: number
   monthlyIncome: number
   raiseAmount: number // in the unit matching incomeType
+  monthlyRent: number        // optional deduction input, default 0
+  monthlyChildcareCosts: number // optional deduction input, default 0
 }
 
 // ---------------------------------------------------------------------------

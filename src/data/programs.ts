@@ -63,6 +63,16 @@ export const REDUCED_MEAL_VALUE_PER_CHILD = 84
 export const WHEAP_MONTHLY_VALUE = 55
 
 // ---------------------------------------------------------------------------
+// FoodShare deduction constants (FFY 2025, DHS Operations Memo 2024-18)
+// ---------------------------------------------------------------------------
+
+/** Wisconsin Heating Standard Utility Allowance (HSUA) for FFY 2025. */
+export const HEATING_STANDARD_UTILITY_ALLOWANCE = 538
+
+/** Maximum excess shelter deduction (FFY 2025). Applies unless household has elderly/disabled member. */
+export const MAX_EXCESS_SHELTER_DEDUCTION = 712
+
+// ---------------------------------------------------------------------------
 // Program definitions
 // ---------------------------------------------------------------------------
 

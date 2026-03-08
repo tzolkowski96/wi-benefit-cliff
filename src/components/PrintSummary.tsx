@@ -26,6 +26,8 @@ export default function PrintSummary({ state, analysis }: Props) {
           <div>Current monthly income: <strong>{formatMoney(state.currentMonthlyIncome)}</strong></div>
           <div>Monthly raise: <strong>{formatMoney(state.raiseMonthly)}</strong></div>
           <div>New monthly income: <strong>{formatMoney(state.currentMonthlyIncome + state.raiseMonthly)}</strong></div>
+          {state.monthlyRent > 0 && <div>Monthly rent/mortgage: <strong>{formatMoney(state.monthlyRent)}</strong></div>}
+          {state.monthlyChildcareCosts > 0 && <div>Monthly childcare costs: <strong>{formatMoney(state.monthlyChildcareCosts)}</strong></div>}
         </div>
       </div>
 
@@ -110,7 +112,9 @@ export default function PrintSummary({ state, analysis }: Props) {
       <div className="text-[10px] text-[#999] leading-relaxed border-t border-[#ddd] pt-3">
         <strong>Disclaimer:</strong> This calculator provides estimates based on 2025 income
         eligibility thresholds published by UW-Madison Division of Extension. FoodShare estimates
-        use a simplified formula excluding shelter and dependent care deductions. School meal
+        use a simplified formula. When housing and childcare costs are provided, the shelter
+        and dependent care deductions are applied. The shelter deduction cap ($712/mo) assumes
+        no elderly or disabled household members. School meal
         values use USDA federal reimbursement rates (SY 2025-26) as an upper-bound proxy.
         This tool does not replace official eligibility determinations through ACCESS Wisconsin
         (access.wisconsin.gov). Contact your county financial educator or call 211 (877-847-2211)

@@ -15,6 +15,8 @@ import {
   getMaxAllotment,
   FREE_MEAL_VALUE_PER_CHILD,
   REDUCED_MEAL_VALUE_PER_CHILD,
+  HEATING_STANDARD_UTILITY_ALLOWANCE,
+  MAX_EXCESS_SHELTER_DEDUCTION,
 } from '../data/programs.ts'
 
 // ---------------------------------------------------------------------------
@@ -27,25 +29,50 @@ import {
  * Checks BOTH the gross income limit (200% FPL) AND the net income limit
  * (100% FPL). A household can be under the gross limit but still receive
  * $0 if their net income exceeds 100% FPL.
+ *
+ * Optionally accepts monthly rent and childcare costs to compute the
+ * dependent care deduction and excess shelter deduction for a more
+ * accurate estimate.
  */
 export function calculateFoodShareBenefit(
   grossMonthly: number,
   householdSize: number,
+  monthlyRent: number = 0,
+  monthlyChildcareCosts: number = 0,
 ): number {
   // 1. Gross income test: 200% FPL
   const grossLimit = getFplAtPercent(200, householdSize)
   if (grossMonthly > grossLimit) return 0
 
-  // 2. Compute net income
+  // 2. Compute deductions
   const standardDeduction = getFoodShareStandardDeduction(householdSize)
   const earnedIncomeDeduction = 0.20 * grossMonthly // assuming all income is earned
-  const netIncome = Math.max(0, grossMonthly - standardDeduction - earnedIncomeDeduction)
 
-  // 3. Net income test: 100% FPL
+  // Dependent care deduction: actual childcare costs, no cap
+  const dependentCareDeduction = Math.max(0, monthlyChildcareCosts)
+
+  // Excess shelter deduction (only if rent/housing costs provided)
+  let excessShelterDeduction = 0
+  if (monthlyRent > 0) {
+    const incomeAfterOtherDeductions = grossMonthly - standardDeduction - earnedIncomeDeduction - dependentCareDeduction
+    const halfIncome = Math.max(0, incomeAfterOtherDeductions) / 2
+    const shelterCosts = monthlyRent + HEATING_STANDARD_UTILITY_ALLOWANCE
+    const excessShelter = Math.max(0, shelterCosts - halfIncome)
+    // Cap at $712/mo (FFY 2025) unless household has elderly/disabled member
+    // (we don't track this, so always apply the cap)
+    excessShelterDeduction = Math.min(excessShelter, MAX_EXCESS_SHELTER_DEDUCTION)
+  }
+
+  // 3. Net income = gross - all deductions
+  const netIncome = Math.max(0,
+    grossMonthly - standardDeduction - earnedIncomeDeduction - dependentCareDeduction - excessShelterDeduction
+  )
+
+  // 4. Net income test: 100% FPL
   const netLimit = getFplAtPercent(100, householdSize)
   if (netIncome > netLimit) return 0
 
-  // 4. Benefit calculation
+  // 5. Benefit calculation
   const maxAllotment = getMaxAllotment(householdSize)
   const benefit = maxAllotment - 0.30 * netIncome
   return Math.max(0, Math.round(benefit))
