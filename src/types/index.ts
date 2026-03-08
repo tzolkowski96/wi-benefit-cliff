@@ -24,6 +24,10 @@ export interface FormState extends HouseholdInputs {
   raiseAmount: number // in the unit matching incomeType
   monthlyRent: number        // optional deduction input, default 0
   monthlyChildcareCosts: number // optional deduction input, default 0
+  // User-entered monthly values for eligibility-only programs
+  customBadgerCareAdultValue: number | null
+  customBadgerCareChildValue: number | null
+  customWisconsinSharesValue: number | null
 }
 
 // ---------------------------------------------------------------------------
@@ -82,6 +86,7 @@ export interface MonthlyImpact {
   foodshareLoss: number        // gradual reduction (could be $0 to full amount)
   schoolMealLoss: number       // per-child x numberOfChildren, tier-aware
   wheapLoss: number            // $55/mo if lost, $0 if kept
+  customLosses: number         // sum of user-entered values for lost eligibility-only programs
   totalCalculableLoss: number
   netMonthly: number           // raise - totalCalculableLoss
   netAnnual: number

@@ -8,7 +8,7 @@ interface Props {
 
 export default function PrintSummary({ state, analysis }: Props) {
   const { programs, calculableImpact, safeRaiseMax } = analysis
-  const { netMonthly, netAnnual, uncalculatedLosses, foodshareLoss, schoolMealLoss, wheapLoss } = calculableImpact
+  const { netMonthly, netAnnual, uncalculatedLosses, foodshareLoss, schoolMealLoss, wheapLoss, customLosses } = calculableImpact
 
   return (
     <div className="print-summary hidden print:block print:p-8 print:text-[12px] print:text-black print:bg-white">
@@ -42,6 +42,7 @@ export default function PrintSummary({ state, analysis }: Props) {
           {foodshareLoss > 0 && <> | FoodShare: -{formatMoney(foodshareLoss)}</>}
           {schoolMealLoss > 0 && <> | School meals: -{formatMoney(schoolMealLoss)}</>}
           {wheapLoss > 0 && <> | WHEAP: -{formatMoney(wheapLoss)}</>}
+          {customLosses > 0 && <> | User-entered: -{formatMoney(customLosses)}</>}
         </div>
       </div>
 

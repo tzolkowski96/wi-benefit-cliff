@@ -22,7 +22,13 @@ import {
   getDistanceToCliff,
 } from '../utils/calculations.ts'
 
-export function useCliffAnalysis(inputs: HouseholdInputs): CliffAnalysis {
+export interface CustomBenefitValues {
+  customBadgerCareAdultValue: number | null
+  customBadgerCareChildValue: number | null
+  customWisconsinSharesValue: number | null
+}
+
+export function useCliffAnalysis(inputs: HouseholdInputs, customValues?: CustomBenefitValues): CliffAnalysis {
   const { householdSize, numberOfChildren, currentMonthlyIncome, raiseMonthly, monthlyRent, monthlyChildcareCosts } = inputs
 
   return useMemo(() => {
@@ -32,6 +38,7 @@ export function useCliffAnalysis(inputs: HouseholdInputs): CliffAnalysis {
     let foodshareLoss = 0
     let schoolMealLoss = 0
     let wheapLoss = 0
+    let customLosses = 0
     const uncalculatedLosses: string[] = []
 
     // Track distances for safeRaiseMax calculation
@@ -76,13 +83,18 @@ export function useCliffAnalysis(inputs: HouseholdInputs): CliffAnalysis {
         }
       }
 
-      // 4. Track uncalculated losses
+      // 4. Track uncalculated losses (or include custom values)
       if (!prog.calculable && result.lost) {
-        uncalculatedLosses.push(result.name)
+        const customValue = getCustomValue(prog.key, customValues)
+        if (customValue !== null) {
+          customLosses += customValue
+        } else {
+          uncalculatedLosses.push(result.name)
+        }
       }
     }
 
-    const totalCalculableLoss = foodshareLoss + schoolMealLoss + wheapLoss
+    const totalCalculableLoss = foodshareLoss + schoolMealLoss + wheapLoss + customLosses
     const netMonthly = raiseMonthly - totalCalculableLoss
 
     const calculableImpact: MonthlyImpact = {
@@ -90,6 +102,7 @@ export function useCliffAnalysis(inputs: HouseholdInputs): CliffAnalysis {
       foodshareLoss,
       schoolMealLoss,
       wheapLoss,
+      customLosses,
       totalCalculableLoss,
       netMonthly,
       netAnnual: netMonthly * 12,
@@ -107,7 +120,8 @@ export function useCliffAnalysis(inputs: HouseholdInputs): CliffAnalysis {
       safeRaiseMax,
       cliffWarning: netMonthly < 0,
     }
-  }, [householdSize, numberOfChildren, currentMonthlyIncome, raiseMonthly, monthlyRent, monthlyChildcareCosts])
+  }, [householdSize, numberOfChildren, currentMonthlyIncome, raiseMonthly, monthlyRent, monthlyChildcareCosts,
+      customValues?.customBadgerCareAdultValue, customValues?.customBadgerCareChildValue, customValues?.customWisconsinSharesValue])
 }
 
 // ---------------------------------------------------------------------------
@@ -362,5 +376,19 @@ function analyzeEligibilityOnly(
     currentMonthlyValue: null,
     newMonthlyValue: null,
     monthlyLoss: null,
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Helper: look up user-entered custom value for an eligibility-only program
+// ---------------------------------------------------------------------------
+
+function getCustomValue(programKey: string, customValues?: CustomBenefitValues): number | null {
+  if (!customValues) return null
+  switch (programKey) {
+    case 'badgercare_adult': return customValues.customBadgerCareAdultValue
+    case 'badgercare_children': return customValues.customBadgerCareChildValue
+    case 'wisconsin_shares': return customValues.customWisconsinSharesValue
+    default: return null
   }
 }

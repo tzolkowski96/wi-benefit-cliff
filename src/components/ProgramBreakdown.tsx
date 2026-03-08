@@ -1,8 +1,17 @@
-import type { ProgramResult } from '../types/index.ts'
+import type { ProgramResult, FormState } from '../types/index.ts'
+import type { FormUpdater } from '../hooks/useUrlState.ts'
 import { formatMoney } from '../utils/format.ts'
+
+const CUSTOM_VALUE_KEYS: Record<string, keyof FormState> = {
+  badgercare_adult: 'customBadgerCareAdultValue',
+  badgercare_children: 'customBadgerCareChildValue',
+  wisconsin_shares: 'customWisconsinSharesValue',
+}
 
 interface Props {
   programs: ProgramResult[]
+  state: FormState
+  update: FormUpdater
 }
 
 function cliffTypeBadge(type: string) {
@@ -57,7 +66,7 @@ function statusBadge(prog: ProgramResult) {
   )
 }
 
-export default function ProgramBreakdown({ programs }: Props) {
+export default function ProgramBreakdown({ programs, state, update }: Props) {
   if (programs.length === 0) return null
 
   return (
@@ -67,61 +76,88 @@ export default function ProgramBreakdown({ programs }: Props) {
       </h2>
 
       <div className="space-y-0">
-        {programs.map((prog) => (
-          <div
-            key={prog.key}
-            className={`py-3 border-b border-[#eee] last:border-b-0 ${
-              !prog.currentlyEligible ? 'opacity-45' : ''
-            }`}
-          >
-            {/* Mobile: stacked layout */}
-            <div className="flex flex-wrap items-start justify-between gap-2 mb-1">
-              <div className="flex-1 min-w-0">
-                <div className="text-sm font-semibold" style={{ color: prog.color }}>
-                  {prog.name}
+        {programs.map((prog) => {
+          const customKey = CUSTOM_VALUE_KEYS[prog.key]
+          const customValue = customKey ? (state[customKey] as number | null) : null
+
+          return (
+            <div
+              key={prog.key}
+              className={`py-3 border-b border-[#eee] last:border-b-0 ${
+                !prog.currentlyEligible ? 'opacity-45' : ''
+              }`}
+            >
+              {/* Mobile: stacked layout */}
+              <div className="flex flex-wrap items-start justify-between gap-2 mb-1">
+                <div className="flex-1 min-w-0">
+                  <div className="text-sm font-semibold" style={{ color: prog.color }}>
+                    {prog.name}
+                  </div>
+                  <div className="text-[11px] text-[#888]">
+                    {prog.key === 'wisconsin_shares' && prog.entryLimit && prog.exitLimit ? (
+                      <>
+                        Entry: {formatMoney(prog.entryLimit)}/mo &middot; Continuation: {formatMoney(prog.exitLimit)}/mo
+                      </>
+                    ) : (
+                      <>Cutoff: {formatMoney(prog.limit)}/mo ({prog.basis})</>
+                    )}
+                  </div>
                 </div>
-                <div className="text-[11px] text-[#888]">
-                  {prog.key === 'wisconsin_shares' && prog.entryLimit && prog.exitLimit ? (
-                    <>
-                      Entry: {formatMoney(prog.entryLimit)}/mo &middot; Continuation: {formatMoney(prog.exitLimit)}/mo
-                    </>
+                <div className="flex items-center gap-2">
+                  {cliffTypeBadge(prog.cliffType)}
+                  {statusBadge(prog)}
+                </div>
+              </div>
+
+              {/* Value impact line */}
+              {prog.currentlyEligible && (
+                <div className="text-xs font-mono text-[#666] mt-1">
+                  {prog.calculable ? (
+                    prog.currentMonthlyValue !== null ? (
+                      <>
+                        {formatMoney(prog.currentMonthlyValue)}/mo &rarr; {formatMoney(prog.newMonthlyValue ?? 0)}/mo
+                        {prog.monthlyLoss !== null && prog.monthlyLoss > 0 && (
+                          <span className="text-[#9B2226] font-semibold ml-1">
+                            (-{formatMoney(prog.monthlyLoss)})
+                          </span>
+                        )}
+                        {prog.monthlyLoss === 0 && (
+                          <span className="text-[#2D6A4F] ml-1">no change</span>
+                        )}
+                      </>
+                    ) : null
                   ) : (
-                    <>Cutoff: {formatMoney(prog.limit)}/mo ({prog.basis})</>
+                    <div>
+                      <span className="text-[#888] italic">
+                        Eligibility shown — dollar value varies by individual
+                      </span>
+                      {/* Inline custom value input */}
+                      {customKey && (
+                        <div className="mt-1.5 flex items-center gap-1.5">
+                          <span className="text-[11px] text-[#999] font-sans not-italic">Know your monthly value?</span>
+                          <span className="text-[#888]">$</span>
+                          <input
+                            type="number"
+                            min={0}
+                            step={25}
+                            value={customValue ?? ''}
+                            placeholder="—"
+                            onChange={(e) => {
+                              const val = e.target.value
+                              update({ [customKey]: val === '' ? null : Math.max(0, Math.round(Number(val))) })
+                            }}
+                            className="w-[72px] py-0.5 px-1.5 border border-[#ddd] rounded-sm text-xs font-mono outline-none focus:border-[#1a1a1a] focus:ring-1 focus:ring-[#1a1a1a]"
+                            aria-label={`Custom monthly value for ${prog.name}`}
+                          />
+                        </div>
+                      )}
+                    </div>
                   )}
                 </div>
-              </div>
-              <div className="flex items-center gap-2">
-                {cliffTypeBadge(prog.cliffType)}
-                {statusBadge(prog)}
-              </div>
+              )}
             </div>
-
-            {/* Value impact line */}
-            {prog.currentlyEligible && (
-              <div className="text-xs font-mono text-[#666] mt-1">
-                {prog.calculable ? (
-                  prog.currentMonthlyValue !== null ? (
-                    <>
-                      {formatMoney(prog.currentMonthlyValue)}/mo &rarr; {formatMoney(prog.newMonthlyValue ?? 0)}/mo
-                      {prog.monthlyLoss !== null && prog.monthlyLoss > 0 && (
-                        <span className="text-[#9B2226] font-semibold ml-1">
-                          (-{formatMoney(prog.monthlyLoss)})
-                        </span>
-                      )}
-                      {prog.monthlyLoss === 0 && (
-                        <span className="text-[#2D6A4F] ml-1">no change</span>
-                      )}
-                    </>
-                  ) : null
-                ) : (
-                  <span className="text-[#888] italic">
-                    Eligibility shown — dollar value varies by individual
-                  </span>
-                )}
-              </div>
-            )}
-          </div>
-        ))}
+          )
+        })}
       </div>
 
       {/* Tier 2 note */}
@@ -130,6 +166,8 @@ export default function ProgramBreakdown({ programs }: Props) {
           Programs marked "Eligibility shown" may have significant financial value but it varies
           too much by individual circumstances to estimate. The net impact shown above only
           includes programs with calculable values.
+          <br />
+          <em>Optional.</em> Enter your actual monthly savings to include in the net impact calculation.
         </div>
       )}
     </section>

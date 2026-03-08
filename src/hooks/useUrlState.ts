@@ -21,6 +21,9 @@ const DEFAULTS: FormState = {
   raiseMonthly: 346,
   monthlyRent: 0,
   monthlyChildcareCosts: 0,
+  customBadgerCareAdultValue: null,
+  customBadgerCareChildValue: null,
+  customWisconsinSharesValue: null,
 }
 
 function parseUrl(): Partial<FormState> {
@@ -68,6 +71,24 @@ function parseUrl(): Partial<FormState> {
     if (!isNaN(val) && val >= 0) result.monthlyChildcareCosts = val
   }
 
+  const bca = params.get('bca')
+  if (bca) {
+    const val = parseInt(bca, 10)
+    if (!isNaN(val) && val > 0) result.customBadgerCareAdultValue = val
+  }
+
+  const bcc = params.get('bcc')
+  if (bcc) {
+    const val = parseInt(bcc, 10)
+    if (!isNaN(val) && val > 0) result.customBadgerCareChildValue = val
+  }
+
+  const wis = params.get('wis')
+  if (wis) {
+    const val = parseInt(wis, 10)
+    if (!isNaN(val) && val > 0) result.customWisconsinSharesValue = val
+  }
+
   return result
 }
 
@@ -102,6 +123,9 @@ function buildInitialState(): FormState {
     raiseMonthly,
     monthlyRent,
     monthlyChildcareCosts,
+    customBadgerCareAdultValue: fromUrl.customBadgerCareAdultValue ?? DEFAULTS.customBadgerCareAdultValue,
+    customBadgerCareChildValue: fromUrl.customBadgerCareChildValue ?? DEFAULTS.customBadgerCareChildValue,
+    customWisconsinSharesValue: fromUrl.customWisconsinSharesValue ?? DEFAULTS.customWisconsinSharesValue,
   }
 }
 
@@ -122,6 +146,11 @@ function writeUrl(state: FormState) {
   // Only include deductions in URL when non-zero
   if (state.monthlyRent > 0) params.set('rent', String(state.monthlyRent))
   if (state.monthlyChildcareCosts > 0) params.set('care', String(state.monthlyChildcareCosts))
+
+  // Only include custom benefit values when non-null
+  if (state.customBadgerCareAdultValue !== null) params.set('bca', String(state.customBadgerCareAdultValue))
+  if (state.customBadgerCareChildValue !== null) params.set('bcc', String(state.customBadgerCareChildValue))
+  if (state.customWisconsinSharesValue !== null) params.set('wis', String(state.customWisconsinSharesValue))
 
   const newUrl = window.location.pathname + '?' + params.toString()
   history.replaceState(null, '', newUrl)

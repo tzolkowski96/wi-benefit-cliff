@@ -6,7 +6,7 @@ interface Props {
 }
 
 export default function NetImpactBanner({ impact }: Props) {
-  const { raise, totalCalculableLoss, netMonthly, netAnnual, uncalculatedLosses } = impact
+  const { raise, totalCalculableLoss, netMonthly, netAnnual, uncalculatedLosses, customLosses } = impact
   const isPositive = netMonthly >= 0
 
   return (
@@ -52,6 +52,7 @@ export default function NetImpactBanner({ impact }: Props) {
           isPositive ? 'border-[#2D6A4F]/20 text-[#2D6A4F]' : 'border-[#9B2226]/20 text-[#9B2226]'
         }`}>
           That's <strong>{formatMoneyWithSign(netAnnual)}/year</strong> in calculable impact
+          {customLosses > 0 && <span className="text-[11px] opacity-70"> (includes {formatMoney(customLosses)} user-entered)</span>}
         </div>
       </div>
 

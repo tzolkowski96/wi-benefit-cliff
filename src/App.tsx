@@ -17,6 +17,10 @@ export default function App() {
     raiseMonthly: formState.raiseMonthly,
     monthlyRent: formState.monthlyRent,
     monthlyChildcareCosts: formState.monthlyChildcareCosts,
+  }, {
+    customBadgerCareAdultValue: formState.customBadgerCareAdultValue,
+    customBadgerCareChildValue: formState.customBadgerCareChildValue,
+    customWisconsinSharesValue: formState.customWisconsinSharesValue,
   })
 
   const newMonthlyIncome = formState.currentMonthlyIncome + formState.raiseMonthly
@@ -70,7 +74,7 @@ export default function App() {
           currentMonthlyIncome={formState.currentMonthlyIncome}
           newMonthlyIncome={newMonthlyIncome}
         />
-        <ProgramBreakdown programs={analysis.programs} />
+        <ProgramBreakdown programs={analysis.programs} state={formState} update={updateForm} />
         <SafeRaiseZones
           programs={analysis.programs}
           raiseMonthly={formState.raiseMonthly}
