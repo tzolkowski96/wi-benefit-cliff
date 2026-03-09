@@ -5,6 +5,7 @@ import {
 import type { MonthlyImpact } from '../types/index.ts'
 import { useI18n } from '../hooks/useI18n.ts'
 import { formatMoney } from '../utils/format.ts'
+import { CHART_TICK_STYLE, CHART_TOOLTIP_STYLE } from '../utils/chartStyles.ts'
 
 interface Props {
   impact: MonthlyImpact
@@ -71,12 +72,12 @@ export default function WaterfallChart({ impact }: Props) {
           <BarChart data={bars} margin={{ top: 20, right: 10, left: 10, bottom: 5 }}>
             <XAxis
               dataKey="name"
-              tick={{ fontSize: 11, fontFamily: "'IBM Plex Mono', monospace", fill: '#666' }}
+              tick={{ ...CHART_TICK_STYLE, fill: '#666' }}
               axisLine={{ stroke: '#ddd' }}
               tickLine={false}
             />
             <YAxis
-              tick={{ fontSize: 11, fontFamily: "'IBM Plex Mono', monospace", fill: '#767676' }}
+              tick={{ ...CHART_TICK_STYLE, fill: '#767676' }}
               axisLine={false}
               tickLine={false}
               tickFormatter={(v: number) => `$${v}`}
@@ -88,7 +89,7 @@ export default function WaterfallChart({ impact }: Props) {
                 const bar = props.payload as WaterfallBar
                 return [bar.label, bar.name]
               }}
-              contentStyle={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, border: '1px solid #ddd' }}
+              contentStyle={CHART_TOOLTIP_STYLE}
             />
             {/* Invisible base bar */}
             <Bar dataKey="base" stackId="waterfall" fill="transparent" isAnimationActive={false} />

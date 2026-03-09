@@ -79,7 +79,6 @@ type ProgramKey =
 
 export interface ProgramConfig {
   key: ProgramKey
-  name: string
   cliffType: CliffType
   basis: string
   color: string
@@ -96,7 +95,6 @@ export interface ProgramConfig {
 export const PROGRAMS: ProgramConfig[] = [
   {
     key: 'foodshare',
-    name: 'FoodShare',
     cliffType: 'gradual',
     basis: '200% FPL',
     color: '#2D6A4F',
@@ -107,7 +105,6 @@ export const PROGRAMS: ProgramConfig[] = [
   },
   {
     key: 'badgercare_adult',
-    name: 'BadgerCare Plus (Adults)',
     cliffType: 'hard',
     basis: '100% FPL',
     color: '#1B4965',
@@ -118,7 +115,6 @@ export const PROGRAMS: ProgramConfig[] = [
   },
   {
     key: 'badgercare_children',
-    name: 'BadgerCare Plus (Children)',
     cliffType: 'hard',
     basis: '306% FPL',
     color: '#3D5A80',
@@ -129,7 +125,6 @@ export const PROGRAMS: ProgramConfig[] = [
   },
   {
     key: 'wisconsin_shares',
-    name: 'Wisconsin Shares',
     cliffType: 'hard',
     basis: '85% SMI (exit)',
     color: '#774936',
@@ -141,7 +136,6 @@ export const PROGRAMS: ProgramConfig[] = [
   },
   {
     key: 'wheap',
-    name: 'WHEAP',
     cliffType: 'hard',
     basis: '60% SMI',
     color: '#9B2226',
@@ -152,7 +146,6 @@ export const PROGRAMS: ProgramConfig[] = [
   },
   {
     key: 'school_meals_free',
-    name: 'Free School Meals',
     cliffType: 'tier_shift',
     basis: '130% FPL',
     color: '#5F0F40',
@@ -163,7 +156,6 @@ export const PROGRAMS: ProgramConfig[] = [
   },
   {
     key: 'school_meals_reduced',
-    name: 'Reduced School Meals',
     cliffType: 'hard',
     basis: '185% FPL',
     color: '#823038',

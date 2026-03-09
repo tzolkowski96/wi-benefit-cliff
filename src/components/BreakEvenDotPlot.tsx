@@ -1,28 +1,21 @@
-import { useMemo } from 'react'
 import {
   BarChart, Bar, XAxis, YAxis, ReferenceLine, Cell, ResponsiveContainer, Tooltip,
 } from 'recharts'
-import type { ProgramResult, FormState } from '../types/index.ts'
+import type { BreakEvenData } from '../utils/breakeven.ts'
 import { useI18n } from '../hooks/useI18n.ts'
 import { formatMoney } from '../utils/format.ts'
-import { computeBreakEvenData } from '../utils/breakeven.ts'
-import { toBreakEvenInputs, toCustomBenefitValues } from '../utils/formHelpers.ts'
+import { CHART_TICK_STYLE, CHART_TOOLTIP_STYLE, CHART_AXIS_LABEL_STYLE } from '../utils/chartStyles.ts'
 
 interface Props {
-  programs: ProgramResult[]
-  state: FormState
+  breakEvenData: BreakEvenData
+  raiseMonthly: number
 }
 
 const AMBER = '#E8A838'
 
-export default function BreakEvenDotPlot({ programs, state }: Props) {
+export default function BreakEvenDotPlot({ breakEvenData, raiseMonthly }: Props) {
   const { t } = useI18n()
-
-  const { rows } = useMemo(() => computeBreakEvenData(
-    programs,
-    toBreakEvenInputs(state),
-    toCustomBenefitValues(state),
-  ), [programs, state])
+  const { rows } = breakEvenData
 
   if (rows.length === 0) return null
 
@@ -52,11 +45,11 @@ export default function BreakEvenDotPlot({ programs, state }: Props) {
           >
             <XAxis
               type="number"
-              tick={{ fontSize: 11, fontFamily: "'IBM Plex Mono', monospace", fill: '#888' }}
+              tick={{ ...CHART_TICK_STYLE, fill: '#767676' }}
               axisLine={{ stroke: '#ddd' }}
               tickLine={false}
               tickFormatter={(v: number) => `$${v.toLocaleString('en-US')}`}
-              label={{ value: t('dotPlot.xAxis'), position: 'insideBottom', offset: -10, fontSize: 10, fill: '#767676', fontFamily: "'IBM Plex Mono', monospace" }}
+              label={{ ...CHART_AXIS_LABEL_STYLE, value: t('dotPlot.xAxis'), position: 'insideBottom', offset: -10, fill: '#767676' }}
             />
             <YAxis
               type="category"
@@ -68,24 +61,23 @@ export default function BreakEvenDotPlot({ programs, state }: Props) {
             />
 
             {/* Current raise marker */}
-            {state.raiseMonthly > 0 && (
+            {raiseMonthly > 0 && (
               <ReferenceLine
-                x={state.raiseMonthly}
+                x={raiseMonthly}
                 stroke={AMBER}
                 strokeWidth={2}
                 label={{
                   value: t('dotPlot.yourRaise'),
                   position: 'top',
-                  fontSize: 10,
+                  ...CHART_AXIS_LABEL_STYLE,
                   fill: AMBER,
                   fontWeight: 600,
-                  fontFamily: "'IBM Plex Mono', monospace",
                 }}
               />
             )}
 
             <Tooltip
-              contentStyle={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, border: '1px solid #ddd', borderRadius: 2 }}
+              contentStyle={CHART_TOOLTIP_STYLE}
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
               formatter={(_value: any, name: any, props: any) => {
                 const d = props.payload as typeof chartData[0]

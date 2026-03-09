@@ -13,6 +13,8 @@ import { useMemo } from 'react'
 import type { HouseholdInputs, CliffAnalysis, ProgramResult, MonthlyImpact } from '../types/index.ts'
 import { PROGRAMS, WHEAP_MONTHLY_VALUE } from '../data/programs.ts'
 import type { ProgramConfig } from '../data/programs.ts'
+import { useI18n } from './useI18n.ts'
+import type { I18nKey } from '../i18n/en.ts'
 import {
   calculateFoodShareBenefit,
   getSchoolMealTier,
@@ -30,6 +32,7 @@ export interface CustomBenefitValues {
 
 export function useCliffAnalysis(inputs: HouseholdInputs, customValues?: CustomBenefitValues): CliffAnalysis {
   const { householdSize, numberOfChildren, currentMonthlyIncome, raiseMonthly, monthlyRent, monthlyChildcareCosts } = inputs
+  const { t } = useI18n()
 
   return useMemo(() => {
     const newMonthlyIncome = currentMonthlyIncome + raiseMonthly
@@ -50,8 +53,10 @@ export function useCliffAnalysis(inputs: HouseholdInputs, customValues?: CustomB
       if (householdSize < prog.minHouseholdSize) continue
 
       // 2. Build the result for this program
+      const name = t(('program.' + prog.key) as I18nKey)
       const result = analyzeProgram(
         prog,
+        name,
         currentMonthlyIncome,
         newMonthlyIncome,
         householdSize,
@@ -121,7 +126,7 @@ export function useCliffAnalysis(inputs: HouseholdInputs, customValues?: CustomB
       cliffWarning: netMonthly < 0,
     }
   }, [householdSize, numberOfChildren, currentMonthlyIncome, raiseMonthly, monthlyRent, monthlyChildcareCosts,
-      customValues?.customBadgerCareAdultValue, customValues?.customBadgerCareChildValue, customValues?.customWisconsinSharesValue])
+      customValues?.customBadgerCareAdultValue, customValues?.customBadgerCareChildValue, customValues?.customWisconsinSharesValue, t])
 }
 
 // ---------------------------------------------------------------------------
@@ -130,6 +135,7 @@ export function useCliffAnalysis(inputs: HouseholdInputs, customValues?: CustomB
 
 function analyzeProgram(
   prog: ProgramConfig,
+  name: string,
   currentIncome: number,
   newIncome: number,
   householdSize: number,
@@ -142,7 +148,7 @@ function analyzeProgram(
   // Base result shape
   const base = {
     key: prog.key,
-    name: prog.name,
+    name,
     cliffType: prog.cliffType,
     color: prog.color,
     basis: prog.basis,

@@ -1,27 +1,20 @@
-import { useMemo } from 'react'
 import type { FormState, CliffAnalysis } from '../types/index.ts'
+import type { BreakEvenData } from '../utils/breakeven.ts'
 import { useI18n, DATE_LOCALE } from '../hooks/useI18n.ts'
 import type { I18nKey } from '../i18n/en.ts'
 import { formatMoney, formatMoneyWithSign } from '../utils/format.ts'
 import { monthlyToHourly } from '../utils/wage.ts'
-import { computeBreakEvenData } from '../utils/breakeven.ts'
-import { toBreakEvenInputs, toCustomBenefitValues } from '../utils/formHelpers.ts'
 
 interface Props {
   state: FormState
   analysis: CliffAnalysis
+  breakEvenData: BreakEvenData
 }
 
-export default function PrintSummary({ state, analysis }: Props) {
+export default function PrintSummary({ state, analysis, breakEvenData }: Props) {
   const { t, lang } = useI18n()
   const { programs, calculableImpact, safeRaiseMax } = analysis
   const { netMonthly, netAnnual, uncalculatedLosses, foodshareLoss, schoolMealLoss, wheapLoss, customLosses } = calculableImpact
-
-  const breakEvenData = useMemo(() => computeBreakEvenData(
-    programs,
-    toBreakEvenInputs(state),
-    toCustomBenefitValues(state),
-  ), [programs, state])
 
   return (
     <div className="print-summary hidden print:block print:p-8 print:text-[12px] print:text-black print:bg-white">

@@ -67,7 +67,7 @@ export default function HouseholdForm({ state, update }: Props) {
                     ? 'bg-[#1a1a1a] text-white border-2 border-[#1a1a1a]'
                     : 'bg-white text-[#333] border border-[#ccc] hover:border-[#999]'
                   }
-                  ${householdSize === 1 && n > 0 ? 'opacity-50 cursor-not-allowed text-[#999]' : ''}`}
+                  ${householdSize === 1 && n > 0 ? 'opacity-50 cursor-not-allowed text-[#595959]' : ''}`}
               >
                 {n}
               </button>
@@ -116,7 +116,7 @@ export default function HouseholdForm({ state, update }: Props) {
               step={incomeType === 'hourly' ? 0.25 : 50}
               value={incomeType === 'hourly' ? hourlyWage : monthlyIncome}
               onChange={(e) => {
-                const val = Math.max(0, Number(e.target.value))
+                const val = Math.max(0, Number(e.target.value) || 0)
                 if (incomeType === 'hourly') update({ hourlyWage: val })
                 else update({ monthlyIncome: val })
               }}
@@ -130,7 +130,7 @@ export default function HouseholdForm({ state, update }: Props) {
             step={incomeType === 'hourly' ? 0.25 : 50}
             value={incomeType === 'hourly' ? hourlyWage : monthlyIncome}
             onChange={(e) => {
-              const val = Number(e.target.value)
+              const val = Number(e.target.value) || 0
               if (incomeType === 'hourly') update({ hourlyWage: val })
               else update({ monthlyIncome: val })
             }}
@@ -156,7 +156,7 @@ export default function HouseholdForm({ state, update }: Props) {
               min={0}
               step={incomeType === 'hourly' ? 0.25 : 25}
               value={raiseAmount}
-              onChange={(e) => update({ raiseAmount: Math.max(0, Number(e.target.value)) })}
+              onChange={(e) => update({ raiseAmount: Math.max(0, Number(e.target.value) || 0) })}
               className="w-full py-2.5 pl-7 pr-3 border border-[#ccc] rounded-sm text-lg font-semibold font-mono outline-none focus:border-[#1a1a1a] focus:ring-1 focus:ring-[#1a1a1a]"
             />
           </div>
@@ -166,7 +166,7 @@ export default function HouseholdForm({ state, update }: Props) {
             max={incomeType === 'hourly' ? 20 : 3000}
             step={incomeType === 'hourly' ? 0.25 : 25}
             value={raiseAmount}
-            onChange={(e) => update({ raiseAmount: Number(e.target.value) })}
+            onChange={(e) => update({ raiseAmount: Number(e.target.value) || 0 })}
             aria-label={incomeType === 'hourly' ? t('form.raise.hourly') : t('form.raise.monthly')}
             className="w-full mt-1.5 accent-[#1a1a1a]"
           />
@@ -209,7 +209,7 @@ export default function HouseholdForm({ state, update }: Props) {
                     min={0}
                     step={50}
                     value={monthlyRent}
-                    onChange={(e) => update({ monthlyRent: Math.max(0, Math.round(Number(e.target.value))) })}
+                    onChange={(e) => update({ monthlyRent: Math.max(0, Math.round(Number(e.target.value) || 0)) })}
                     className="w-full py-2.5 pl-7 pr-3 border border-[#ccc] rounded-sm text-lg font-semibold font-mono outline-none focus:border-[#1a1a1a] focus:ring-1 focus:ring-[#1a1a1a]"
                   />
                 </div>
@@ -226,7 +226,7 @@ export default function HouseholdForm({ state, update }: Props) {
                     min={0}
                     step={50}
                     value={monthlyChildcareCosts}
-                    onChange={(e) => update({ monthlyChildcareCosts: Math.max(0, Math.round(Number(e.target.value))) })}
+                    onChange={(e) => update({ monthlyChildcareCosts: Math.max(0, Math.round(Number(e.target.value) || 0)) })}
                     className="w-full py-2.5 pl-7 pr-3 border border-[#ccc] rounded-sm text-lg font-semibold font-mono outline-none focus:border-[#1a1a1a] focus:ring-1 focus:ring-[#1a1a1a]"
                   />
                 </div>

@@ -287,7 +287,8 @@ function addReferenceSheet(
   rows.push([t('print.program'), t('excel.basis'), ...hhHeaders])
 
   for (const prog of PROGRAMS) {
-    const row: (string | number)[] = [prog.name, prog.basis]
+    const progName = t(('program.' + prog.key) as I18nKey)
+    const row: (string | number)[] = [progName, prog.basis]
     for (let hh = 1; hh <= 8; hh++) {
       if (prog.requiresChildren && hh < prog.minHouseholdSize) {
         row.push('')
@@ -299,7 +300,7 @@ function addReferenceSheet(
 
     // Wisconsin Shares also has entry threshold
     if (prog.key === 'wisconsin_shares' && prog.getEntryLimit) {
-      const entryRow: (string | number)[] = [`${prog.name} (${t('program.entry')})`, t('excel.fpl200Label')]
+      const entryRow: (string | number)[] = [`${progName} (${t('program.entry')})`, t('excel.fpl200Label')]
       for (let hh = 1; hh <= 8; hh++) {
         if (hh < prog.minHouseholdSize) {
           entryRow.push('')

@@ -20,10 +20,8 @@ export const es: Record<I18nKey, string> = {
   'form.incomeType.monthly': 'Mensual',
   'form.hourlyWage': 'Salario por hora actual',
   'form.monthlyIncome': 'Ingreso mensual actual',
-  'form.raise': 'Aumento potencial',
   'form.raise.hourly': 'Aumento por hora',
   'form.raise.monthly': 'Aumento mensual',
-  'form.monthlyEquivalent': 'equivalente mensual',
   'form.deductionsToggle': 'Opcional: mejorar precisi\u00f3n de FoodShare',
   'form.deductionsHelp': 'Agregar sus costos de vivienda y cuidado infantil puede aumentar su beneficio estimado de FoodShare.',
   'form.rent': 'Alquiler/hipoteca mensual',
@@ -42,7 +40,6 @@ export const es: Record<I18nKey, string> = {
   'result.na': 'N/A',
   'result.buffer': 'margen',
   'result.noChange': 'sin cambio',
-  'result.freeToReduced': 'GRATIS \u2192 REDUCIDO',
   'result.annualCalcImpact': 'en impacto calculable',
   'result.includesUserEntered': 'incluye {amount} ingresado por usuario',
   'result.notIncluded': 'No incluido arriba:',
@@ -92,33 +89,25 @@ export const es: Record<I18nKey, string> = {
   'breakEven.needAtLeast': 'Necesita al menos',
   'breakEven.toBreakEven': 'para recuperar lo perdido despu\u00e9s de cruzar este l\u00edmite.',
 
+  // Program names
+  'program.foodshare': 'FoodShare',
+  'program.badgercare_adult': 'BadgerCare Plus (Adultos)',
+  'program.badgercare_children': 'BadgerCare Plus (Niños)',
+  'program.wisconsin_shares': 'Wisconsin Shares',
+  'program.wheap': 'WHEAP',
+  'program.school_meals_free': 'Comidas Escolares Gratuitas',
+  'program.school_meals_reduced': 'Comidas Escolares de Precio Reducido',
+
   // Programs
-  'program.cutoff': 'L\u00edmite',
+  'program.cutoff': 'Límite',
   'program.value': 'valor',
   'program.entry': 'Entrada',
   'program.continuation': 'Continuaci\u00f3n',
-  'program.entryCutoff': 'L\u00edmite de entrada (para comenzar a recibir)',
-  'program.continuationCutoff': 'L\u00edmite de continuaci\u00f3n (para mantener si est\u00e1 inscrito)',
   'program.eligibilityOnly': 'Elegibilidad mostrada \u2014 el valor en d\u00f3lares var\u00eda seg\u00fan el individuo',
 
   // Tier 2 note
   'tier2.note': 'Los programas marcados como "Elegibilidad mostrada" pueden tener un valor financiero significativo, pero var\u00eda demasiado seg\u00fan las circunstancias individuales para estimarlo. El impacto neto mostrado arriba solo incluye programas con valores calculables.',
   'tier2.optionalNote': 'Opcional. Ingrese sus ahorros mensuales reales para incluirlos en el c\u00e1lculo del impacto neto.',
-
-  // FoodShare note
-  'foodshare.note': 'Su cantidad real de FoodShare puede ser mayor si tiene costos altos de alquiler o cuidado infantil. Esta estimaci\u00f3n usa una f\u00f3rmula simplificada.',
-
-  // School meals note
-  'schoolMeals.note': 'Los valores de comidas escolares reflejan las tasas de reembolso federal \u2014 el costo de proporcionar comidas, no sus ahorros directos. Sus ahorros reales pueden ser menores si normalmente empaca comidas desde casa.',
-
-  // WHEAP note
-  'wheap.note': 'WHEAP es un pago anual \u00fanico que promedia ~$665, mostrado aqu\u00ed como equivalente mensual.',
-
-  // BadgerCare note
-  'badgercare.lostNote': 'Necesitar\u00eda cobertura del Mercado ACA. Puede calificar para cr\u00e9ditos fiscales de prima por encima del 100% FPL.',
-
-  // Wisconsin Shares note
-  'shares.note': 'El monto del subsidio var\u00eda. Contacte a su agencia local de Wisconsin Shares para su calendario de copagos espec\u00edfico.',
 
   // Print
   'print.title': 'Resumen del An\u00e1lisis de L\u00edmites de Beneficios',
@@ -152,7 +141,6 @@ export const es: Record<I18nKey, string> = {
   'sweep.xAxis': 'Aumento mensual',
   'sweep.yAxis': 'Impacto neto mensual',
   'sweep.currentRaise': 'Su aumento',
-  'sweep.cliffAt': 'límite',
   'sweep.tooltipRaise': 'Aumento',
   'sweep.tooltipLoss': 'Pérdida de beneficios',
   'sweep.tooltipNet': 'Impacto neto',
@@ -271,9 +259,4 @@ export const es: Record<I18nKey, string> = {
 
   // Accessibility
   'a11y.skipToContent': 'Saltar al contenido',
-  'a11y.currentIncome': 'Ingreso actual',
-  'a11y.afterRaise': 'Despu\u00e9s del aumento',
-  'a11y.eligibilityCutoff': 'L\u00edmite de elegibilidad',
-
-  // (a11y.language, a11y.customValueFor, a11y.breakEvenExceeded defined above)
 }

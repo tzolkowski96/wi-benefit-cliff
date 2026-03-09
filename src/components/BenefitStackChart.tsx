@@ -6,6 +6,7 @@ import type { FormState } from '../types/index.ts'
 import { useI18n } from '../hooks/useI18n.ts'
 import { formatMoney } from '../utils/format.ts'
 import { computeBenefitStack } from '../utils/sweep.ts'
+import { CHART_TICK_STYLE, CHART_AXIS_LABEL_STYLE, CHART_TOOLTIP_STYLE, CHART_LEGEND_STYLE } from '../utils/chartStyles.ts'
 
 interface Props {
   state: FormState
@@ -47,18 +48,18 @@ export default function BenefitStackChart({ state }: Props) {
           <AreaChart data={stackData} margin={{ top: 10, right: 10, left: 10, bottom: 5 }}>
             <XAxis
               dataKey="monthlyIncome"
-              tick={{ fontSize: 11, fontFamily: "'IBM Plex Mono', monospace", fill: '#888' }}
+              tick={{ ...CHART_TICK_STYLE, fill: '#767676' }}
               axisLine={{ stroke: '#ddd' }}
               tickLine={false}
               tickFormatter={(v: number) => `$${v.toLocaleString('en-US')}`}
-              label={{ value: t('stack.xAxis'), position: 'insideBottom', offset: -2, fontSize: 10, fill: '#767676', fontFamily: "'IBM Plex Mono', monospace" }}
+              label={{ ...CHART_AXIS_LABEL_STYLE, value: t('stack.xAxis'), position: 'insideBottom', offset: -2, fill: '#767676' }}
             />
             <YAxis
-              tick={{ fontSize: 11, fontFamily: "'IBM Plex Mono', monospace", fill: '#888' }}
+              tick={{ ...CHART_TICK_STYLE, fill: '#767676' }}
               axisLine={false}
               tickLine={false}
               tickFormatter={(v: number) => `$${v}`}
-              label={{ value: t('stack.yAxis'), angle: -90, position: 'insideLeft', offset: 5, fontSize: 10, fill: '#767676', fontFamily: "'IBM Plex Mono', monospace" }}
+              label={{ ...CHART_AXIS_LABEL_STYLE, value: t('stack.yAxis'), angle: -90, position: 'insideLeft', offset: 5, fill: '#767676' }}
             />
 
             {/* Stacked benefit areas */}
@@ -132,7 +133,7 @@ export default function BenefitStackChart({ state }: Props) {
             )}
 
             <Tooltip
-              contentStyle={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, border: '1px solid #ddd', borderRadius: 2 }}
+              contentStyle={CHART_TOOLTIP_STYLE}
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
               formatter={(value: any, name: any) => [`${formatMoney(Number(value))}${t('unit.perMonth')}`, name]}
               labelFormatter={(label: any) => `${t('stack.xAxis')}: ${formatMoney(Number(label))}${t('unit.perMonth')}`}
@@ -140,7 +141,7 @@ export default function BenefitStackChart({ state }: Props) {
 
             <Legend
               iconType="square"
-              wrapperStyle={{ fontSize: 11, fontFamily: "'IBM Plex Mono', monospace" }}
+              wrapperStyle={CHART_LEGEND_STYLE}
             />
           </AreaChart>
         </ResponsiveContainer>

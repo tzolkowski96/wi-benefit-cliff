@@ -14,10 +14,8 @@ export const en = {
   'form.incomeType.monthly': 'Monthly',
   'form.hourlyWage': 'Current hourly wage',
   'form.monthlyIncome': 'Current monthly income',
-  'form.raise': 'Potential raise',
   'form.raise.hourly': 'Hourly raise amount',
   'form.raise.monthly': 'Monthly raise amount',
-  'form.monthlyEquivalent': 'monthly equivalent',
   'form.deductionsToggle': 'Optional: improve FoodShare accuracy',
   'form.deductionsHelp': 'Adding your housing and childcare costs may increase your estimated FoodShare benefit.',
   'form.rent': 'Monthly rent/mortgage',
@@ -36,7 +34,6 @@ export const en = {
   'result.na': 'N/A',
   'result.buffer': 'buffer',
   'result.noChange': 'no change',
-  'result.freeToReduced': 'FREE \u2192 REDUCED',
   'result.annualCalcImpact': 'in calculable impact',
   'result.includesUserEntered': 'includes {amount} user-entered',
   'result.notIncluded': 'Not included above:',
@@ -86,33 +83,25 @@ export const en = {
   'breakEven.needAtLeast': 'You need at least',
   'breakEven.toBreakEven': 'to break even after crossing this cliff.',
 
+  // Program names
+  'program.foodshare': 'FoodShare',
+  'program.badgercare_adult': 'BadgerCare Plus (Adults)',
+  'program.badgercare_children': 'BadgerCare Plus (Children)',
+  'program.wisconsin_shares': 'Wisconsin Shares',
+  'program.wheap': 'WHEAP',
+  'program.school_meals_free': 'Free School Meals',
+  'program.school_meals_reduced': 'Reduced School Meals',
+
   // Programs
   'program.cutoff': 'Cutoff',
   'program.value': 'value',
   'program.entry': 'Entry',
   'program.continuation': 'Continuation',
-  'program.entryCutoff': 'Entry cutoff (to start receiving)',
-  'program.continuationCutoff': 'Continuation cutoff (to keep if enrolled)',
   'program.eligibilityOnly': 'Eligibility shown \u2014 dollar value varies by individual',
 
   // Tier 2 note
   'tier2.note': 'Programs marked "Eligibility shown" may have significant financial value but it varies too much by individual circumstances to estimate. The net impact shown above only includes programs with calculable values.',
   'tier2.optionalNote': 'Optional. Enter your actual monthly savings to include in the net impact calculation.',
-
-  // FoodShare note
-  'foodshare.note': 'Your actual FoodShare amount may be higher if you have high rent or childcare costs. This estimate uses a simplified formula.',
-
-  // School meals note
-  'schoolMeals.note': 'School meal values reflect federal reimbursement rates \u2014 the cost of providing meals, not your direct savings. Your actual household savings may be lower if you would otherwise pack meals from home.',
-
-  // WHEAP note
-  'wheap.note': 'WHEAP is a one-time annual payment averaging ~$665, shown here as a monthly equivalent.',
-
-  // BadgerCare note
-  'badgercare.lostNote': 'Would need ACA Marketplace coverage. You may qualify for premium tax credits above 100% FPL.',
-
-  // Wisconsin Shares note
-  'shares.note': 'Subsidy amount varies. Contact your local Wisconsin Shares agency for your specific copay schedule.',
 
   // Print
   'print.title': 'Benefit Cliff Analysis Summary',
@@ -146,7 +135,6 @@ export const en = {
   'sweep.xAxis': 'Monthly raise',
   'sweep.yAxis': 'Net monthly impact',
   'sweep.currentRaise': 'Your raise',
-  'sweep.cliffAt': 'cliff',
   'sweep.tooltipRaise': 'Raise',
   'sweep.tooltipLoss': 'Benefit loss',
   'sweep.tooltipNet': 'Net impact',
@@ -265,9 +253,6 @@ export const en = {
 
   // Accessibility
   'a11y.skipToContent': 'Skip to content',
-  'a11y.currentIncome': 'Current income',
-  'a11y.afterRaise': 'After raise',
-  'a11y.eligibilityCutoff': 'Eligibility cutoff',
 } as const
 
 export type I18nKey = keyof typeof en

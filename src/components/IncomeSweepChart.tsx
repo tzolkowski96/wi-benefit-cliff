@@ -7,6 +7,7 @@ import { useI18n } from '../hooks/useI18n.ts'
 import { formatMoney } from '../utils/format.ts'
 import { computeRaiseSweep } from '../utils/sweep.ts'
 import { toBreakEvenInputs, toCustomBenefitValues } from '../utils/formHelpers.ts'
+import { CHART_TICK_STYLE, CHART_AXIS_LABEL_STYLE, CHART_TOOLTIP_STYLE, CHART_LEGEND_STYLE } from '../utils/chartStyles.ts'
 
 interface Props {
   programs: ProgramResult[]
@@ -51,18 +52,18 @@ export default function IncomeSweepChart({ programs, state }: Props) {
           <ComposedChart data={data} margin={{ top: 10, right: 10, left: 10, bottom: 5 }}>
             <XAxis
               dataKey="raise"
-              tick={{ fontSize: 11, fontFamily: "'IBM Plex Mono', monospace", fill: '#888' }}
+              tick={{ ...CHART_TICK_STYLE, fill: '#767676' }}
               axisLine={{ stroke: '#ddd' }}
               tickLine={false}
               tickFormatter={(v: number) => `$${v}`}
-              label={{ value: t('sweep.xAxis'), position: 'insideBottom', offset: -2, fontSize: 10, fill: '#999', fontFamily: "'IBM Plex Mono', monospace" }}
+              label={{ ...CHART_AXIS_LABEL_STYLE, value: t('sweep.xAxis'), position: 'insideBottom', offset: -2, fill: '#595959' }}
             />
             <YAxis
-              tick={{ fontSize: 11, fontFamily: "'IBM Plex Mono', monospace", fill: '#888' }}
+              tick={{ ...CHART_TICK_STYLE, fill: '#767676' }}
               axisLine={false}
               tickLine={false}
               tickFormatter={(v: number) => `$${v}`}
-              label={{ value: t('sweep.yAxis'), angle: -90, position: 'insideLeft', offset: 5, fontSize: 10, fill: '#999', fontFamily: "'IBM Plex Mono', monospace" }}
+              label={{ ...CHART_AXIS_LABEL_STYLE, value: t('sweep.yAxis'), angle: -90, position: 'insideLeft', offset: 5, fill: '#595959' }}
             />
 
             {/* Zero line */}
@@ -130,7 +131,7 @@ export default function IncomeSweepChart({ programs, state }: Props) {
             )}
 
             <Tooltip
-              contentStyle={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, border: '1px solid #ddd', borderRadius: 2 }}
+              contentStyle={CHART_TOOLTIP_STYLE}
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
               formatter={(value: any, name: any) => {
                 if (name === t('sweep.positiveZone') || name === t('sweep.negativeZone')) {
@@ -143,7 +144,7 @@ export default function IncomeSweepChart({ programs, state }: Props) {
 
             <Legend
               iconType="line"
-              wrapperStyle={{ fontSize: 11, fontFamily: "'IBM Plex Mono', monospace" }}
+              wrapperStyle={CHART_LEGEND_STYLE}
             />
           </ComposedChart>
         </ResponsiveContainer>

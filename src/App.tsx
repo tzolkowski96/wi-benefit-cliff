@@ -1,6 +1,9 @@
+import { useMemo } from 'react'
 import { useUrlState } from './hooks/useUrlState.ts'
 import { useCliffAnalysis } from './hooks/useCliffAnalysis.ts'
 import { useI18n } from './hooks/useI18n.ts'
+import { computeBreakEvenData } from './utils/breakeven.ts'
+import { toBreakEvenInputs, toCustomBenefitValues } from './utils/formHelpers.ts'
 import ErrorBoundary from './components/ErrorBoundary.tsx'
 import HouseholdForm from './components/HouseholdForm.tsx'
 import NetImpactBanner from './components/NetImpactBanner.tsx'
@@ -30,6 +33,12 @@ export default function App() {
     customBadgerCareChildValue: formState.customBadgerCareChildValue,
     customWisconsinSharesValue: formState.customWisconsinSharesValue,
   })
+
+  const breakEvenData = useMemo(() => computeBreakEvenData(
+    analysis.programs,
+    toBreakEvenInputs(formState),
+    toCustomBenefitValues(formState),
+  ), [analysis.programs, formState])
 
   const newMonthlyIncome = formState.currentMonthlyIncome + formState.raiseMonthly
 
@@ -112,7 +121,7 @@ export default function App() {
               </button>
             </div>
           </div>
-          <p className="text-sm text-gray-400 mt-2 mb-0 leading-relaxed max-w-[600px]">
+          <p className="text-sm text-[#aaa] mt-2 mb-0 leading-relaxed max-w-[600px]">
             {t('app.description')}{' '}
             {t('app.source')}
           </p>
@@ -138,11 +147,11 @@ export default function App() {
           raiseMonthly={formState.raiseMonthly}
           safeRaiseMax={analysis.safeRaiseMax}
         />
-        <BreakEvenCalculator programs={analysis.programs} state={formState} />
-        <BreakEvenDotPlot programs={analysis.programs} state={formState} />
+        <BreakEvenCalculator breakEvenData={breakEvenData} raiseMonthly={formState.raiseMonthly} />
+        <BreakEvenDotPlot breakEvenData={breakEvenData} raiseMonthly={formState.raiseMonthly} />
 
         {/* Disclaimer */}
-        <footer className="text-[11px] text-[#767676] leading-relaxed px-1 mt-4">
+        <footer className="text-[11px] text-[#595959] leading-relaxed px-1 mt-4">
           <strong>{t('label.disclaimer')}:</strong> {t('disclaimer.text')}{' '}
           <a href="https://access.wisconsin.gov" target="_blank" rel="noopener noreferrer" className="text-[#666] underline">
             {t('disclaimer.accessWi')}
@@ -170,7 +179,7 @@ export default function App() {
       </main>
 
       {/* Print-only summary (hidden on screen, shown when printing) */}
-      <PrintSummary state={formState} analysis={analysis} />
+      <PrintSummary state={formState} analysis={analysis} breakEvenData={breakEvenData} />
     </div>
     </ErrorBoundary>
   )

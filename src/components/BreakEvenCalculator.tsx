@@ -1,14 +1,11 @@
-import { useMemo } from 'react'
-import type { ProgramResult, FormState } from '../types/index.ts'
 import { useI18n } from '../hooks/useI18n.ts'
-import { computeBreakEvenData } from '../utils/breakeven.ts'
+import type { BreakEvenData } from '../utils/breakeven.ts'
 import { formatMoney } from '../utils/format.ts'
 import { monthlyToHourly } from '../utils/wage.ts'
-import { toBreakEvenInputs, toCustomBenefitValues } from '../utils/formHelpers.ts'
 
 interface Props {
-  programs: ProgramResult[]
-  state: FormState
+  breakEvenData: BreakEvenData
+  raiseMonthly: number
 }
 
 function getRaiseColor(monthly: number): string {
@@ -21,15 +18,9 @@ function formatHourly(monthly: number): string {
   return monthlyToHourly(monthly).toFixed(2)
 }
 
-export default function BreakEvenCalculator({ programs, state }: Props) {
+export default function BreakEvenCalculator({ breakEvenData, raiseMonthly }: Props) {
   const { t } = useI18n()
-  const { raiseMonthly } = state
-
-  const { rows, clearAllRaise } = useMemo(() => computeBreakEvenData(
-    programs,
-    toBreakEvenInputs(state),
-    toCustomBenefitValues(state),
-  ), [programs, state])
+  const { rows, clearAllRaise } = breakEvenData
 
   if (rows.length === 0) return null
 
@@ -53,13 +44,13 @@ export default function BreakEvenCalculator({ programs, state }: Props) {
             >
               <div className="min-w-0">
                 <span className="text-[13px] font-medium">{row.name}</span>
-                <span className="text-[11px] text-[#999] ml-2">
+                <span className="text-[11px] text-[#595959] ml-2">
                   {t('breakEven.cliffAt')} +{formatMoney(row.cliffDistance)}{t('unit.perMonth')}
                 </span>
               </div>
               <div className={`font-mono text-[13px] font-semibold whitespace-nowrap ${getRaiseColor(row.breakEvenMonthly)}`}>
                 +{formatMoney(row.breakEvenMonthly)}{t('unit.perMonth')}
-                <span className="text-[11px] font-normal text-[#999] ml-1.5">
+                <span className="text-[11px] font-normal text-[#595959] ml-1.5">
                   (+${formatHourly(row.breakEvenMonthly)}{t('unit.perHour')})
                 </span>
                 {cleared && (
@@ -81,7 +72,7 @@ export default function BreakEvenCalculator({ programs, state }: Props) {
               <strong className={`font-mono ${getRaiseColor(clearAllRaise)}`}>
                 +{formatMoney(clearAllRaise)}{t('unit.perMonth')}
               </strong>
-              <span className="text-[11px] text-[#999] ml-1">
+              <span className="text-[11px] text-[#595959] ml-1">
                 (+${formatHourly(clearAllRaise)}{t('unit.perHour')})
               </span>
               {' '}{t('breakEven.offsetAll')}
@@ -92,7 +83,7 @@ export default function BreakEvenCalculator({ programs, state }: Props) {
               <strong className={`font-mono ${getRaiseColor(clearAllRaise)}`}>
                 +{formatMoney(clearAllRaise)}{t('unit.perMonth')}
               </strong>
-              <span className="text-[11px] text-[#999] ml-1">
+              <span className="text-[11px] text-[#595959] ml-1">
                 (+${formatHourly(clearAllRaise)}{t('unit.perHour')})
               </span>
               {' '}{t('breakEven.toBreakEven')}
