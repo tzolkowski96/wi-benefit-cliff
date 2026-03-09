@@ -6,6 +6,15 @@ import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig({
   base: '/wi-benefit-cliff/',
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          recharts: ['recharts'],
+        },
+      },
+    },
+  },
   test: {
     globals: true,
     environment: 'jsdom',

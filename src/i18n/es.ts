@@ -142,6 +142,46 @@ export const es: Record<I18nKey, string> = {
   'print.wheapLoss': 'WHEAP',
   'print.userEnteredLoss': 'Ingresado por usuario',
 
+  // Chart sections
+  'section.incomeSweep': 'Impacto Neto por Monto de Aumento',
+  'section.waterfall': 'Desglose del Impacto',
+  'section.benefitStack': 'Beneficios Totales por Ingreso',
+  'section.breakEvenPlot': 'Visualización de Equilibrio',
+
+  // Income Sweep Chart
+  'sweep.xAxis': 'Aumento mensual',
+  'sweep.yAxis': 'Impacto neto mensual',
+  'sweep.currentRaise': 'Su aumento',
+  'sweep.cliffAt': 'límite',
+  'sweep.tooltipRaise': 'Aumento',
+  'sweep.tooltipLoss': 'Pérdida de beneficios',
+  'sweep.tooltipNet': 'Impacto neto',
+  'sweep.positiveZone': 'Mejor situación',
+  'sweep.negativeZone': 'Peor situación',
+  'sweep.description': 'Cómo cambia su ingreso neto con cada monto de aumento posible. Las caídas por debajo de cero significan que pierde más en beneficios de lo que gana.',
+  'sweep.srCaption': 'Impacto neto mensual para varios montos de aumento, mostrando dónde los límites de beneficios reducen o eliminan las ganancias',
+
+  // Waterfall Chart
+  'waterfall.raise': 'Aumento',
+  'waterfall.net': 'Impacto Neto',
+  'waterfall.srCaption': 'Desglose del monto del aumento menos las pérdidas de beneficios mostrando el impacto neto',
+
+  // Benefit Stack Chart
+  'stack.xAxis': 'Ingreso mensual',
+  'stack.yAxis': 'Valor mensual de beneficios',
+  'stack.currentIncome': 'Actual',
+  'stack.afterRaise': 'Con aumento',
+  'stack.description': 'Valor total de beneficios calculables en cada nivel de ingreso. El límite es visible donde las bandas caen abruptamente.',
+  'stack.srCaption': 'Valor mensual total de beneficios a través de niveles de ingreso mostrando cómo se reducen los beneficios',
+
+  // Break-Even Dot Plot
+  'dotPlot.xAxis': 'Aumento mensual',
+  'dotPlot.cliffDistance': 'Se activa el límite',
+  'dotPlot.breakEven': 'Equilibrio',
+  'dotPlot.yourRaise': 'Su aumento',
+  'dotPlot.gap': 'Brecha a cubrir',
+  'dotPlot.srCaption': 'Montos de aumento de equilibrio comparados con las distancias de límite para cada programa de beneficios',
+
   // Disclaimer
   'disclaimer.text': 'Esta calculadora proporciona estimaciones basadas en los umbrales de elegibilidad de ingresos de 2025 publicados por la Divisi\u00f3n de Extensi\u00f3n de UW-Madison. Los valores estimados de beneficios son aproximaciones. La elegibilidad real depende de factores adicionales incluyendo activos, deducciones, composici\u00f3n del hogar y estatus migratorio. Esta herramienta no reemplaza las determinaciones oficiales de elegibilidad.',
   'disclaimer.accessWi': 'Solicite a trav\u00e9s de ACCESS Wisconsin para decisiones oficiales de beneficios.',

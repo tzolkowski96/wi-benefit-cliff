@@ -136,6 +136,46 @@ export const en = {
   'print.wheapLoss': 'WHEAP',
   'print.userEnteredLoss': 'User-entered',
 
+  // Chart sections
+  'section.incomeSweep': 'Net Impact Across Raise Amounts',
+  'section.waterfall': 'Impact Breakdown',
+  'section.benefitStack': 'Total Benefits by Income',
+  'section.breakEvenPlot': 'Break-Even Visualization',
+
+  // Income Sweep Chart
+  'sweep.xAxis': 'Monthly raise',
+  'sweep.yAxis': 'Net monthly impact',
+  'sweep.currentRaise': 'Your raise',
+  'sweep.cliffAt': 'cliff',
+  'sweep.tooltipRaise': 'Raise',
+  'sweep.tooltipLoss': 'Benefit loss',
+  'sweep.tooltipNet': 'Net impact',
+  'sweep.positiveZone': 'Better off',
+  'sweep.negativeZone': 'Worse off',
+  'sweep.description': 'How your net income changes at every possible raise amount. Dips below zero mean you lose more in benefits than you gain.',
+  'sweep.srCaption': 'Net monthly impact for various raise amounts, showing where benefit cliffs reduce or eliminate gains',
+
+  // Waterfall Chart
+  'waterfall.raise': 'Raise',
+  'waterfall.net': 'Net Impact',
+  'waterfall.srCaption': 'Breakdown of raise amount minus benefit losses showing net impact',
+
+  // Benefit Stack Chart
+  'stack.xAxis': 'Monthly income',
+  'stack.yAxis': 'Monthly benefit value',
+  'stack.currentIncome': 'Current',
+  'stack.afterRaise': 'After raise',
+  'stack.description': 'Total calculable benefit value at each income level. The cliff is visible where bands drop sharply.',
+  'stack.srCaption': 'Total monthly benefit value across income levels showing how benefits phase out',
+
+  // Break-Even Dot Plot
+  'dotPlot.xAxis': 'Monthly raise',
+  'dotPlot.cliffDistance': 'Cliff triggers',
+  'dotPlot.breakEven': 'Break-even',
+  'dotPlot.yourRaise': 'Your raise',
+  'dotPlot.gap': 'Gap to cover',
+  'dotPlot.srCaption': 'Break-even raise amounts compared to cliff distances for each benefit program',
+
   // Disclaimer
   'disclaimer.text': 'This calculator provides estimates based on 2025 income eligibility thresholds published by UW-Madison Division of Extension. Estimated benefit values are approximations. Actual eligibility depends on additional factors including assets, deductions, household composition, and immigration status. This tool does not replace official eligibility determinations.',
   'disclaimer.accessWi': 'Apply through ACCESS Wisconsin for official benefit decisions.',

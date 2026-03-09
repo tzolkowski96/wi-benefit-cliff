@@ -39,7 +39,7 @@ export interface BreakEvenData {
 // Core: compute total calculable loss for a given raise amount
 // ---------------------------------------------------------------------------
 
-function computeTotalLoss(
+export function computeTotalLoss(
   inputs: BreakEvenInputs,
   raiseMonthly: number,
   customValues?: CustomBenefitValues,
