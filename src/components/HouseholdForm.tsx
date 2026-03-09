@@ -232,7 +232,7 @@ export default function HouseholdForm({ state, update }: Props) {
                 </div>
               </div>
             </div>
-            <p className="text-[11px] text-[#999] mt-2 leading-relaxed">
+            <p className="text-[11px] text-[#767676] mt-2 leading-relaxed">
               {t('form.deductionsNote')}
             </p>
           </div>

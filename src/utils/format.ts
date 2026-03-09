@@ -14,7 +14,3 @@ export function formatMoneyWithSign(amount: number): string {
   if (rounded >= 0) return '+' + formatMoney(rounded)
   return formatMoney(rounded)
 }
-
-export function formatPercent(value: number): string {
-  return Math.round(value) + '%'
-}

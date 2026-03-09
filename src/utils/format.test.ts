@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { formatMoney, formatMoneyWithSign, formatPercent } from './format.ts'
+import { formatMoney, formatMoneyWithSign } from './format.ts'
 
 describe('formatMoney', () => {
   it('formats positive amounts', () => {
@@ -40,15 +40,3 @@ describe('formatMoneyWithSign', () => {
   })
 })
 
-describe('formatPercent', () => {
-  it('formats integer percentages', () => {
-    expect(formatPercent(50)).toBe('50%')
-    expect(formatPercent(100)).toBe('100%')
-    expect(formatPercent(0)).toBe('0%')
-  })
-
-  it('rounds decimal percentages', () => {
-    expect(formatPercent(33.3)).toBe('33%')
-    expect(formatPercent(66.7)).toBe('67%')
-  })
-})

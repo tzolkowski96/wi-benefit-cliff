@@ -330,7 +330,7 @@ function addReferenceSheet(
 
     // Wisconsin Shares also has entry threshold
     if (prog.key === 'wisconsin_shares' && prog.getEntryLimit) {
-      const entryRow: (string | number)[] = [`${prog.name} (${t('program.entry')})`, '200% FPL']
+      const entryRow: (string | number)[] = [`${prog.name} (${t('program.entry')})`, t('excel.fpl200Label')]
       for (let hh = 1; hh <= 8; hh++) {
         if (hh < prog.minHouseholdSize) {
           entryRow.push('')
@@ -346,7 +346,7 @@ function addReferenceSheet(
 
   // Section: FPL 100%
   rows.push([t('excel.fplTitle')])
-  const fplRow: (string | number)[] = ['100% FPL', '']
+  const fplRow: (string | number)[] = [t('excel.fpl100Label'), '']
   for (let hh = 1; hh <= 8; hh++) fplRow.push(FPL_100[hh])
   rows.push(['', '', ...hhHeaders])
   rows.push(fplRow)
@@ -356,10 +356,10 @@ function addReferenceSheet(
   // Section: SMI
   rows.push([t('excel.smiTitle')])
   rows.push(['', '', ...hhHeaders])
-  const smi60Row: (string | number)[] = ['60% SMI (WHEAP)', '']
+  const smi60Row: (string | number)[] = [t('excel.smi60Label'), '']
   for (let hh = 1; hh <= 8; hh++) smi60Row.push(SMI_60[hh])
   rows.push(smi60Row)
-  const smi85Row: (string | number)[] = ['85% SMI (WI Shares)', '']
+  const smi85Row: (string | number)[] = [t('excel.smi85Label'), '']
   for (let hh = 1; hh <= 8; hh++) smi85Row.push(SMI_85[hh] ?? '')
   rows.push(smi85Row)
 
@@ -386,10 +386,10 @@ function addReferenceSheet(
 
   rows.push([])
   rows.push([t('excel.sources')])
-  rows.push(['UW-Madison Division of Extension, "Benefit Cliffs for Wisconsin Public Programs" (2025)'])
-  rows.push(['Wisconsin DHS, DMS Operations Memo 2024-18 (FoodShare FFY 2025)'])
-  rows.push(['USDA FNS, FR 07/24/2025 (School meal reimbursement rates SY 2025-26)'])
-  rows.push(['Wisconsin DCF (Wisconsin Shares entry/exit thresholds)'])
+  rows.push([t('excel.sourceUW')])
+  rows.push([t('excel.sourceDHS')])
+  rows.push([t('excel.sourceUSDA')])
+  rows.push([t('excel.sourceDCF')])
 
   const ws = XLSX.utils.aoa_to_sheet(rows)
   ws['!cols'] = [

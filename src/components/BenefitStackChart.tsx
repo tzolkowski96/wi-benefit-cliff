@@ -58,7 +58,7 @@ export default function BenefitStackChart({ state }: Props) {
               axisLine={false}
               tickLine={false}
               tickFormatter={(v: number) => `$${v}`}
-              label={{ value: t('stack.yAxis'), angle: -90, position: 'insideLeft', offset: 5, fontSize: 10, fill: '#999', fontFamily: "'IBM Plex Mono', monospace" }}
+              label={{ value: t('stack.yAxis'), angle: -90, position: 'insideLeft', offset: 5, fontSize: 10, fill: '#767676', fontFamily: "'IBM Plex Mono', monospace" }}
             />
 
             {/* Stacked benefit areas */}
@@ -71,7 +71,7 @@ export default function BenefitStackChart({ state }: Props) {
               stroke={WHEAP_COLOR}
               strokeWidth={1.5}
               isAnimationActive={false}
-              name="WHEAP"
+              name={t('print.wheapLoss')}
             />
             {state.numberOfChildren > 0 && (
               <Area
@@ -95,7 +95,7 @@ export default function BenefitStackChart({ state }: Props) {
               stroke={FOODSHARE_COLOR}
               strokeWidth={1.5}
               isAnimationActive={false}
-              name="FoodShare"
+              name={t('print.foodshareLoss')}
             />
 
             {/* Current income marker */}

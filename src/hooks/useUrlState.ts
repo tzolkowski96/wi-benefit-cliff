@@ -6,7 +6,7 @@
  * - Writes on every change via history.replaceState (no page reloads)
  */
 
-import { useState, useCallback, useEffect, useRef } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import type { FormState, IncomeType } from '../types/index.ts'
 import { hourlyToMonthly, monthlyToHourly } from '../utils/wage.ts'
 
@@ -152,6 +152,11 @@ function writeUrl(state: FormState) {
   if (state.customBadgerCareChildValue !== null) params.set('bcc', String(state.customBadgerCareChildValue))
   if (state.customWisconsinSharesValue !== null) params.set('wis', String(state.customWisconsinSharesValue))
 
+  // Preserve non-form params (e.g. lang) set by other hooks
+  const current = new URLSearchParams(window.location.search)
+  const lang = current.get('lang')
+  if (lang) params.set('lang', lang)
+
   const newUrl = window.location.pathname + '?' + params.toString()
   history.replaceState(null, '', newUrl)
 }
@@ -160,14 +165,8 @@ export type FormUpdater = (patch: Partial<FormState>) => void
 
 export function useUrlState(): [FormState, FormUpdater] {
   const [state, setState] = useState<FormState>(buildInitialState)
-  const isInitial = useRef(true)
 
   useEffect(() => {
-    if (isInitial.current) {
-      isInitial.current = false
-      writeUrl(state)
-      return
-    }
     writeUrl(state)
   }, [state])
 

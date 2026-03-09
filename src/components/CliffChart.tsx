@@ -41,13 +41,13 @@ export default function CliffChart({ programs, currentMonthlyIncome, newMonthlyI
           return (
             <div key={prog.key} className="mb-2.5">
               <div className="flex justify-between items-center mb-1">
-                <span className={`text-[13px] font-medium ${prog.currentlyEligible ? 'text-[#1a1a1a]' : 'text-[#aaa]'}`}>
+                <span className={`text-[13px] font-medium ${prog.currentlyEligible ? 'text-[#1a1a1a]' : 'text-[#767676]'}`}>
                   {prog.name}
                 </span>
                 <span className={`text-[11px] font-mono ${
                   prog.lost ? 'text-[#9B2226] font-bold'
                     : prog.currentlyEligible ? 'text-[#666]'
-                    : 'text-[#bbb]'
+                    : 'text-[#767676]'
                 }`}>
                   {prog.lost
                     ? (prog.cliffType === 'tier_shift' && prog.currentTier && prog.newTier

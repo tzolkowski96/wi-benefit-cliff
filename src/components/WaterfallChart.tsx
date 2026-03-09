@@ -36,9 +36,9 @@ export default function WaterfallChart({ impact }: Props) {
 
     // Loss bars (only include non-zero losses)
     const losses: { name: string; loss: number }[] = []
-    if (foodshareLoss > 0) losses.push({ name: 'FoodShare', loss: foodshareLoss })
+    if (foodshareLoss > 0) losses.push({ name: t('print.foodshareLoss'), loss: foodshareLoss })
     if (schoolMealLoss > 0) losses.push({ name: t('print.schoolMealLoss'), loss: schoolMealLoss })
-    if (wheapLoss > 0) losses.push({ name: 'WHEAP', loss: wheapLoss })
+    if (wheapLoss > 0) losses.push({ name: t('print.wheapLoss'), loss: wheapLoss })
     if (customLosses > 0) losses.push({ name: t('print.userEnteredLoss'), loss: customLosses })
 
     for (const { name, loss } of losses) {
@@ -76,7 +76,7 @@ export default function WaterfallChart({ impact }: Props) {
               tickLine={false}
             />
             <YAxis
-              tick={{ fontSize: 11, fontFamily: "'IBM Plex Mono', monospace", fill: '#888' }}
+              tick={{ fontSize: 11, fontFamily: "'IBM Plex Mono', monospace", fill: '#767676' }}
               axisLine={false}
               tickLine={false}
               tickFormatter={(v: number) => `$${v}`}

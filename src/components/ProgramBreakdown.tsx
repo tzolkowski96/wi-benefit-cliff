@@ -36,7 +36,7 @@ function StatusBadge({ prog }: { prog: ProgramResult }) {
 
   if (!prog.currentlyEligible) {
     return (
-      <span className="inline-flex items-center gap-1 text-xs font-bold font-mono px-2.5 py-1 rounded-sm bg-[#f5f5f5] text-[#aaa]">
+      <span className="inline-flex items-center gap-1 text-xs font-bold font-mono px-2.5 py-1 rounded-sm bg-[#f5f5f5] text-[#767676]">
         {t('result.na')}
       </span>
     )
@@ -137,7 +137,7 @@ export default function ProgramBreakdown({ programs, state, update }: Props) {
                       {/* Inline custom value input */}
                       {customKey && (
                         <div className="mt-1.5 flex items-center gap-1.5">
-                          <span className="text-[11px] text-[#999] font-sans not-italic">{t('form.customValuePrompt')}</span>
+                          <span className="text-[11px] text-[#767676] font-sans not-italic">{t('form.customValuePrompt')}</span>
                           <span className="text-[#767676]">$</span>
                           <input
                             type="number"
@@ -165,7 +165,7 @@ export default function ProgramBreakdown({ programs, state, update }: Props) {
 
       {/* Tier 2 note */}
       {programs.some((p) => !p.calculable && p.currentlyEligible) && (
-        <div className="mt-4 pt-3 border-t border-[#eee] text-[11px] text-[#999] leading-relaxed">
+        <div className="mt-4 pt-3 border-t border-[#eee] text-[11px] text-[#767676] leading-relaxed">
           {t('tier2.note')}
           <br />
           <em>{t('tier2.optionalNote')}</em>

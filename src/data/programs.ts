@@ -68,7 +68,7 @@ export const MAX_EXCESS_SHELTER_DEDUCTION = 712
 // Program definitions
 // ---------------------------------------------------------------------------
 
-export type ProgramKey =
+type ProgramKey =
   | 'foodshare'
   | 'badgercare_adult'
   | 'badgercare_children'

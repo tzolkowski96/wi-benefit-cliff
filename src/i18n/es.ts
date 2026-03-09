@@ -260,6 +260,14 @@ export const es: Record<I18nKey, string> = {
 
   // Excel reference sheet
   'excel.hhPrefix': 'Hogar',
+  'excel.fpl100Label': '100% FPL',
+  'excel.fpl200Label': '200% FPL',
+  'excel.smi60Label': '60% SMI (WHEAP)',
+  'excel.smi85Label': '85% SMI (WI Shares)',
+  'excel.sourceUW': 'UW-Madison Division of Extension, "Benefit Cliffs for Wisconsin Public Programs" (2025)',
+  'excel.sourceDHS': 'Wisconsin DHS, DMS Operations Memo 2024-18 (FoodShare FFY 2025)',
+  'excel.sourceUSDA': 'USDA FNS, FR 07/24/2025 (Tasas de reembolso de comidas escolares SY 2025-26)',
+  'excel.sourceDCF': 'Wisconsin DCF (Umbrales de entrada/salida de Wisconsin Shares)',
 
   // Accessibility
   'a11y.skipToContent': 'Saltar al contenido',

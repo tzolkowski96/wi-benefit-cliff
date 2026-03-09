@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import type { FormState, CliffAnalysis } from '../types/index.ts'
 import { useI18n, DATE_LOCALE } from '../hooks/useI18n.ts'
 import type { I18nKey } from '../i18n/en.ts'
@@ -14,6 +15,22 @@ export default function PrintSummary({ state, analysis }: Props) {
   const { t, lang } = useI18n()
   const { programs, calculableImpact, safeRaiseMax } = analysis
   const { netMonthly, netAnnual, uncalculatedLosses, foodshareLoss, schoolMealLoss, wheapLoss, customLosses } = calculableImpact
+
+  const breakEvenData = useMemo(() => computeBreakEvenData(
+    programs,
+    {
+      householdSize: state.householdSize,
+      numberOfChildren: state.numberOfChildren,
+      currentMonthlyIncome: state.currentMonthlyIncome,
+      monthlyRent: state.monthlyRent,
+      monthlyChildcareCosts: state.monthlyChildcareCosts,
+    },
+    {
+      customBadgerCareAdultValue: state.customBadgerCareAdultValue,
+      customBadgerCareChildValue: state.customBadgerCareChildValue,
+      customWisconsinSharesValue: state.customWisconsinSharesValue,
+    },
+  ), [programs, state])
 
   return (
     <div className="print-summary hidden print:block print:p-8 print:text-[12px] print:text-black print:bg-white">
@@ -114,59 +131,41 @@ export default function PrintSummary({ state, analysis }: Props) {
       </div>
 
       {/* Break-even raises */}
-      {(() => {
-        const { rows, clearAllRaise } = computeBreakEvenData(
-          programs,
-          {
-            householdSize: state.householdSize,
-            numberOfChildren: state.numberOfChildren,
-            currentMonthlyIncome: state.currentMonthlyIncome,
-            monthlyRent: state.monthlyRent,
-            monthlyChildcareCosts: state.monthlyChildcareCosts,
-          },
-          {
-            customBadgerCareAdultValue: state.customBadgerCareAdultValue,
-            customBadgerCareChildValue: state.customBadgerCareChildValue,
-            customWisconsinSharesValue: state.customWisconsinSharesValue,
-          },
-        )
-        if (rows.length === 0) return null
-        return (
-          <div className="mb-4 p-3 border border-[#ddd]">
-            <h2 className="text-xs font-bold uppercase tracking-wider mb-2">{t('print.breakEven')}</h2>
-            <table className="w-full border-collapse text-[11px] mb-2">
-              <thead>
-                <tr className="border-b border-[#999]">
-                  <th className="text-left py-1 font-bold">{t('print.program')}</th>
-                  <th className="text-right py-1 font-bold">{t('print.cliffAt')}</th>
-                  <th className="text-right py-1 font-bold">{t('print.breakEvenCol')}</th>
-                  <th className="text-right py-1 font-bold">{t('print.hourlyCol')}</th>
+      {breakEvenData.rows.length > 0 && (
+        <div className="mb-4 p-3 border border-[#ddd]">
+          <h2 className="text-xs font-bold uppercase tracking-wider mb-2">{t('print.breakEven')}</h2>
+          <table className="w-full border-collapse text-[11px] mb-2">
+            <thead>
+              <tr className="border-b border-[#999]">
+                <th className="text-left py-1 font-bold">{t('print.program')}</th>
+                <th className="text-right py-1 font-bold">{t('print.cliffAt')}</th>
+                <th className="text-right py-1 font-bold">{t('print.breakEvenCol')}</th>
+                <th className="text-right py-1 font-bold">{t('print.hourlyCol')}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {breakEvenData.rows.map((row) => (
+                <tr key={row.name} className="border-b border-[#eee]">
+                  <td className="py-1">{row.name}</td>
+                  <td className="py-1 font-mono text-right">+{formatMoney(row.cliffDistance)}{t('unit.perMonth')}</td>
+                  <td className="py-1 font-mono text-right">+{formatMoney(row.breakEvenMonthly)}{t('unit.perMonth')}</td>
+                  <td className="py-1 font-mono text-right">+${monthlyToHourly(row.breakEvenMonthly).toFixed(2)}{t('unit.perHour')}</td>
                 </tr>
-              </thead>
-              <tbody>
-                {rows.map((row) => (
-                  <tr key={row.name} className="border-b border-[#eee]">
-                    <td className="py-1">{row.name}</td>
-                    <td className="py-1 font-mono text-right">+{formatMoney(row.cliffDistance)}{t('unit.perMonth')}</td>
-                    <td className="py-1 font-mono text-right">+{formatMoney(row.breakEvenMonthly)}{t('unit.perMonth')}</td>
-                    <td className="py-1 font-mono text-right">+${monthlyToHourly(row.breakEvenMonthly).toFixed(2)}{t('unit.perHour')}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            {clearAllRaise !== null && (
-              <p className="text-[11px]">
-                {rows.length > 1
-                  ? <>{t('breakEven.clearAll')} <strong className="font-mono">+{formatMoney(clearAllRaise)}{t('unit.perMonth')}</strong> (+${monthlyToHourly(clearAllRaise).toFixed(2)}{t('unit.perHour')})</>
-                  : <>{t('print.breakEvenCol')}: <strong className="font-mono">+{formatMoney(clearAllRaise)}{t('unit.perMonth')}</strong> (+${monthlyToHourly(clearAllRaise).toFixed(2)}{t('unit.perHour')})</>}
-              </p>
-            )}
-          </div>
-        )
-      })()}
+              ))}
+            </tbody>
+          </table>
+          {breakEvenData.clearAllRaise !== null && (
+            <p className="text-[11px]">
+              {breakEvenData.rows.length > 1
+                ? <>{t('breakEven.clearAll')} <strong className="font-mono">+{formatMoney(breakEvenData.clearAllRaise)}{t('unit.perMonth')}</strong> (+${monthlyToHourly(breakEvenData.clearAllRaise).toFixed(2)}{t('unit.perHour')})</>
+                : <>{t('print.breakEvenCol')}: <strong className="font-mono">+{formatMoney(breakEvenData.clearAllRaise)}{t('unit.perMonth')}</strong> (+${monthlyToHourly(breakEvenData.clearAllRaise).toFixed(2)}{t('unit.perHour')})</>}
+            </p>
+          )}
+        </div>
+      )}
 
       {/* Disclaimer */}
-      <div className="text-[10px] text-[#999] leading-relaxed border-t border-[#ddd] pt-3">
+      <div className="text-[10px] text-[#767676] leading-relaxed border-t border-[#ddd] pt-3">
         <strong>{t('label.disclaimer')}:</strong> {t('disclaimer.text')}{' '}
         {t('disclaimer.contact')}
       </div>

@@ -15,24 +15,24 @@ import { getSmi60 } from '../data/smi.ts'
 // Types
 // ---------------------------------------------------------------------------
 
-export interface RaiseSweepPoint {
+interface RaiseSweepPoint {
   raiseMonthly: number
   totalLoss: number
   netImpact: number
 }
 
-export interface CliffPoint {
+interface CliffPoint {
   raiseMonthly: number
   programName: string
   programColor: string
 }
 
-export interface RaiseSweepResult {
+interface RaiseSweepResult {
   points: RaiseSweepPoint[]
   cliffPoints: CliffPoint[]
 }
 
-export interface BenefitStackPoint {
+interface BenefitStackPoint {
   monthlyIncome: number
   foodshare: number
   schoolMeals: number

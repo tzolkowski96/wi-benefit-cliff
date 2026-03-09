@@ -254,6 +254,14 @@ export const en = {
 
   // Excel reference sheet
   'excel.hhPrefix': 'HH',
+  'excel.fpl100Label': '100% FPL',
+  'excel.fpl200Label': '200% FPL',
+  'excel.smi60Label': '60% SMI (WHEAP)',
+  'excel.smi85Label': '85% SMI (WI Shares)',
+  'excel.sourceUW': 'UW-Madison Division of Extension, "Benefit Cliffs for Wisconsin Public Programs" (2025)',
+  'excel.sourceDHS': 'Wisconsin DHS, DMS Operations Memo 2024-18 (FoodShare FFY 2025)',
+  'excel.sourceUSDA': 'USDA FNS, FR 07/24/2025 (School meal reimbursement rates SY 2025-26)',
+  'excel.sourceDCF': 'Wisconsin DCF (Wisconsin Shares entry/exit thresholds)',
 
   // Accessibility
   'a11y.skipToContent': 'Skip to content',
