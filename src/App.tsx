@@ -1,6 +1,7 @@
 import { useUrlState } from './hooks/useUrlState.ts'
 import { useCliffAnalysis } from './hooks/useCliffAnalysis.ts'
 import { useI18n } from './hooks/useI18n.ts'
+import ErrorBoundary from './components/ErrorBoundary.tsx'
 import HouseholdForm from './components/HouseholdForm.tsx'
 import NetImpactBanner from './components/NetImpactBanner.tsx'
 import CliffWarning from './components/CliffWarning.tsx'
@@ -33,11 +34,17 @@ export default function App() {
   const newMonthlyIncome = formState.currentMonthlyIncome + formState.raiseMonthly
 
   const handleExcelExport = async () => {
-    const { exportToExcel } = await import('./utils/excel.ts')
-    await exportToExcel(formState, analysis, t, lang)
+    try {
+      const { exportToExcel } = await import('./utils/excel.ts')
+      await exportToExcel(formState, analysis, t, lang)
+    } catch (err) {
+      console.error('Excel export failed:', err)
+      alert(t('error.exportFailed'))
+    }
   }
 
   return (
+    <ErrorBoundary fallbackTitle={t('error.title')} fallbackAction={t('error.reload')}>
     <div className="min-h-screen bg-[#F8F6F3] text-[#1a1a1a]">
       {/* Skip to content link */}
       <a
@@ -123,7 +130,7 @@ export default function App() {
           currentMonthlyIncome={formState.currentMonthlyIncome}
           newMonthlyIncome={newMonthlyIncome}
         />
-        <IncomeSweepChart programs={analysis.programs} state={formState} safeRaiseMax={analysis.safeRaiseMax} />
+        <IncomeSweepChart programs={analysis.programs} state={formState} />
         <BenefitStackChart state={formState} />
         <ProgramBreakdown programs={analysis.programs} state={formState} update={updateForm} />
         <SafeRaiseZones
@@ -135,7 +142,7 @@ export default function App() {
         <BreakEvenDotPlot programs={analysis.programs} state={formState} />
 
         {/* Disclaimer */}
-        <footer className="text-[11px] text-[#999] leading-relaxed px-1 mt-4">
+        <footer className="text-[11px] text-[#767676] leading-relaxed px-1 mt-4">
           <strong>{t('label.disclaimer')}:</strong> {t('disclaimer.text')}{' '}
           <a href="https://access.wisconsin.gov" target="_blank" rel="noopener noreferrer" className="text-[#666] underline">
             {t('disclaimer.accessWi')}
@@ -165,5 +172,6 @@ export default function App() {
       {/* Print-only summary (hidden on screen, shown when printing) */}
       <PrintSummary state={formState} analysis={analysis} />
     </div>
+    </ErrorBoundary>
   )
 }

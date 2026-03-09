@@ -19,7 +19,7 @@ export const FPL_100: Record<number, number> = {
 }
 
 /** Per-additional-person increment beyond household size 8 (monthly, 100% FPL). */
-export const FPL_100_PER_ADDITIONAL = 449
+const FPL_100_PER_ADDITIONAL = 449
 
 /**
  * Get 100% FPL monthly limit for any household size.

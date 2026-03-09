@@ -23,7 +23,7 @@ export default function NetImpactBanner({ impact }: Props) {
         {/* Three-column metrics — semantic dl/dt/dd */}
         <dl className="grid grid-cols-1 sm:grid-cols-3 gap-3 m-0">
           <div>
-            <dt className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[#888] mb-1 font-mono">
+            <dt className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[#767676] mb-1 font-mono">
               {t('result.raise')}
             </dt>
             <dd className="text-xl font-bold font-mono text-[#2D6A4F] m-0">
@@ -31,7 +31,7 @@ export default function NetImpactBanner({ impact }: Props) {
             </dd>
           </div>
           <div>
-            <dt className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[#888] mb-1 font-mono">
+            <dt className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[#767676] mb-1 font-mono">
               {t('result.lostBenefits')}
             </dt>
             <dd className={`text-xl font-bold font-mono m-0 ${totalCalculableLoss > 0 ? 'text-[#9B2226]' : 'text-[#666]'}`}>
@@ -40,7 +40,7 @@ export default function NetImpactBanner({ impact }: Props) {
             </dd>
           </div>
           <div>
-            <dt className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[#888] mb-1 font-mono">
+            <dt className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[#767676] mb-1 font-mono">
               {t('result.netImpact')}
             </dt>
             <dd className={`text-2xl font-bold font-mono m-0 ${isPositive ? 'text-[#2D6A4F]' : 'text-[#9B2226]'}`}>

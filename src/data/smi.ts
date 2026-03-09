@@ -17,7 +17,7 @@ export const SMI_60: Record<number, number> = {
   8: 9655,
 }
 
-export const SMI_60_PER_ADDITIONAL = 942
+const SMI_60_PER_ADDITIONAL = 942
 
 /** 85% SMI — monthly limits by household size (Wisconsin Shares exit threshold). */
 export const SMI_85: Record<number, number> = {
@@ -30,7 +30,7 @@ export const SMI_85: Record<number, number> = {
   8: 13676,
 }
 
-export const SMI_85_PER_ADDITIONAL = 1334
+const SMI_85_PER_ADDITIONAL = 1334
 
 /**
  * Get 60% SMI monthly limit for a household size.

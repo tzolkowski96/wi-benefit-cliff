@@ -253,6 +253,14 @@ export const es: Record<I18nKey, string> = {
   'disclaimer.accessWi': 'Solicite a trav\u00e9s de ACCESS Wisconsin para decisiones oficiales de beneficios.',
   'disclaimer.contact': 'Contacte a su educador financiero del condado o llame al 211 (877-847-2211) para orientaci\u00f3n personalizada.',
 
+  // Error boundary
+  'error.title': 'Algo sali\u00f3 mal',
+  'error.reload': 'Recargar',
+  'error.exportFailed': 'La exportaci\u00f3n fall\u00f3. Por favor int\u00e9ntelo de nuevo.',
+
+  // Excel reference sheet
+  'excel.hhPrefix': 'Hogar',
+
   // Accessibility
   'a11y.skipToContent': 'Saltar al contenido',
   'a11y.currentIncome': 'Ingreso actual',

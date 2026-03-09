@@ -40,7 +40,7 @@ export default function CliffWarning({ analysis }: Props) {
   // Positive net but some programs lost: amber heads-up
   if (lostPrograms.length > 0 && netMonthly >= 0) {
     return (
-      <div className="bg-[#FFF8E1] border border-[#E0C97B] rounded-sm px-5 py-4 mb-5 text-sm leading-relaxed">
+      <div role="alert" className="bg-[#FFF8E1] border border-[#E0C97B] rounded-sm px-5 py-4 mb-5 text-sm leading-relaxed">
         <strong className="text-[#8B6914]">
           <span aria-hidden="true">&#9888; </span>{t('warning.headsUp')}:
         </strong>{' '}

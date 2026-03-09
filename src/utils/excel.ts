@@ -9,19 +9,13 @@
 import type { FormState, CliffAnalysis, ProgramResult } from '../types/index.ts'
 import type { CustomBenefitValues } from '../hooks/useCliffAnalysis.ts'
 import type { I18nKey } from '../i18n/en.ts'
-import type { Lang } from '../hooks/useI18n.ts'
+import { DATE_LOCALE, type Lang } from '../hooks/useI18n.ts'
 import { computeBreakEvenData } from './breakeven.ts'
 import { computeRaiseSweep, computeBenefitStack } from './sweep.ts'
 import { monthlyToHourly } from './wage.ts'
 import { PROGRAMS, FOODSHARE_MAX_ALLOTMENT, FREE_MEAL_VALUE_PER_CHILD, REDUCED_MEAL_VALUE_PER_CHILD, WHEAP_MONTHLY_VALUE, getFoodShareStandardDeduction } from '../data/programs.ts'
 import { FPL_100 } from '../data/fpl.ts'
 import { SMI_60, SMI_85 } from '../data/smi.ts'
-
-// ---------------------------------------------------------------------------
-// Date locale mapping
-// ---------------------------------------------------------------------------
-
-const DATE_LOCALE: Record<string, string> = { en: 'en-US', es: 'es-US' }
 
 // ---------------------------------------------------------------------------
 // Public API
@@ -133,7 +127,7 @@ function addProgramStatusSheet(
 
   const rows = programs.map((p) => [
     p.name,
-    p.cliffType.replace('_', ' '),
+    t(('cliffType.' + p.cliffType) as I18nKey),
     p.basis,
     p.limit,
     p.currentlyEligible ? t('label.yes') : t('label.no'),
@@ -316,7 +310,8 @@ function addReferenceSheet(
   t: (key: I18nKey) => string,
 ) {
   const rows: (string | number)[][] = []
-  const hhHeaders = ['HH 1', 'HH 2', 'HH 3', 'HH 4', 'HH 5', 'HH 6', 'HH 7', 'HH 8']
+  const hhPrefix = t('excel.hhPrefix')
+  const hhHeaders = Array.from({ length: 8 }, (_, i) => `${hhPrefix} ${i + 1}`)
 
   // Section: Income thresholds by household size
   rows.push([t('excel.thresholdTitle'), '', '', '', '', '', '', '', '', ''])

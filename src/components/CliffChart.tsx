@@ -101,7 +101,7 @@ export default function CliffChart({ programs, currentMonthlyIncome, newMonthlyI
         })}
 
         {/* Legend */}
-        <div className="flex flex-wrap gap-x-4 gap-y-1 mt-4 text-[11px] text-[#888]">
+        <div className="flex flex-wrap gap-x-4 gap-y-1 mt-4 text-[11px] text-[#767676]">
           <div className="flex items-center gap-1">
             <div className="w-3 h-[3px] bg-[#1a1a1a] rounded-sm" />
             {t('chart.current')} ({formatMoney(currentMonthlyIncome)})

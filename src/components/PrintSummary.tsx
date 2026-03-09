@@ -1,5 +1,6 @@
 import type { FormState, CliffAnalysis } from '../types/index.ts'
-import { useI18n } from '../hooks/useI18n.ts'
+import { useI18n, DATE_LOCALE } from '../hooks/useI18n.ts'
+import type { I18nKey } from '../i18n/en.ts'
 import { formatMoney, formatMoneyWithSign } from '../utils/format.ts'
 import { monthlyToHourly } from '../utils/wage.ts'
 import { computeBreakEvenData } from '../utils/breakeven.ts'
@@ -8,8 +9,6 @@ interface Props {
   state: FormState
   analysis: CliffAnalysis
 }
-
-const DATE_LOCALE: Record<string, string> = { en: 'en-US', es: 'es-US' }
 
 export default function PrintSummary({ state, analysis }: Props) {
   const { t, lang } = useI18n()
@@ -72,7 +71,7 @@ export default function PrintSummary({ state, analysis }: Props) {
                   ? `${formatMoney(prog.entryLimit)} / ${formatMoney(prog.exitLimit ?? prog.limit)}`
                   : `${formatMoney(prog.limit)} (${prog.basis})`}
               </td>
-              <td className="py-1.5 capitalize">{prog.cliffType.replace('_', ' ')}</td>
+              <td className="py-1.5">{t(('cliffType.' + prog.cliffType) as I18nKey)}</td>
               <td className="py-1.5 font-mono text-right">
                 {prog.calculable && prog.monthlyLoss !== null
                   ? prog.monthlyLoss > 0

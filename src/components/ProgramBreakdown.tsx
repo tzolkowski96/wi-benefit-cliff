@@ -96,7 +96,7 @@ export default function ProgramBreakdown({ programs, state, update }: Props) {
                   <div className="text-sm font-semibold" style={{ color: prog.color }}>
                     {prog.name}
                   </div>
-                  <div className="text-[11px] text-[#888]">
+                  <div className="text-[11px] text-[#767676]">
                     {prog.key === 'wisconsin_shares' && prog.entryLimit && prog.exitLimit ? (
                       <>
                         {t('program.entry')}: {formatMoney(prog.entryLimit)}{t('unit.perMonth')} &middot; {t('program.continuation')}: {formatMoney(prog.exitLimit)}{t('unit.perMonth')}
@@ -131,14 +131,14 @@ export default function ProgramBreakdown({ programs, state, update }: Props) {
                     ) : null
                   ) : (
                     <div>
-                      <span className="text-[#888] italic">
+                      <span className="text-[#767676] italic">
                         {t('program.eligibilityOnly')}
                       </span>
                       {/* Inline custom value input */}
                       {customKey && (
                         <div className="mt-1.5 flex items-center gap-1.5">
                           <span className="text-[11px] text-[#999] font-sans not-italic">{t('form.customValuePrompt')}</span>
-                          <span className="text-[#888]">$</span>
+                          <span className="text-[#767676]">$</span>
                           <input
                             type="number"
                             min={0}

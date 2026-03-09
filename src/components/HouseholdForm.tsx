@@ -108,7 +108,7 @@ export default function HouseholdForm({ state, update }: Props) {
             {incomeType === 'hourly' ? t('form.hourlyWage') : t('form.monthlyIncome')}
           </label>
           <div className="relative">
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#888] text-base font-semibold">$</span>
+            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#767676] text-base font-semibold">$</span>
             <input
               id="income-input"
               type="number"
@@ -137,7 +137,7 @@ export default function HouseholdForm({ state, update }: Props) {
             aria-label={incomeType === 'hourly' ? t('form.hourlyWage') : t('form.monthlyIncome')}
             className="w-full mt-1.5 accent-[#1a1a1a]"
           />
-          <div className="text-xs text-[#888] mt-0.5 font-mono">
+          <div className="text-xs text-[#767676] mt-0.5 font-mono">
             {incomeType === 'hourly'
               ? `\u2248 ${formatMoney(hourlyToMonthly(hourlyWage))}${t('unit.perMonth')}`
               : `\u2248 $${monthlyToHourly(monthlyIncome).toFixed(2)}${t('unit.perHour')}`}
@@ -149,7 +149,7 @@ export default function HouseholdForm({ state, update }: Props) {
             {incomeType === 'hourly' ? t('form.raise.hourly') : t('form.raise.monthly')}
           </label>
           <div className="relative">
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#888] text-base font-semibold">$</span>
+            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#767676] text-base font-semibold">$</span>
             <input
               id="raise-input"
               type="number"
@@ -170,7 +170,7 @@ export default function HouseholdForm({ state, update }: Props) {
             aria-label={incomeType === 'hourly' ? t('form.raise.hourly') : t('form.raise.monthly')}
             className="w-full mt-1.5 accent-[#1a1a1a]"
           />
-          <div className="text-xs text-[#888] mt-0.5 font-mono">
+          <div className="text-xs text-[#767676] mt-0.5 font-mono">
             {incomeType === 'hourly'
               ? `\u2248 ${formatMoney(hourlyToMonthly(raiseAmount))}${t('unit.perMonth')}`
               : `\u2248 $${monthlyToHourly(raiseAmount).toFixed(2)}${t('unit.perHour')}`}
@@ -183,7 +183,7 @@ export default function HouseholdForm({ state, update }: Props) {
         <button
           type="button"
           onClick={() => setDeductionsOpen(!deductionsOpen)}
-          className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.05em] text-[#888] font-mono cursor-pointer hover:text-[#555] bg-transparent border-0 p-0"
+          className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.05em] text-[#767676] font-mono cursor-pointer hover:text-[#555] bg-transparent border-0 p-0"
           aria-expanded={deductionsOpen}
           aria-controls="deduction-inputs"
         >
@@ -193,7 +193,7 @@ export default function HouseholdForm({ state, update }: Props) {
 
         {deductionsOpen && (
           <div id="deduction-inputs" className="mt-3">
-            <p className="text-[12px] text-[#888] mb-3 leading-relaxed">
+            <p className="text-[12px] text-[#767676] mb-3 leading-relaxed">
               {t('form.deductionsHelp')}
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -202,7 +202,7 @@ export default function HouseholdForm({ state, update }: Props) {
                   {t('form.rent')}
                 </label>
                 <div className="relative">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#888] text-base font-semibold">$</span>
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#767676] text-base font-semibold">$</span>
                   <input
                     id="rent-input"
                     type="number"
@@ -219,7 +219,7 @@ export default function HouseholdForm({ state, update }: Props) {
                   {t('form.childcare')}
                 </label>
                 <div className="relative">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#888] text-base font-semibold">$</span>
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#767676] text-base font-semibold">$</span>
                   <input
                     id="childcare-input"
                     type="number"

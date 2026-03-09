@@ -10,6 +10,9 @@ import type { I18nKey } from '../i18n/en.ts'
 
 export type Lang = 'en' | 'es'
 
+/** Locale string for Intl/toLocaleDateString, keyed by app language. */
+export const DATE_LOCALE: Record<Lang, string> = { en: 'en-US', es: 'es-US' }
+
 const TRANSLATIONS: Record<Lang, Record<string, string>> = { en, es }
 
 interface I18nContextValue {

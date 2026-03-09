@@ -37,22 +37,6 @@ export interface FormState extends HouseholdInputs {
 export type CliffType = 'hard' | 'gradual' | 'tier_shift'
 
 // ---------------------------------------------------------------------------
-// Program definitions (imported/used by data/programs.ts)
-// ---------------------------------------------------------------------------
-
-export interface ProgramDefinition {
-  key: string
-  name: string
-  description: string
-  cliffType: CliffType
-  basis: string
-  color: string
-  requiresChildren: boolean
-  minHouseholdSize: number
-  calculable: boolean
-}
-
-// ---------------------------------------------------------------------------
 // Analysis output
 // ---------------------------------------------------------------------------
 

@@ -11,14 +11,13 @@ import { computeRaiseSweep } from '../utils/sweep.ts'
 interface Props {
   programs: ProgramResult[]
   state: FormState
-  safeRaiseMax: number
 }
 
 const GREEN = '#2D6A4F'
 const RED = '#9B2226'
 const AMBER = '#E8A838'
 
-export default function IncomeSweepChart({ programs, state, safeRaiseMax }: Props) {
+export default function IncomeSweepChart({ programs, state }: Props) {
   const { t } = useI18n()
 
   const { data, cliffs } = useMemo(() => {
@@ -44,7 +43,7 @@ export default function IncomeSweepChart({ programs, state, safeRaiseMax }: Prop
       })),
       cliffs: cliffPoints,
     }
-  }, [programs, state, safeRaiseMax])
+  }, [programs, state]) // safeRaiseMax excluded — derived from programs, not an input to the sweep
 
   // Don't render if no programs are eligible (nothing interesting to show)
   const hasEligiblePrograms = programs.some((p) => p.currentlyEligible)
@@ -55,7 +54,7 @@ export default function IncomeSweepChart({ programs, state, safeRaiseMax }: Prop
       <h2 className="text-xs font-semibold uppercase tracking-[0.08em] text-[#666] mb-1 font-mono">
         {t('section.incomeSweep')}
       </h2>
-      <p className="text-[12px] text-[#888] mb-4 leading-relaxed">
+      <p className="text-[12px] text-[#767676] mb-4 leading-relaxed">
         {t('sweep.description')}
       </p>
 

@@ -38,7 +38,7 @@ export default function BenefitStackChart({ state }: Props) {
       <h2 className="text-xs font-semibold uppercase tracking-[0.08em] text-[#666] mb-1 font-mono">
         {t('section.benefitStack')}
       </h2>
-      <p className="text-[12px] text-[#888] mb-4 leading-relaxed">
+      <p className="text-[12px] text-[#767676] mb-4 leading-relaxed">
         {t('stack.description')}
       </p>
 
@@ -50,8 +50,8 @@ export default function BenefitStackChart({ state }: Props) {
               tick={{ fontSize: 11, fontFamily: "'IBM Plex Mono', monospace", fill: '#888' }}
               axisLine={{ stroke: '#ddd' }}
               tickLine={false}
-              tickFormatter={(v: number) => `$${v.toLocaleString()}`}
-              label={{ value: t('stack.xAxis'), position: 'insideBottom', offset: -2, fontSize: 10, fill: '#999', fontFamily: "'IBM Plex Mono', monospace" }}
+              tickFormatter={(v: number) => `$${v.toLocaleString('en-US')}`}
+              label={{ value: t('stack.xAxis'), position: 'insideBottom', offset: -2, fontSize: 10, fill: '#767676', fontFamily: "'IBM Plex Mono', monospace" }}
             />
             <YAxis
               tick={{ fontSize: 11, fontFamily: "'IBM Plex Mono', monospace", fill: '#888' }}

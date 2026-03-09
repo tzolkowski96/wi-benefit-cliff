@@ -247,6 +247,14 @@ export const en = {
   'disclaimer.accessWi': 'Apply through ACCESS Wisconsin for official benefit decisions.',
   'disclaimer.contact': 'Contact your county financial educator or call 211 (877-847-2211) for personalized guidance.',
 
+  // Error boundary
+  'error.title': 'Something went wrong',
+  'error.reload': 'Reload',
+  'error.exportFailed': 'Export failed. Please try again.',
+
+  // Excel reference sheet
+  'excel.hhPrefix': 'HH',
+
   // Accessibility
   'a11y.skipToContent': 'Skip to content',
   'a11y.currentIncome': 'Current income',

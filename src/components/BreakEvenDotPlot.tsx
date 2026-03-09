@@ -68,8 +68,8 @@ export default function BreakEvenDotPlot({ programs, state }: Props) {
               tick={{ fontSize: 11, fontFamily: "'IBM Plex Mono', monospace", fill: '#888' }}
               axisLine={{ stroke: '#ddd' }}
               tickLine={false}
-              tickFormatter={(v: number) => `$${v.toLocaleString()}`}
-              label={{ value: t('dotPlot.xAxis'), position: 'insideBottom', offset: -10, fontSize: 10, fill: '#999', fontFamily: "'IBM Plex Mono', monospace" }}
+              tickFormatter={(v: number) => `$${v.toLocaleString('en-US')}`}
+              label={{ value: t('dotPlot.xAxis'), position: 'insideBottom', offset: -10, fontSize: 10, fill: '#767676', fontFamily: "'IBM Plex Mono', monospace" }}
             />
             <YAxis
               type="category"
@@ -124,7 +124,7 @@ export default function BreakEvenDotPlot({ programs, state }: Props) {
       </div>
 
       {/* Legend */}
-      <div className="flex items-center gap-4 text-[11px] text-[#888] font-mono mt-1 mb-0 pl-[130px]" aria-hidden="true">
+      <div className="flex items-center gap-4 text-[11px] text-[#767676] font-mono mt-1 mb-0 pl-[130px]" aria-hidden="true">
         <span className="flex items-center gap-1">
           <span className="inline-block w-2 h-2 rounded-full bg-[#666]" /> {t('dotPlot.cliffDistance')}
         </span>

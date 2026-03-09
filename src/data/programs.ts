@@ -181,12 +181,3 @@ export const PROGRAMS: ProgramConfig[] = [
     getLimit: (hh) => getFplAtPercent(185, hh),
   },
 ]
-
-/**
- * Convenience: look up a program config by key.
- */
-export function getProgram(key: ProgramKey): ProgramConfig {
-  const p = PROGRAMS.find((prog) => prog.key === key)
-  if (!p) throw new Error(`Unknown program: ${key}`)
-  return p
-}
