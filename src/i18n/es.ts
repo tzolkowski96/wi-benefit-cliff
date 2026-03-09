@@ -182,6 +182,16 @@ export const es: Record<I18nKey, string> = {
   'dotPlot.gap': 'Brecha a cubrir',
   'dotPlot.srCaption': 'Montos de aumento de equilibrio comparados con las distancias de límite para cada programa de beneficios',
 
+  // Excel Export
+  'export.button': 'Exportar Excel',
+  'export.sheetSummary': 'Resumen del Escenario',
+  'export.sheetPrograms': 'Estado de Programas',
+  'export.sheetBreakEven': 'An\u00e1lisis de Equilibrio',
+  'export.sheetSensitivity': 'Sensibilidad de Ingresos',
+  'export.sheetBenefitLevels': 'Niveles de Beneficios',
+  'export.sheetReference': 'Referencia de Programas',
+  'export.filename': 'analisis-limites-beneficios',
+
   // Disclaimer
   'disclaimer.text': 'Esta calculadora proporciona estimaciones basadas en los umbrales de elegibilidad de ingresos de 2025 publicados por la Divisi\u00f3n de Extensi\u00f3n de UW-Madison. Los valores estimados de beneficios son aproximaciones. La elegibilidad real depende de factores adicionales incluyendo activos, deducciones, composici\u00f3n del hogar y estatus migratorio. Esta herramienta no reemplaza las determinaciones oficiales de elegibilidad.',
   'disclaimer.accessWi': 'Solicite a trav\u00e9s de ACCESS Wisconsin para decisiones oficiales de beneficios.',

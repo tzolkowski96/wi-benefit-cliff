@@ -176,6 +176,16 @@ export const en = {
   'dotPlot.gap': 'Gap to cover',
   'dotPlot.srCaption': 'Break-even raise amounts compared to cliff distances for each benefit program',
 
+  // Excel Export
+  'export.button': 'Export Excel',
+  'export.sheetSummary': 'Scenario Summary',
+  'export.sheetPrograms': 'Program Status',
+  'export.sheetBreakEven': 'Break-Even Analysis',
+  'export.sheetSensitivity': 'Income Sensitivity',
+  'export.sheetBenefitLevels': 'Benefit Levels',
+  'export.sheetReference': 'Program Reference',
+  'export.filename': 'benefit-cliff-analysis',
+
   // Disclaimer
   'disclaimer.text': 'This calculator provides estimates based on 2025 income eligibility thresholds published by UW-Madison Division of Extension. Estimated benefit values are approximations. Actual eligibility depends on additional factors including assets, deductions, household composition, and immigration status. This tool does not replace official eligibility determinations.',
   'disclaimer.accessWi': 'Apply through ACCESS Wisconsin for official benefit decisions.',

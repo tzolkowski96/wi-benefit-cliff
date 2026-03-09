@@ -32,6 +32,11 @@ export default function App() {
 
   const newMonthlyIncome = formState.currentMonthlyIncome + formState.raiseMonthly
 
+  const handleExcelExport = async () => {
+    const { exportToExcel } = await import('./utils/excel.ts')
+    await exportToExcel(formState, analysis, t)
+  }
+
   return (
     <div className="min-h-screen bg-[#F8F6F3] text-[#1a1a1a]">
       {/* Skip to content link */}
@@ -91,6 +96,13 @@ export default function App() {
               >
                 <span aria-hidden="true">&#9113;</span> {t('print.button')}
               </button>
+              <button
+                type="button"
+                onClick={handleExcelExport}
+                className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono font-medium text-[#F8F6F3] border border-[#555] rounded-sm hover:border-[#E8A838] hover:text-[#E8A838] cursor-pointer"
+              >
+                <span aria-hidden="true">&#8615;</span> {t('export.button')}
+              </button>
             </div>
           </div>
           <p className="text-sm text-gray-400 mt-2 mb-0 leading-relaxed max-w-[600px]">
@@ -131,14 +143,23 @@ export default function App() {
           {t('disclaimer.contact')}
         </footer>
 
-        {/* Mobile print button */}
-        <button
-          type="button"
-          onClick={() => window.print()}
-          className="sm:hidden w-full mt-6 py-3 text-sm font-mono font-medium text-[#1a1a1a] border border-[#ccc] rounded-sm hover:border-[#1a1a1a] cursor-pointer"
-        >
-          <span aria-hidden="true">&#9113; </span>{t('print.button')}
-        </button>
+        {/* Mobile action buttons */}
+        <div className="sm:hidden flex gap-3 mt-6">
+          <button
+            type="button"
+            onClick={() => window.print()}
+            className="flex-1 py-3 text-sm font-mono font-medium text-[#1a1a1a] border border-[#ccc] rounded-sm hover:border-[#1a1a1a] cursor-pointer"
+          >
+            <span aria-hidden="true">&#9113; </span>{t('print.button')}
+          </button>
+          <button
+            type="button"
+            onClick={handleExcelExport}
+            className="flex-1 py-3 text-sm font-mono font-medium text-[#1a1a1a] border border-[#ccc] rounded-sm hover:border-[#1a1a1a] cursor-pointer"
+          >
+            <span aria-hidden="true">&#8615; </span>{t('export.button')}
+          </button>
+        </div>
       </main>
 
       {/* Print-only summary (hidden on screen, shown when printing) */}
