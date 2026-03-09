@@ -34,7 +34,7 @@ export default function App() {
 
   const handleExcelExport = async () => {
     const { exportToExcel } = await import('./utils/excel.ts')
-    await exportToExcel(formState, analysis, t)
+    await exportToExcel(formState, analysis, t, lang)
   }
 
   return (
@@ -61,7 +61,7 @@ export default function App() {
             </div>
             <div className="flex items-center gap-3 mt-1">
               {/* Language toggle */}
-              <div className="flex text-xs font-mono font-medium" role="radiogroup" aria-label="Language">
+              <div className="flex text-xs font-mono font-medium" role="radiogroup" aria-label={t('a11y.language')}>
                 <button
                   type="button"
                   role="radio"
@@ -136,7 +136,7 @@ export default function App() {
 
         {/* Disclaimer */}
         <footer className="text-[11px] text-[#999] leading-relaxed px-1 mt-4">
-          <strong>Disclaimer:</strong> {t('disclaimer.text')}{' '}
+          <strong>{t('label.disclaimer')}:</strong> {t('disclaimer.text')}{' '}
           <a href="https://access.wisconsin.gov" target="_blank" rel="noopener noreferrer" className="text-[#666] underline">
             {t('disclaimer.accessWi')}
           </a>{' '}

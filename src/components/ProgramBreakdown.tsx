@@ -99,10 +99,10 @@ export default function ProgramBreakdown({ programs, state, update }: Props) {
                   <div className="text-[11px] text-[#888]">
                     {prog.key === 'wisconsin_shares' && prog.entryLimit && prog.exitLimit ? (
                       <>
-                        {t('program.entry')}: {formatMoney(prog.entryLimit)}/mo &middot; {t('program.continuation')}: {formatMoney(prog.exitLimit)}/mo
+                        {t('program.entry')}: {formatMoney(prog.entryLimit)}{t('unit.perMonth')} &middot; {t('program.continuation')}: {formatMoney(prog.exitLimit)}{t('unit.perMonth')}
                       </>
                     ) : (
-                      <>{t('program.cutoff')}: {formatMoney(prog.limit)}/mo ({prog.basis})</>
+                      <>{t('program.cutoff')}: {formatMoney(prog.limit)}{t('unit.perMonth')} ({prog.basis})</>
                     )}
                   </div>
                 </div>
@@ -118,7 +118,7 @@ export default function ProgramBreakdown({ programs, state, update }: Props) {
                   {prog.calculable ? (
                     prog.currentMonthlyValue !== null ? (
                       <>
-                        {formatMoney(prog.currentMonthlyValue)}/mo &rarr; {formatMoney(prog.newMonthlyValue ?? 0)}/mo
+                        {formatMoney(prog.currentMonthlyValue)}{t('unit.perMonth')} &rarr; {formatMoney(prog.newMonthlyValue ?? 0)}{t('unit.perMonth')}
                         {prog.monthlyLoss !== null && prog.monthlyLoss > 0 && (
                           <span className="text-[#9B2226] font-semibold ml-1">
                             (-{formatMoney(prog.monthlyLoss)})
@@ -150,7 +150,7 @@ export default function ProgramBreakdown({ programs, state, update }: Props) {
                               update({ [customKey]: val === '' ? null : Math.max(0, Math.round(Number(val))) })
                             }}
                             className="w-[72px] py-0.5 px-1.5 border border-[#ddd] rounded-sm text-xs font-mono outline-none focus:border-[#1a1a1a] focus:ring-1 focus:ring-[#1a1a1a]"
-                            aria-label={`Custom monthly value for ${prog.name}`}
+                            aria-label={t('a11y.customValueFor').replace('{name}', prog.name)}
                           />
                         </div>
                       )}

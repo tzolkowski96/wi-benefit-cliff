@@ -16,14 +16,6 @@ import { getSmi60, getSmi85 } from './smi.ts'
 // FoodShare constants (FFY 2025)
 // ---------------------------------------------------------------------------
 
-/** Standard deductions by household size. */
-export const FOODSHARE_STANDARD_DEDUCTION: Record<string, number> = {
-  '1-3': 198,
-  '4': 213,
-  '5': 249,
-  '6+': 286,
-}
-
 export function getFoodShareStandardDeduction(householdSize: number): number {
   if (householdSize <= 3) return 198
   if (householdSize === 4) return 213

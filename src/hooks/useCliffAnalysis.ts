@@ -383,7 +383,7 @@ function analyzeEligibilityOnly(
 // Helper: look up user-entered custom value for an eligibility-only program
 // ---------------------------------------------------------------------------
 
-function getCustomValue(programKey: string, customValues?: CustomBenefitValues): number | null {
+export function getCustomValue(programKey: string, customValues?: CustomBenefitValues): number | null {
   if (!customValues) return null
   switch (programKey) {
     case 'badgercare_adult': return customValues.customBadgerCareAdultValue

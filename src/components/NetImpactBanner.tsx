@@ -27,7 +27,7 @@ export default function NetImpactBanner({ impact }: Props) {
               {t('result.raise')}
             </dt>
             <dd className="text-xl font-bold font-mono text-[#2D6A4F] m-0">
-              +{formatMoney(raise)}<span className="text-sm font-medium">/mo</span>
+              +{formatMoney(raise)}<span className="text-sm font-medium">{t('unit.perMonth')}</span>
             </dd>
           </div>
           <div>
@@ -36,7 +36,7 @@ export default function NetImpactBanner({ impact }: Props) {
             </dt>
             <dd className={`text-xl font-bold font-mono m-0 ${totalCalculableLoss > 0 ? 'text-[#9B2226]' : 'text-[#666]'}`}>
               {totalCalculableLoss > 0 ? `-${formatMoney(totalCalculableLoss)}` : formatMoney(0)}
-              <span className="text-sm font-medium">/mo</span>
+              <span className="text-sm font-medium">{t('unit.perMonth')}</span>
             </dd>
           </div>
           <div>
@@ -44,7 +44,7 @@ export default function NetImpactBanner({ impact }: Props) {
               {t('result.netImpact')}
             </dt>
             <dd className={`text-2xl font-bold font-mono m-0 ${isPositive ? 'text-[#2D6A4F]' : 'text-[#9B2226]'}`}>
-              {formatMoneyWithSign(netMonthly)}<span className="text-sm font-medium">/mo</span>
+              {formatMoneyWithSign(netMonthly)}<span className="text-sm font-medium">{t('unit.perMonth')}</span>
             </dd>
           </div>
         </dl>
@@ -53,7 +53,7 @@ export default function NetImpactBanner({ impact }: Props) {
         <div className={`mt-3 pt-3 border-t text-sm font-mono ${
           isPositive ? 'border-[#2D6A4F]/20 text-[#2D6A4F]' : 'border-[#9B2226]/20 text-[#9B2226]'
         }`}>
-          <strong>{formatMoneyWithSign(netAnnual)}/year</strong> {t('result.annualCalcImpact')}
+          <strong>{formatMoneyWithSign(netAnnual)}{t('unit.perYear')}</strong> {t('result.annualCalcImpact')}
           {customLosses > 0 && <span className="text-[11px] opacity-70"> ({t('result.includesUserEntered').replace('{amount}', formatMoney(customLosses))})</span>}
         </div>
       </div>

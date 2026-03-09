@@ -107,8 +107,8 @@ export default function WaterfallChart({ impact }: Props) {
         <caption>{t('waterfall.srCaption')}</caption>
         <thead>
           <tr>
-            <th scope="col">Item</th>
-            <th scope="col">Amount</th>
+            <th scope="col">{t('label.item')}</th>
+            <th scope="col">{t('label.amount')}</th>
           </tr>
         </thead>
         <tbody>

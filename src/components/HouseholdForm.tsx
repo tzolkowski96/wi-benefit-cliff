@@ -139,8 +139,8 @@ export default function HouseholdForm({ state, update }: Props) {
           />
           <div className="text-xs text-[#888] mt-0.5 font-mono">
             {incomeType === 'hourly'
-              ? `\u2248 ${formatMoney(hourlyToMonthly(hourlyWage))}/mo`
-              : `\u2248 $${monthlyToHourly(monthlyIncome).toFixed(2)}/hr`}
+              ? `\u2248 ${formatMoney(hourlyToMonthly(hourlyWage))}${t('unit.perMonth')}`
+              : `\u2248 $${monthlyToHourly(monthlyIncome).toFixed(2)}${t('unit.perHour')}`}
           </div>
         </div>
 
@@ -172,8 +172,8 @@ export default function HouseholdForm({ state, update }: Props) {
           />
           <div className="text-xs text-[#888] mt-0.5 font-mono">
             {incomeType === 'hourly'
-              ? `\u2248 ${formatMoney(hourlyToMonthly(raiseAmount))}/mo`
-              : `\u2248 $${monthlyToHourly(raiseAmount).toFixed(2)}/hr`}
+              ? `\u2248 ${formatMoney(hourlyToMonthly(raiseAmount))}${t('unit.perMonth')}`
+              : `\u2248 $${monthlyToHourly(raiseAmount).toFixed(2)}${t('unit.perHour')}`}
           </div>
         </div>
       </div>

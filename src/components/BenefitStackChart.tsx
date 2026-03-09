@@ -134,8 +134,8 @@ export default function BenefitStackChart({ state }: Props) {
             <Tooltip
               contentStyle={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, border: '1px solid #ddd', borderRadius: 2 }}
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              formatter={(value: any, name: any) => [`${formatMoney(Number(value))}/mo`, name]}
-              labelFormatter={(label: any) => `${t('stack.xAxis')}: ${formatMoney(Number(label))}/mo`}
+              formatter={(value: any, name: any) => [`${formatMoney(Number(value))}${t('unit.perMonth')}`, name]}
+              labelFormatter={(label: any) => `${t('stack.xAxis')}: ${formatMoney(Number(label))}${t('unit.perMonth')}`}
             />
 
             <Legend
@@ -152,16 +152,16 @@ export default function BenefitStackChart({ state }: Props) {
         <thead>
           <tr>
             <th scope="col">{t('stack.xAxis')}</th>
-            <th scope="col">FoodShare</th>
+            <th scope="col">{t('print.foodshareLoss')}</th>
             {state.numberOfChildren > 0 && <th scope="col">{t('print.schoolMealLoss')}</th>}
-            <th scope="col">WHEAP</th>
-            <th scope="col">Total</th>
+            <th scope="col">{t('print.wheapLoss')}</th>
+            <th scope="col">{t('label.total')}</th>
           </tr>
         </thead>
         <tbody>
           {stackData.filter((_, i) => i % 10 === 0).map((point, i) => (
             <tr key={i}>
-              <td>{formatMoney(point.monthlyIncome)}/mo</td>
+              <td>{formatMoney(point.monthlyIncome)}{t('unit.perMonth')}</td>
               <td>{formatMoney(point.foodshare)}</td>
               {state.numberOfChildren > 0 && <td>{formatMoney(point.schoolMeals)}</td>}
               <td>{formatMoney(point.wheap)}</td>

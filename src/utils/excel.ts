@@ -9,12 +9,19 @@
 import type { FormState, CliffAnalysis, ProgramResult } from '../types/index.ts'
 import type { CustomBenefitValues } from '../hooks/useCliffAnalysis.ts'
 import type { I18nKey } from '../i18n/en.ts'
+import type { Lang } from '../hooks/useI18n.ts'
 import { computeBreakEvenData } from './breakeven.ts'
 import { computeRaiseSweep, computeBenefitStack } from './sweep.ts'
 import { monthlyToHourly } from './wage.ts'
 import { PROGRAMS, FOODSHARE_MAX_ALLOTMENT, FREE_MEAL_VALUE_PER_CHILD, REDUCED_MEAL_VALUE_PER_CHILD, WHEAP_MONTHLY_VALUE, getFoodShareStandardDeduction } from '../data/programs.ts'
 import { FPL_100 } from '../data/fpl.ts'
 import { SMI_60, SMI_85 } from '../data/smi.ts'
+
+// ---------------------------------------------------------------------------
+// Date locale mapping
+// ---------------------------------------------------------------------------
+
+const DATE_LOCALE: Record<string, string> = { en: 'en-US', es: 'es-US' }
 
 // ---------------------------------------------------------------------------
 // Public API
@@ -24,12 +31,13 @@ export async function exportToExcel(
   state: FormState,
   analysis: CliffAnalysis,
   t: (key: I18nKey) => string,
+  lang: Lang = 'en',
 ): Promise<void> {
   const XLSX = await import('xlsx')
 
   const wb = XLSX.utils.book_new()
 
-  addSummarySheet(XLSX, wb, state, analysis, t)
+  addSummarySheet(XLSX, wb, state, analysis, t, lang)
   addProgramStatusSheet(XLSX, wb, analysis.programs, t)
   addBreakEvenSheet(XLSX, wb, state, analysis, t)
   addSensitivitySheet(XLSX, wb, state, analysis, t)
@@ -58,6 +66,7 @@ function addSummarySheet(
   state: FormState,
   analysis: CliffAnalysis,
   t: (key: I18nKey) => string,
+  lang: Lang,
 ) {
   const { calculableImpact, safeRaiseMax } = analysis
   const rows = [
@@ -71,9 +80,9 @@ function addSummarySheet(
     [t('form.childcare'), state.monthlyChildcareCosts],
     ['', ''],
     [t('print.netImpact'), ''],
-    [t('result.netImpact') + ' (/mo)', calculableImpact.netMonthly],
-    [t('result.netAnnual') + ' (/yr)', calculableImpact.netAnnual],
-    [t('result.raise') + ' (/mo)', calculableImpact.raise],
+    [`${t('result.netImpact')} (${t('unit.perMonth')})`, calculableImpact.netMonthly],
+    [`${t('result.netAnnual')} (${t('unit.perYear')})`, calculableImpact.netAnnual],
+    [`${t('result.raise')} (${t('unit.perMonth')})`, calculableImpact.raise],
     [t('print.foodshareLoss'), -calculableImpact.foodshareLoss],
     [t('print.schoolMealLoss'), -calculableImpact.schoolMealLoss],
     [t('print.wheapLoss'), -calculableImpact.wheapLoss],
@@ -85,8 +94,8 @@ function addSummarySheet(
       ? [[t('result.notIncluded'), calculableImpact.uncalculatedLosses.join(', ')]]
       : []),
     ['', ''],
-    [t('print.generated'), new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })],
-    ['Disclaimer', t('disclaimer.text')],
+    [t('print.generated'), new Date().toLocaleDateString(DATE_LOCALE[lang] ?? 'en-US', { year: 'numeric', month: 'long', day: 'numeric' })],
+    [t('label.disclaimer'), t('disclaimer.text')],
   ]
 
   const ws = XLSX.utils.aoa_to_sheet(rows)
@@ -111,15 +120,15 @@ function addProgramStatusSheet(
   const header = [
     t('print.program'),
     t('print.type'),
-    'Basis',
+    t('excel.basis'),
     t('print.threshold'),
-    'Eligible Now',
-    'Eligible After',
+    t('excel.eligibleNow'),
+    t('excel.eligibleAfter'),
     t('print.status'),
-    'Distance to Cliff',
-    'Current Value (/mo)',
-    'New Value (/mo)',
-    'Monthly Loss',
+    t('excel.distanceToCliff'),
+    t('excel.currentValue'),
+    t('excel.newValue'),
+    t('excel.monthlyLoss'),
   ]
 
   const rows = programs.map((p) => [
@@ -127,8 +136,8 @@ function addProgramStatusSheet(
     p.cliffType.replace('_', ' '),
     p.basis,
     p.limit,
-    p.currentlyEligible ? 'Yes' : 'No',
-    p.eligibleAfterRaise ? 'Yes' : 'No',
+    p.currentlyEligible ? t('label.yes') : t('label.no'),
+    p.eligibleAfterRaise ? t('label.yes') : t('label.no'),
     getStatusText(p, t),
     p.currentlyEligible ? p.distanceToCliff : '',
     p.currentMonthlyValue ?? '',
@@ -178,9 +187,9 @@ function addBreakEvenSheet(
 
   const header = [
     t('print.program'),
-    'Cliff Distance (/mo)',
-    'Break-Even Raise (/mo)',
-    'Break-Even Raise (/hr)',
+    t('excel.cliffDistanceCol'),
+    t('excel.breakEvenMo'),
+    t('excel.breakEvenHr'),
   ]
 
   const dataRows = rows.map((r) => [
@@ -237,10 +246,10 @@ function addSensitivitySheet(
   )
 
   const header = [
-    'Raise ($/mo)',
-    'Raise ($/hr)',
-    'Benefit Loss ($/mo)',
-    'Net Impact ($/mo)',
+    t('excel.raisePerMo'),
+    t('excel.raisePerHr'),
+    t('excel.benefitLossCol'),
+    t('excel.netImpactCol'),
   ]
 
   const dataRows = points.map((p) => [
@@ -275,11 +284,11 @@ function addBenefitLevelsSheet(
   )
 
   const header = [
-    'Monthly Income',
-    'FoodShare',
-    'School Meals',
-    'WHEAP',
-    'Total Benefits',
+    t('excel.monthlyIncome'),
+    t('print.foodshareLoss'),
+    t('excel.schoolMeals'),
+    t('print.wheapLoss'),
+    t('excel.totalBenefits'),
   ]
 
   const dataRows = points.map((p) => [
@@ -307,10 +316,11 @@ function addReferenceSheet(
   t: (key: I18nKey) => string,
 ) {
   const rows: (string | number)[][] = []
+  const hhHeaders = ['HH 1', 'HH 2', 'HH 3', 'HH 4', 'HH 5', 'HH 6', 'HH 7', 'HH 8']
 
   // Section: Income thresholds by household size
-  rows.push(['2025 Monthly Income Thresholds by Household Size', '', '', '', '', '', '', '', '', ''])
-  rows.push(['Program', 'Basis', 'HH 1', 'HH 2', 'HH 3', 'HH 4', 'HH 5', 'HH 6', 'HH 7', 'HH 8'])
+  rows.push([t('excel.thresholdTitle'), '', '', '', '', '', '', '', '', ''])
+  rows.push([t('print.program'), t('excel.basis'), ...hhHeaders])
 
   for (const prog of PROGRAMS) {
     const row: (string | number)[] = [prog.name, prog.basis]
@@ -325,7 +335,7 @@ function addReferenceSheet(
 
     // Wisconsin Shares also has entry threshold
     if (prog.key === 'wisconsin_shares' && prog.getEntryLimit) {
-      const entryRow: (string | number)[] = [prog.name + ' (Entry)', '200% FPL']
+      const entryRow: (string | number)[] = [`${prog.name} (${t('program.entry')})`, '200% FPL']
       for (let hh = 1; hh <= 8; hh++) {
         if (hh < prog.minHouseholdSize) {
           entryRow.push('')
@@ -340,17 +350,17 @@ function addReferenceSheet(
   rows.push([])
 
   // Section: FPL 100%
-  rows.push(['Federal Poverty Level (100% FPL) - Monthly'])
+  rows.push([t('excel.fplTitle')])
   const fplRow: (string | number)[] = ['100% FPL', '']
   for (let hh = 1; hh <= 8; hh++) fplRow.push(FPL_100[hh])
-  rows.push(['', '', 'HH 1', 'HH 2', 'HH 3', 'HH 4', 'HH 5', 'HH 6', 'HH 7', 'HH 8'])
+  rows.push(['', '', ...hhHeaders])
   rows.push(fplRow)
 
   rows.push([])
 
   // Section: SMI
-  rows.push(['State Median Income (SMI) - Monthly'])
-  rows.push(['', '', 'HH 1', 'HH 2', 'HH 3', 'HH 4', 'HH 5', 'HH 6', 'HH 7', 'HH 8'])
+  rows.push([t('excel.smiTitle')])
+  rows.push(['', '', ...hhHeaders])
   const smi60Row: (string | number)[] = ['60% SMI (WHEAP)', '']
   for (let hh = 1; hh <= 8; hh++) smi60Row.push(SMI_60[hh])
   rows.push(smi60Row)
@@ -361,33 +371,30 @@ function addReferenceSheet(
   rows.push([])
 
   // Section: FoodShare constants
-  rows.push(['FoodShare Constants (FFY 2025)'])
-  rows.push(['Max Allotments', '', 'HH 1', 'HH 2', 'HH 3', 'HH 4', 'HH 5', 'HH 6', 'HH 7', 'HH 8'])
-  const allotRow: (string | number)[] = ['Max Allotment', '']
+  rows.push([t('excel.foodshareTitle')])
+  rows.push([t('excel.maxAllotments'), '', ...hhHeaders])
+  const allotRow: (string | number)[] = [t('excel.maxAllotment'), '']
   for (let hh = 1; hh <= 8; hh++) allotRow.push(FOODSHARE_MAX_ALLOTMENT[hh])
   rows.push(allotRow)
 
-  const dedRow: (string | number)[] = ['Standard Deduction', '']
+  const dedRow: (string | number)[] = [t('excel.standardDeduction'), '']
   for (let hh = 1; hh <= 8; hh++) dedRow.push(getFoodShareStandardDeduction(hh))
   rows.push(dedRow)
 
   rows.push([])
 
   // Section: School meal & WHEAP values
-  rows.push(['Benefit Value Constants'])
-  rows.push(['Free School Meals (per child/mo)', FREE_MEAL_VALUE_PER_CHILD])
-  rows.push(['Reduced School Meals (per child/mo)', REDUCED_MEAL_VALUE_PER_CHILD])
-  rows.push(['WHEAP (monthly equivalent)', WHEAP_MONTHLY_VALUE])
+  rows.push([t('excel.benefitValueConstants')])
+  rows.push([t('excel.freeMealsLabel'), FREE_MEAL_VALUE_PER_CHILD])
+  rows.push([t('excel.reducedMealsLabel'), REDUCED_MEAL_VALUE_PER_CHILD])
+  rows.push([t('excel.wheapLabel'), WHEAP_MONTHLY_VALUE])
 
   rows.push([])
-  rows.push(['Sources:'])
+  rows.push([t('excel.sources')])
   rows.push(['UW-Madison Division of Extension, "Benefit Cliffs for Wisconsin Public Programs" (2025)'])
   rows.push(['Wisconsin DHS, DMS Operations Memo 2024-18 (FoodShare FFY 2025)'])
   rows.push(['USDA FNS, FR 07/24/2025 (School meal reimbursement rates SY 2025-26)'])
   rows.push(['Wisconsin DCF (Wisconsin Shares entry/exit thresholds)'])
-
-  // Suppress unused-var warning: t is available for future i18n of reference data
-  void t
 
   const ws = XLSX.utils.aoa_to_sheet(rows)
   ws['!cols'] = [

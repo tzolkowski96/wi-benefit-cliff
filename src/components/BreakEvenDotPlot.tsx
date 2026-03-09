@@ -104,7 +104,7 @@ export default function BreakEvenDotPlot({ programs, state }: Props) {
                 const d = props.payload as typeof chartData[0]
                 if (name === 'base') return null
                 return [
-                  `${t('dotPlot.cliffDistance')}: +${formatMoney(d.cliffDistance)}/mo | ${t('dotPlot.breakEven')}: +${formatMoney(d.breakEvenMonthly)}/mo`,
+                  `${t('dotPlot.cliffDistance')}: +${formatMoney(d.cliffDistance)}${t('unit.perMonth')} | ${t('dotPlot.breakEven')}: +${formatMoney(d.breakEvenMonthly)}${t('unit.perMonth')}`,
                   d.name,
                 ]
               }}
@@ -150,8 +150,8 @@ export default function BreakEvenDotPlot({ programs, state }: Props) {
           {rows.map((row, i) => (
             <tr key={i}>
               <td>{row.name}</td>
-              <td>+{formatMoney(row.cliffDistance)}/mo</td>
-              <td>+{formatMoney(row.breakEvenMonthly)}/mo</td>
+              <td>+{formatMoney(row.cliffDistance)}{t('unit.perMonth')}</td>
+              <td>+{formatMoney(row.breakEvenMonthly)}{t('unit.perMonth')}</td>
             </tr>
           ))}
         </tbody>

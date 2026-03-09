@@ -58,16 +58,16 @@ export default function BreakEvenCalculator({ programs, state }: Props) {
               <div className="min-w-0">
                 <span className="text-[13px] font-medium">{row.name}</span>
                 <span className="text-[11px] text-[#999] ml-2">
-                  {t('breakEven.cliffAt')} +{formatMoney(row.cliffDistance)}/mo
+                  {t('breakEven.cliffAt')} +{formatMoney(row.cliffDistance)}{t('unit.perMonth')}
                 </span>
               </div>
               <div className={`font-mono text-[13px] font-semibold whitespace-nowrap ${getRaiseColor(row.breakEvenMonthly)}`}>
-                +{formatMoney(row.breakEvenMonthly)}/mo
+                +{formatMoney(row.breakEvenMonthly)}{t('unit.perMonth')}
                 <span className="text-[11px] font-normal text-[#999] ml-1.5">
-                  (+${formatHourly(row.breakEvenMonthly)}/hr)
+                  (+${formatHourly(row.breakEvenMonthly)}{t('unit.perHour')})
                 </span>
                 {cleared && (
-                  <span className="text-[#2D6A4F] ml-1" aria-label="current raise exceeds break-even">&#10003;</span>
+                  <span className="text-[#2D6A4F] ml-1" aria-label={t('a11y.breakEvenExceeded')}>&#10003;</span>
                 )}
               </div>
             </div>
@@ -83,10 +83,10 @@ export default function BreakEvenCalculator({ programs, state }: Props) {
             <>
               {t('breakEven.raiseAtLeast')}{' '}
               <strong className={`font-mono ${getRaiseColor(clearAllRaise)}`}>
-                +{formatMoney(clearAllRaise)}/mo
+                +{formatMoney(clearAllRaise)}{t('unit.perMonth')}
               </strong>
               <span className="text-[11px] text-[#999] ml-1">
-                (+${formatHourly(clearAllRaise)}/hr)
+                (+${formatHourly(clearAllRaise)}{t('unit.perHour')})
               </span>
               {' '}{t('breakEven.offsetAll')}
             </>
@@ -94,10 +94,10 @@ export default function BreakEvenCalculator({ programs, state }: Props) {
             <>
               {t('breakEven.needAtLeast')}{' '}
               <strong className={`font-mono ${getRaiseColor(clearAllRaise)}`}>
-                +{formatMoney(clearAllRaise)}/mo
+                +{formatMoney(clearAllRaise)}{t('unit.perMonth')}
               </strong>
               <span className="text-[11px] text-[#999] ml-1">
-                (+${formatHourly(clearAllRaise)}/hr)
+                (+${formatHourly(clearAllRaise)}{t('unit.perHour')})
               </span>
               {' '}{t('breakEven.toBreakEven')}
             </>

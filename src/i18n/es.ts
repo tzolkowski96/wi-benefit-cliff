@@ -182,6 +182,31 @@ export const es: Record<I18nKey, string> = {
   'dotPlot.gap': 'Brecha a cubrir',
   'dotPlot.srCaption': 'Montos de aumento de equilibrio comparados con las distancias de límite para cada programa de beneficios',
 
+  // Unit suffixes
+  'unit.perMonth': '/mes',
+  'unit.perYear': '/a\u00f1o',
+  'unit.perHour': '/hr',
+
+  // Labels
+  'label.disclaimer': 'Descargo',
+  'label.yes': 'S\u00ed',
+  'label.no': 'No',
+  'label.total': 'Total',
+  'label.item': 'Elemento',
+  'label.amount': 'Monto',
+
+  // Accessibility (additional)
+  'a11y.language': 'Idioma',
+  'a11y.customValueFor': 'Valor mensual personalizado para {name}',
+  'a11y.breakEvenExceeded': 'El aumento actual excede el punto de equilibrio',
+
+  // Warning (plural-safe)
+  'warning.benefitLostSingular': '1 beneficio perdido,',
+  'warning.benefitsLostPlural': '{count} beneficios perdidos,',
+
+  // Chart SR
+  'chart.tierTo': 'a',
+
   // Excel Export
   'export.button': 'Exportar Excel',
   'export.sheetSummary': 'Resumen del Escenario',
@@ -191,6 +216,37 @@ export const es: Record<I18nKey, string> = {
   'export.sheetBenefitLevels': 'Niveles de Beneficios',
   'export.sheetReference': 'Referencia de Programas',
   'export.filename': 'analisis-limites-beneficios',
+
+  // Excel column headers
+  'excel.basis': 'Base',
+  'excel.eligibleNow': 'Elegible ahora',
+  'excel.eligibleAfter': 'Elegible despu\u00e9s',
+  'excel.distanceToCliff': 'Distancia al l\u00edmite',
+  'excel.currentValue': 'Valor actual (/mes)',
+  'excel.newValue': 'Nuevo valor (/mes)',
+  'excel.monthlyLoss': 'P\u00e9rdida mensual',
+  'excel.cliffDistanceCol': 'Distancia al l\u00edmite (/mes)',
+  'excel.breakEvenMo': 'Aumento de equilibrio (/mes)',
+  'excel.breakEvenHr': 'Aumento de equilibrio (/hr)',
+  'excel.raisePerMo': 'Aumento ($/mes)',
+  'excel.raisePerHr': 'Aumento ($/hr)',
+  'excel.benefitLossCol': 'P\u00e9rdida de beneficios ($/mes)',
+  'excel.netImpactCol': 'Impacto neto ($/mes)',
+  'excel.monthlyIncome': 'Ingreso mensual',
+  'excel.schoolMeals': 'Comidas escolares',
+  'excel.totalBenefits': 'Beneficios totales',
+  'excel.thresholdTitle': 'Umbrales de Ingresos Mensuales 2025 por Tama\u00f1o del Hogar',
+  'excel.fplTitle': 'Nivel Federal de Pobreza (100% FPL) - Mensual',
+  'excel.smiTitle': 'Ingreso Mediano Estatal (SMI) - Mensual',
+  'excel.foodshareTitle': 'Constantes de FoodShare (FFY 2025)',
+  'excel.maxAllotments': 'Asignaciones m\u00e1ximas',
+  'excel.maxAllotment': 'Asignaci\u00f3n m\u00e1xima',
+  'excel.standardDeduction': 'Deducci\u00f3n est\u00e1ndar',
+  'excel.benefitValueConstants': 'Constantes de Valor de Beneficios',
+  'excel.freeMealsLabel': 'Comidas escolares gratuitas (por ni\u00f1o/mes)',
+  'excel.reducedMealsLabel': 'Comidas escolares reducidas (por ni\u00f1o/mes)',
+  'excel.wheapLabel': 'WHEAP (equivalente mensual)',
+  'excel.sources': 'Fuentes:',
 
   // Disclaimer
   'disclaimer.text': 'Esta calculadora proporciona estimaciones basadas en los umbrales de elegibilidad de ingresos de 2025 publicados por la Divisi\u00f3n de Extensi\u00f3n de UW-Madison. Los valores estimados de beneficios son aproximaciones. La elegibilidad real depende de factores adicionales incluyendo activos, deducciones, composici\u00f3n del hogar y estatus migratorio. Esta herramienta no reemplaza las determinaciones oficiales de elegibilidad.',
@@ -202,4 +258,6 @@ export const es: Record<I18nKey, string> = {
   'a11y.currentIncome': 'Ingreso actual',
   'a11y.afterRaise': 'Despu\u00e9s del aumento',
   'a11y.eligibilityCutoff': 'L\u00edmite de elegibilidad',
+
+  // (a11y.language, a11y.customValueFor, a11y.breakEvenExceeded defined above)
 }

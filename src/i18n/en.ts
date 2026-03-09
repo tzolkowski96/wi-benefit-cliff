@@ -176,6 +176,31 @@ export const en = {
   'dotPlot.gap': 'Gap to cover',
   'dotPlot.srCaption': 'Break-even raise amounts compared to cliff distances for each benefit program',
 
+  // Unit suffixes
+  'unit.perMonth': '/mo',
+  'unit.perYear': '/yr',
+  'unit.perHour': '/hr',
+
+  // Labels
+  'label.disclaimer': 'Disclaimer',
+  'label.yes': 'Yes',
+  'label.no': 'No',
+  'label.total': 'Total',
+  'label.item': 'Item',
+  'label.amount': 'Amount',
+
+  // Accessibility (additional)
+  'a11y.language': 'Language',
+  'a11y.customValueFor': 'Custom monthly value for {name}',
+  'a11y.breakEvenExceeded': 'Current raise exceeds break-even',
+
+  // Warning (plural-safe)
+  'warning.benefitLostSingular': '1 benefit lost,',
+  'warning.benefitsLostPlural': '{count} benefits lost,',
+
+  // Chart SR
+  'chart.tierTo': 'to',
+
   // Excel Export
   'export.button': 'Export Excel',
   'export.sheetSummary': 'Scenario Summary',
@@ -185,6 +210,37 @@ export const en = {
   'export.sheetBenefitLevels': 'Benefit Levels',
   'export.sheetReference': 'Program Reference',
   'export.filename': 'benefit-cliff-analysis',
+
+  // Excel column headers
+  'excel.basis': 'Basis',
+  'excel.eligibleNow': 'Eligible Now',
+  'excel.eligibleAfter': 'Eligible After',
+  'excel.distanceToCliff': 'Distance to Cliff',
+  'excel.currentValue': 'Current Value (/mo)',
+  'excel.newValue': 'New Value (/mo)',
+  'excel.monthlyLoss': 'Monthly Loss',
+  'excel.cliffDistanceCol': 'Cliff Distance (/mo)',
+  'excel.breakEvenMo': 'Break-Even Raise (/mo)',
+  'excel.breakEvenHr': 'Break-Even Raise (/hr)',
+  'excel.raisePerMo': 'Raise ($/mo)',
+  'excel.raisePerHr': 'Raise ($/hr)',
+  'excel.benefitLossCol': 'Benefit Loss ($/mo)',
+  'excel.netImpactCol': 'Net Impact ($/mo)',
+  'excel.monthlyIncome': 'Monthly Income',
+  'excel.schoolMeals': 'School Meals',
+  'excel.totalBenefits': 'Total Benefits',
+  'excel.thresholdTitle': '2025 Monthly Income Thresholds by Household Size',
+  'excel.fplTitle': 'Federal Poverty Level (100% FPL) - Monthly',
+  'excel.smiTitle': 'State Median Income (SMI) - Monthly',
+  'excel.foodshareTitle': 'FoodShare Constants (FFY 2025)',
+  'excel.maxAllotments': 'Max Allotments',
+  'excel.maxAllotment': 'Max Allotment',
+  'excel.standardDeduction': 'Standard Deduction',
+  'excel.benefitValueConstants': 'Benefit Value Constants',
+  'excel.freeMealsLabel': 'Free School Meals (per child/mo)',
+  'excel.reducedMealsLabel': 'Reduced School Meals (per child/mo)',
+  'excel.wheapLabel': 'WHEAP (monthly equivalent)',
+  'excel.sources': 'Sources:',
 
   // Disclaimer
   'disclaimer.text': 'This calculator provides estimates based on 2025 income eligibility thresholds published by UW-Madison Division of Extension. Estimated benefit values are approximations. Actual eligibility depends on additional factors including assets, deductions, household composition, and immigration status. This tool does not replace official eligibility determinations.',

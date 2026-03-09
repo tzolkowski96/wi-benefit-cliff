@@ -9,8 +9,10 @@ interface Props {
   analysis: CliffAnalysis
 }
 
+const DATE_LOCALE: Record<string, string> = { en: 'en-US', es: 'es-US' }
+
 export default function PrintSummary({ state, analysis }: Props) {
-  const { t } = useI18n()
+  const { t, lang } = useI18n()
   const { programs, calculableImpact, safeRaiseMax } = analysis
   const { netMonthly, netAnnual, uncalculatedLosses, foodshareLoss, schoolMealLoss, wheapLoss, customLosses } = calculableImpact
 
@@ -18,7 +20,7 @@ export default function PrintSummary({ state, analysis }: Props) {
     <div className="print-summary hidden print:block print:p-8 print:text-[12px] print:text-black print:bg-white">
       <h1 className="text-xl font-bold mb-1">{t('print.title')}</h1>
       <p className="text-[11px] text-[#666] mb-4">
-        {t('print.generated')} {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+        {t('print.generated')} {new Date().toLocaleDateString(DATE_LOCALE[lang] ?? 'en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
       </p>
 
       {/* Household details */}
@@ -39,10 +41,10 @@ export default function PrintSummary({ state, analysis }: Props) {
       <div className={`mb-4 p-3 border-2 ${netMonthly >= 0 ? 'border-[#2D6A4F]' : 'border-[#9B2226]'}`}>
         <h2 className="text-xs font-bold uppercase tracking-wider mb-2">{t('print.netImpact')}</h2>
         <div className="text-lg font-bold font-mono">
-          {formatMoneyWithSign(netMonthly)}/mo ({formatMoneyWithSign(netAnnual)}/year)
+          {formatMoneyWithSign(netMonthly)}{t('unit.perMonth')} ({formatMoneyWithSign(netAnnual)}{t('unit.perYear')})
         </div>
         <div className="text-[11px] mt-1 text-[#666]">
-          {t('result.raise')}: +{formatMoney(calculableImpact.raise)}/mo
+          {t('result.raise')}: +{formatMoney(calculableImpact.raise)}{t('unit.perMonth')}
           {foodshareLoss > 0 && <> | {t('print.foodshareLoss')}: -{formatMoney(foodshareLoss)}</>}
           {schoolMealLoss > 0 && <> | {t('print.schoolMealLoss')}: -{formatMoney(schoolMealLoss)}</>}
           {wheapLoss > 0 && <> | {t('print.wheapLoss')}: -{formatMoney(wheapLoss)}</>}
@@ -74,7 +76,7 @@ export default function PrintSummary({ state, analysis }: Props) {
               <td className="py-1.5 font-mono text-right">
                 {prog.calculable && prog.monthlyLoss !== null
                   ? prog.monthlyLoss > 0
-                    ? `-${formatMoney(prog.monthlyLoss)}/mo`
+                    ? `-${formatMoney(prog.monthlyLoss)}${t('unit.perMonth')}`
                     : '$0'
                   : t('result.na')}
               </td>
@@ -146,9 +148,9 @@ export default function PrintSummary({ state, analysis }: Props) {
                 {rows.map((row) => (
                   <tr key={row.name} className="border-b border-[#eee]">
                     <td className="py-1">{row.name}</td>
-                    <td className="py-1 font-mono text-right">+{formatMoney(row.cliffDistance)}/mo</td>
-                    <td className="py-1 font-mono text-right">+{formatMoney(row.breakEvenMonthly)}/mo</td>
-                    <td className="py-1 font-mono text-right">+${monthlyToHourly(row.breakEvenMonthly).toFixed(2)}/hr</td>
+                    <td className="py-1 font-mono text-right">+{formatMoney(row.cliffDistance)}{t('unit.perMonth')}</td>
+                    <td className="py-1 font-mono text-right">+{formatMoney(row.breakEvenMonthly)}{t('unit.perMonth')}</td>
+                    <td className="py-1 font-mono text-right">+${monthlyToHourly(row.breakEvenMonthly).toFixed(2)}{t('unit.perHour')}</td>
                   </tr>
                 ))}
               </tbody>
@@ -156,8 +158,8 @@ export default function PrintSummary({ state, analysis }: Props) {
             {clearAllRaise !== null && (
               <p className="text-[11px]">
                 {rows.length > 1
-                  ? <>{t('breakEven.clearAll')} <strong className="font-mono">+{formatMoney(clearAllRaise)}/mo</strong> (+${monthlyToHourly(clearAllRaise).toFixed(2)}/hr)</>
-                  : <>{t('print.breakEvenCol')}: <strong className="font-mono">+{formatMoney(clearAllRaise)}/mo</strong> (+${monthlyToHourly(clearAllRaise).toFixed(2)}/hr)</>}
+                  ? <>{t('breakEven.clearAll')} <strong className="font-mono">+{formatMoney(clearAllRaise)}{t('unit.perMonth')}</strong> (+${monthlyToHourly(clearAllRaise).toFixed(2)}{t('unit.perHour')})</>
+                  : <>{t('print.breakEvenCol')}: <strong className="font-mono">+{formatMoney(clearAllRaise)}{t('unit.perMonth')}</strong> (+${monthlyToHourly(clearAllRaise).toFixed(2)}{t('unit.perHour')})</>}
               </p>
             )}
           </div>
@@ -166,7 +168,7 @@ export default function PrintSummary({ state, analysis }: Props) {
 
       {/* Disclaimer */}
       <div className="text-[10px] text-[#999] leading-relaxed border-t border-[#ddd] pt-3">
-        <strong>Disclaimer:</strong> {t('disclaimer.text')}{' '}
+        <strong>{t('label.disclaimer')}:</strong> {t('disclaimer.text')}{' '}
         {t('disclaimer.contact')}
       </div>
     </div>

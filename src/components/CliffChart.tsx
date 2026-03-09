@@ -136,13 +136,13 @@ export default function CliffChart({ programs, currentMonthlyIncome, newMonthlyI
           {displayPrograms.map((prog) => (
             <tr key={prog.key}>
               <td>{prog.name}</td>
-              <td>{formatMoney(prog.limit)}/mo</td>
-              <td>{formatMoney(currentMonthlyIncome)}/mo</td>
-              <td>{formatMoney(newMonthlyIncome)}/mo</td>
+              <td>{formatMoney(prog.limit)}{t('unit.perMonth')}</td>
+              <td>{formatMoney(currentMonthlyIncome)}{t('unit.perMonth')}</td>
+              <td>{formatMoney(newMonthlyIncome)}{t('unit.perMonth')}</td>
               <td>{prog.currentlyEligible ? formatMoney(prog.distanceToCliff) : t('result.na')}</td>
               <td>
                 {prog.lost
-                  ? (prog.cliffType === 'tier_shift' ? `${prog.currentTier} to ${prog.newTier}` : t('result.lost'))
+                  ? (prog.cliffType === 'tier_shift' ? `${prog.currentTier} ${t('chart.tierTo')} ${prog.newTier}` : t('result.lost'))
                   : prog.currentlyEligible ? t('result.keep') : t('result.notEligible')}
               </td>
             </tr>

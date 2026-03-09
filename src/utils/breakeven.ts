@@ -7,7 +7,7 @@
  */
 
 import type { ProgramResult } from '../types/index.ts'
-import type { CustomBenefitValues } from '../hooks/useCliffAnalysis.ts'
+import { getCustomValue, type CustomBenefitValues } from '../hooks/useCliffAnalysis.ts'
 import { PROGRAMS, WHEAP_MONTHLY_VALUE } from '../data/programs.ts'
 import { calculateFoodShareBenefit, getSchoolMealTier, getSchoolMealLoss, isEligible } from './calculations.ts'
 
@@ -85,7 +85,7 @@ export function computeTotalLoss(
       }
       default: {
         if (!prog.calculable && isEligible(currentMonthlyIncome, limit) && !isEligible(newIncome, limit)) {
-          const cv = getCustomVal(prog.key, customValues)
+          const cv = getCustomValue(prog.key, customValues)
           if (cv !== null) totalLoss += cv
         }
         break
@@ -94,16 +94,6 @@ export function computeTotalLoss(
   }
 
   return totalLoss
-}
-
-function getCustomVal(key: string, cv?: CustomBenefitValues): number | null {
-  if (!cv) return null
-  switch (key) {
-    case 'badgercare_adult': return cv.customBadgerCareAdultValue
-    case 'badgercare_children': return cv.customBadgerCareChildValue
-    case 'wisconsin_shares': return cv.customWisconsinSharesValue
-    default: return null
-  }
 }
 
 // ---------------------------------------------------------------------------
@@ -155,7 +145,7 @@ export function computeBreakEvenData(
       include = (prog.currentMonthlyValue ?? 0) > 0
     } else {
       // Eligibility-only: include only if user entered a custom value
-      const cv = getCustomVal(prog.key, customValues)
+      const cv = getCustomValue(prog.key, customValues)
       include = cv !== null && cv > 0
     }
     if (!include) continue

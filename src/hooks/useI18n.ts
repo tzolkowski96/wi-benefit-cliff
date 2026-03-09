@@ -46,12 +46,21 @@ export const I18nContext = createContext<I18nContextValue>({
   t: (key: I18nKey) => en[key],
 })
 
+function syncHtmlLang(lang: Lang) {
+  document.documentElement.lang = lang
+}
+
 export function useI18nProvider(): I18nContextValue {
-  const [lang, setLangState] = useState<Lang>(detectLang)
+  const [lang, setLangState] = useState<Lang>(() => {
+    const detected = detectLang()
+    syncHtmlLang(detected)
+    return detected
+  })
 
   const setLang = useCallback((newLang: Lang) => {
     setLangState(newLang)
     updateUrlLang(newLang)
+    syncHtmlLang(newLang)
   }, [])
 
   const t = useCallback((key: I18nKey): string => {

@@ -151,7 +151,7 @@ export default function IncomeSweepChart({ programs, state, safeRaiseMax }: Prop
                 }
                 return [formatMoney(Math.abs(Number(value))), name]
               }}
-              labelFormatter={(label: any) => `${t('sweep.tooltipRaise')}: +${formatMoney(Number(label))}/mo`}
+              labelFormatter={(label: any) => `${t('sweep.tooltipRaise')}: +${formatMoney(Number(label))}${t('unit.perMonth')}`}
             />
 
             <Legend
@@ -175,9 +175,9 @@ export default function IncomeSweepChart({ programs, state, safeRaiseMax }: Prop
         <tbody>
           {data.filter((_, i) => i % 10 === 0).map((point, i) => (
             <tr key={i}>
-              <td>+{formatMoney(point.raise)}/mo</td>
-              <td>{formatMoney(point.raise - point.net)}/mo</td>
-              <td>{point.net >= 0 ? '+' : ''}{formatMoney(point.net)}/mo</td>
+              <td>+{formatMoney(point.raise)}{t('unit.perMonth')}</td>
+              <td>{formatMoney(point.raise - point.net)}{t('unit.perMonth')}</td>
+              <td>{point.net >= 0 ? '+' : ''}{formatMoney(point.net)}{t('unit.perMonth')}</td>
             </tr>
           ))}
         </tbody>

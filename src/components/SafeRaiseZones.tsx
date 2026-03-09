@@ -36,7 +36,7 @@ export default function SafeRaiseZones({ programs, raiseMonthly, safeRaiseMax }:
               <span className="text-[13px] font-medium">{prog.name}</span>
               <span className={`font-mono text-[13px] font-semibold ${isOver ? 'text-[#9B2226]' : 'text-[#2D6A4F]'}`}>
                 {isOver && <span aria-hidden="true">&times; </span>}
-                {t('safeRaise.upTo')} +{formatMoney(safeAmount)}/mo
+                {t('safeRaise.upTo')} +{formatMoney(safeAmount)}{t('unit.perMonth')}
               </span>
             </div>
           )

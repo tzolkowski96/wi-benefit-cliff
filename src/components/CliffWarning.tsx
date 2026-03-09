@@ -28,8 +28,8 @@ export default function CliffWarning({ analysis }: Props) {
           <span aria-hidden="true">&#9888; </span>{t('warning.cliffTitle')}:
         </strong>{' '}
         {t('warning.cliffBody')}{' '}
-        <strong className="font-mono">{formatMoney(Math.abs(netMonthly))}/month {t('warning.worseOff')}</strong>{' '}
-        ({formatMoney(Math.abs(netMonthly) * 12)}/year).
+        <strong className="font-mono">{formatMoney(Math.abs(netMonthly))}{t('unit.perMonth')} {t('warning.worseOff')}</strong>{' '}
+        ({formatMoney(Math.abs(netMonthly) * 12)}{t('unit.perYear')}).
         {safeRaiseMax > 0 && (
           <> {t('warning.considerSmaller').replace('{amount}', formatMoney(safeRaiseMax))}</>
         )}
@@ -44,8 +44,8 @@ export default function CliffWarning({ analysis }: Props) {
         <strong className="text-[#8B6914]">
           <span aria-hidden="true">&#9888; </span>{t('warning.headsUp')}:
         </strong>{' '}
-        {lostPrograms.length} benefit{lostPrograms.length > 1 ? 's' : ''} lost, {t('warning.stillAhead')}{' '}
-        <strong className="font-mono">{formatMoney(netMonthly)}/month</strong>.{' '}
+        {lostPrograms.length === 1 ? t('warning.benefitLostSingular') : t('warning.benefitsLostPlural').replace('{count}', String(lostPrograms.length))} {t('warning.stillAhead')}{' '}
+        <strong className="font-mono">{formatMoney(netMonthly)}{t('unit.perMonth')}</strong>.{' '}
         {t('warning.budgetTransition')}
       </div>
     )
