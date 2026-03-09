@@ -4,12 +4,12 @@
  */
 
 import type { ProgramResult } from '../types/index.ts'
-import type { CustomBenefitValues } from '../hooks/useCliffAnalysis.ts'
+import type { CustomBenefitValues } from './types.ts'
 import type { BreakEvenInputs } from './breakeven.ts'
 import { computeTotalLoss } from './breakeven.ts'
-import { PROGRAMS, WHEAP_MONTHLY_VALUE } from '../data/programs.ts'
+import { PROGRAMS, WHEAP_MONTHLY_VALUE } from './data/programs.ts'
 import { calculateFoodShareBenefit, getSchoolMealTier, getSchoolMealValue, isEligible } from './calculations.ts'
-import { getSmi60 } from '../data/smi.ts'
+import { getSmi60 } from './data/smi.ts'
 
 // ---------------------------------------------------------------------------
 // Types

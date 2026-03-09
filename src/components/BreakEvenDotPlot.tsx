@@ -1,9 +1,9 @@
 import {
   BarChart, Bar, XAxis, YAxis, ReferenceLine, Cell, ResponsiveContainer, Tooltip,
 } from 'recharts'
-import type { BreakEvenData } from '../utils/breakeven.ts'
+import type { BreakEvenData } from '../engine/breakeven.ts'
 import { useI18n } from '../hooks/useI18n.ts'
-import { formatMoney } from '../utils/format.ts'
+import { formatMoney } from '../engine/format.ts'
 import { CHART_TICK_STYLE, CHART_TOOLTIP_STYLE, CHART_AXIS_LABEL_STYLE } from '../utils/chartStyles.ts'
 
 interface Props {

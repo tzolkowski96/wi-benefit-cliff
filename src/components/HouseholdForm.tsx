@@ -2,8 +2,8 @@ import { useState } from 'react'
 import type { FormState } from '../types/index.ts'
 import type { FormUpdater } from '../hooks/useUrlState.ts'
 import { useI18n } from '../hooks/useI18n.ts'
-import { hourlyToMonthly, monthlyToHourly } from '../utils/wage.ts'
-import { formatMoney } from '../utils/format.ts'
+import { hourlyToMonthly, monthlyToHourly } from '../engine/wage.ts'
+import { formatMoney } from '../engine/format.ts'
 
 interface Props {
   state: FormState

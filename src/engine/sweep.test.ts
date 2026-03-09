@@ -44,8 +44,8 @@ describe('computeRaiseSweep', () => {
   it('net impact at raise=0 is 0', () => {
     const programs = [makeProg()]
     const result = computeRaiseSweep(baseInputs, programs, undefined, 1000, 100)
-    expect(result.points[0].raiseMonthly).toBe(0)
-    expect(result.points[0].netImpact).toBe(0)
+    expect(result.points[0]!.raiseMonthly).toBe(0)
+    expect(result.points[0]!.netImpact).toBe(0)
   })
 
   it('net impact increases for small raises (before any cliff)', () => {
@@ -65,9 +65,9 @@ describe('computeRaiseSweep', () => {
     ]
     const result = computeRaiseSweep(baseInputs, programs, undefined, 2000, 100)
     expect(result.cliffPoints).toHaveLength(2)
-    expect(result.cliffPoints[0].programName).toBe('FoodShare')
-    expect(result.cliffPoints[0].raiseMonthly).toBe(500)
-    expect(result.cliffPoints[1].programName).toBe('WHEAP')
+    expect(result.cliffPoints[0]!.programName).toBe('FoodShare')
+    expect(result.cliffPoints[0]!.raiseMonthly).toBe(500)
+    expect(result.cliffPoints[1]!.programName).toBe('WHEAP')
   })
 
   it('excludes ineligible programs from cliff points', () => {
@@ -83,7 +83,7 @@ describe('computeRaiseSweep', () => {
 describe('computeBenefitStack', () => {
   it('returns zero benefits at very high income', () => {
     const points = computeBenefitStack(3, 1, 0, 0, 20000, 50)
-    const lastPoint = points[points.length - 1]
+    const lastPoint = points[points.length - 1]!
     expect(lastPoint.total).toBe(0)
     expect(lastPoint.foodshare).toBe(0)
     expect(lastPoint.schoolMeals).toBe(0)
@@ -92,7 +92,7 @@ describe('computeBenefitStack', () => {
 
   it('returns maximum benefits at $0 income', () => {
     const points = computeBenefitStack(3, 1, 0, 0, 10000, 50)
-    const firstPoint = points[0]
+    const firstPoint = points[0]!
     // HH of 3: max FoodShare allotment = $768
     expect(firstPoint.foodshare).toBe(768)
     // School meals: 1 child × $105 (free tier)

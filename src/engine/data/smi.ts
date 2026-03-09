@@ -36,8 +36,8 @@ const SMI_85_PER_ADDITIONAL = 1334
  * Get 60% SMI monthly limit for a household size.
  */
 export function getSmi60(householdSize: number): number {
-  if (householdSize <= 8) return SMI_60[householdSize] ?? SMI_60[8]
-  return SMI_60[8] + SMI_60_PER_ADDITIONAL * (householdSize - 8)
+  if (householdSize <= 8) return SMI_60[householdSize]!
+  return SMI_60[8]! + SMI_60_PER_ADDITIONAL * (householdSize - 8)
 }
 
 /**
@@ -45,6 +45,6 @@ export function getSmi60(householdSize: number): number {
  */
 export function getSmi85(householdSize: number): number {
   const size = Math.max(2, householdSize)
-  if (size <= 8) return SMI_85[size] ?? SMI_85[8]
-  return SMI_85[8] + SMI_85_PER_ADDITIONAL * (size - 8)
+  if (size <= 8) return SMI_85[size]!
+  return SMI_85[8]! + SMI_85_PER_ADDITIONAL * (size - 8)
 }

@@ -25,8 +25,8 @@ const FPL_100_PER_ADDITIONAL = 449
  * Get 100% FPL monthly limit for any household size.
  */
 export function getFpl100(householdSize: number): number {
-  if (householdSize <= 8) return FPL_100[householdSize] ?? FPL_100[8]
-  return FPL_100[8] + FPL_100_PER_ADDITIONAL * (householdSize - 8)
+  if (householdSize <= 8) return FPL_100[householdSize]!
+  return FPL_100[8]! + FPL_100_PER_ADDITIONAL * (householdSize - 8)
 }
 
 /**
@@ -38,8 +38,8 @@ export function getFplAtPercent(percent: number, householdSize: number): number 
   // official program thresholds exactly (avoids rounding differences).
   const table = FPL_TABLES[percent]
   if (table) {
-    if (householdSize <= 8) return table.limits[householdSize] ?? table.limits[8]
-    return table.limits[8] + table.perAdditional * (householdSize - 8)
+    if (householdSize <= 8) return table.limits[householdSize]!
+    return table.limits[8]! + table.perAdditional * (householdSize - 8)
   }
   // Fallback: scale from 100% FPL
   return Math.round(getFpl100(householdSize) * (percent / 100))

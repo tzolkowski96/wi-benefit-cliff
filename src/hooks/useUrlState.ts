@@ -8,17 +8,17 @@
 
 import { useState, useCallback, useEffect } from 'react'
 import type { FormState, IncomeType } from '../types/index.ts'
-import { hourlyToMonthly, monthlyToHourly } from '../utils/wage.ts'
+import { hourlyToMonthly, monthlyToHourly } from '../engine/wage.ts'
+import { deriveState, syncIncomeTypeSwitch } from '../engine/derive.ts'
+import type { FormInputs } from '../engine/derive.ts'
 
-const DEFAULTS: FormState = {
+const DEFAULTS: FormInputs = {
   householdSize: 3,
   numberOfChildren: 1,
   incomeType: 'hourly',
   hourlyWage: 16.0,
   monthlyIncome: 2771,
   raiseAmount: 2.0,
-  currentMonthlyIncome: 2771,
-  raiseMonthly: 346,
   monthlyRent: 0,
   monthlyChildcareCosts: 0,
   customBadgerCareAdultValue: null,
@@ -26,9 +26,9 @@ const DEFAULTS: FormState = {
   customWisconsinSharesValue: null,
 }
 
-function parseUrl(): Partial<FormState> {
+function parseUrl(): Partial<FormInputs> {
   const params = new URLSearchParams(window.location.search)
-  const result: Partial<FormState> = {}
+  const result: Partial<FormInputs> = {}
 
   const hh = params.get('hh')
   if (hh) result.householdSize = Math.max(1, Math.min(8, parseInt(hh, 10) || DEFAULTS.householdSize))
@@ -94,39 +94,8 @@ function parseUrl(): Partial<FormState> {
 
 function buildInitialState(): FormState {
   const fromUrl = parseUrl()
-  const incomeType = fromUrl.incomeType ?? DEFAULTS.incomeType
-
-  const hourlyWage = fromUrl.hourlyWage ?? DEFAULTS.hourlyWage
-  const monthlyIncome = fromUrl.monthlyIncome ?? DEFAULTS.monthlyIncome
-  const raiseAmount = fromUrl.raiseAmount ?? DEFAULTS.raiseAmount
-
-  const householdSize = fromUrl.householdSize ?? DEFAULTS.householdSize
-  let numberOfChildren = fromUrl.numberOfChildren ?? DEFAULTS.numberOfChildren
-
-  // Enforce constraints
-  if (householdSize === 1) numberOfChildren = 0
-  if (numberOfChildren >= householdSize) numberOfChildren = householdSize - 1
-
-  const currentMonthlyIncome = incomeType === 'hourly' ? hourlyToMonthly(hourlyWage) : monthlyIncome
-  const raiseMonthly = incomeType === 'hourly' ? hourlyToMonthly(raiseAmount) : Math.round(raiseAmount)
-  const monthlyRent = fromUrl.monthlyRent ?? DEFAULTS.monthlyRent
-  const monthlyChildcareCosts = fromUrl.monthlyChildcareCosts ?? DEFAULTS.monthlyChildcareCosts
-
-  return {
-    householdSize,
-    numberOfChildren,
-    incomeType,
-    hourlyWage,
-    monthlyIncome: currentMonthlyIncome,
-    raiseAmount,
-    currentMonthlyIncome,
-    raiseMonthly,
-    monthlyRent,
-    monthlyChildcareCosts,
-    customBadgerCareAdultValue: fromUrl.customBadgerCareAdultValue ?? DEFAULTS.customBadgerCareAdultValue,
-    customBadgerCareChildValue: fromUrl.customBadgerCareChildValue ?? DEFAULTS.customBadgerCareChildValue,
-    customWisconsinSharesValue: fromUrl.customWisconsinSharesValue ?? DEFAULTS.customWisconsinSharesValue,
-  }
+  const inputs: FormInputs = { ...DEFAULTS, ...fromUrl }
+  return deriveState(inputs)
 }
 
 function writeUrl(state: FormState) {
@@ -172,38 +141,21 @@ export function useUrlState(): [FormState, FormUpdater] {
 
   const update = useCallback((patch: Partial<FormState>) => {
     setState((prev) => {
-      const next = { ...prev, ...patch }
-
-      // Enforce constraints
-      if (next.householdSize === 1) next.numberOfChildren = 0
-      if (next.numberOfChildren >= next.householdSize) next.numberOfChildren = next.householdSize - 1
-
-      // Sync derived values based on income type
-      if (next.incomeType === 'hourly') {
-        if ('hourlyWage' in patch || 'incomeType' in patch) {
-          next.monthlyIncome = hourlyToMonthly(next.hourlyWage)
-        }
-        if ('incomeType' in patch && prev.incomeType === 'monthly') {
-          next.hourlyWage = monthlyToHourly(prev.monthlyIncome)
-          next.monthlyIncome = prev.monthlyIncome
-          next.raiseAmount = monthlyToHourly(prev.raiseAmount)
-        }
-        next.currentMonthlyIncome = hourlyToMonthly(next.hourlyWage)
-        next.raiseMonthly = hourlyToMonthly(next.raiseAmount)
-      } else {
-        if ('monthlyIncome' in patch || 'incomeType' in patch) {
-          next.hourlyWage = monthlyToHourly(next.monthlyIncome)
-        }
-        if ('incomeType' in patch && prev.incomeType === 'hourly') {
-          next.monthlyIncome = hourlyToMonthly(prev.hourlyWage)
-          next.hourlyWage = prev.hourlyWage
-          next.raiseAmount = hourlyToMonthly(prev.raiseAmount)
-        }
-        next.currentMonthlyIncome = next.monthlyIncome
-        next.raiseMonthly = Math.round(next.raiseAmount)
+      // Handle income type switching
+      let merged = { ...prev, ...patch }
+      if ('incomeType' in patch && patch.incomeType !== prev.incomeType) {
+        const switchPatch = syncIncomeTypeSwitch(prev, patch.incomeType!)
+        merged = { ...merged, ...switchPatch }
       }
 
-      return next
+      // Sync hourly ↔ monthly when individual fields change
+      if (merged.incomeType === 'hourly' && 'hourlyWage' in patch) {
+        merged.monthlyIncome = hourlyToMonthly(merged.hourlyWage)
+      } else if (merged.incomeType === 'monthly' && 'monthlyIncome' in patch) {
+        merged.hourlyWage = monthlyToHourly(merged.monthlyIncome)
+      }
+
+      return deriveState(merged)
     })
   }, [])
 

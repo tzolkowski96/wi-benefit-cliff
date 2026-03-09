@@ -4,19 +4,17 @@ import {
 } from 'recharts'
 import type { ProgramResult, FormState } from '../types/index.ts'
 import { useI18n } from '../hooks/useI18n.ts'
-import { formatMoney } from '../utils/format.ts'
-import { computeRaiseSweep } from '../utils/sweep.ts'
+import { formatMoney } from '../engine/format.ts'
+import { computeRaiseSweep } from '../engine/sweep.ts'
 import { toBreakEvenInputs, toCustomBenefitValues } from '../utils/formHelpers.ts'
-import { CHART_TICK_STYLE, CHART_AXIS_LABEL_STYLE, CHART_TOOLTIP_STYLE, CHART_LEGEND_STYLE } from '../utils/chartStyles.ts'
+import { CHART_TICK_STYLE, CHART_AXIS_LABEL_STYLE, CHART_TOOLTIP_STYLE, CHART_LEGEND_STYLE, CHART_FONT_FAMILY } from '../utils/chartStyles.ts'
+import { COLOR } from '../tokens.ts'
+import ChartSection from './ChartSection.tsx'
 
 interface Props {
   programs: ProgramResult[]
   state: FormState
 }
-
-const GREEN = '#2D6A4F'
-const RED = '#9B2226'
-const AMBER = '#E8A838'
 
 export default function IncomeSweepChart({ programs, state }: Props) {
   const { t } = useI18n()
@@ -39,14 +37,7 @@ export default function IncomeSweepChart({ programs, state }: Props) {
   if (!hasEligiblePrograms) return null
 
   return (
-    <section className="bg-white border border-[#ddd] rounded-sm p-6 mb-5">
-      <h2 className="text-xs font-semibold uppercase tracking-[0.08em] text-[#666] mb-1 font-mono">
-        {t('section.incomeSweep')}
-      </h2>
-      <p className="text-[12px] text-[#767676] mb-4 leading-relaxed">
-        {t('sweep.description')}
-      </p>
-
+    <ChartSection title={t('section.incomeSweep')} description={t('sweep.description')}>
       <div aria-hidden="true">
         <ResponsiveContainer width="100%" height={280}>
           <ComposedChart data={data} margin={{ top: 10, right: 10, left: 10, bottom: 5 }}>
@@ -73,9 +64,9 @@ export default function IncomeSweepChart({ programs, state }: Props) {
             <Area
               type="monotone"
               dataKey="positive"
-              fill={GREEN}
+              fill={COLOR.positive}
               fillOpacity={0.15}
-              stroke={GREEN}
+              stroke={COLOR.positive}
               strokeWidth={2}
               isAnimationActive={false}
               dot={false}
@@ -86,9 +77,9 @@ export default function IncomeSweepChart({ programs, state }: Props) {
             <Area
               type="monotone"
               dataKey="negative"
-              fill={RED}
+              fill={COLOR.negative}
               fillOpacity={0.15}
-              stroke={RED}
+              stroke={COLOR.negative}
               strokeWidth={2}
               isAnimationActive={false}
               dot={false}
@@ -108,7 +99,7 @@ export default function IncomeSweepChart({ programs, state }: Props) {
                   position: 'top',
                   fontSize: 9,
                   fill: cliff.programColor,
-                  fontFamily: "'IBM Plex Mono', monospace",
+                  fontFamily: CHART_FONT_FAMILY,
                 }}
               />
             ))}
@@ -117,15 +108,15 @@ export default function IncomeSweepChart({ programs, state }: Props) {
             {state.raiseMonthly > 0 && (
               <ReferenceLine
                 x={state.raiseMonthly}
-                stroke={AMBER}
+                stroke={COLOR.accent}
                 strokeWidth={2}
                 label={{
                   value: t('sweep.currentRaise'),
                   position: 'top',
                   fontSize: 10,
-                  fill: AMBER,
+                  fill: COLOR.accent,
                   fontWeight: 600,
-                  fontFamily: "'IBM Plex Mono', monospace",
+                  fontFamily: CHART_FONT_FAMILY,
                 }}
               />
             )}
@@ -170,6 +161,6 @@ export default function IncomeSweepChart({ programs, state }: Props) {
           ))}
         </tbody>
       </table>
-    </section>
+    </ChartSection>
   )
 }

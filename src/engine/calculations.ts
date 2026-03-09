@@ -9,7 +9,7 @@
  * value" and include the disclaimer from the spec.
  */
 
-import { getFplAtPercent } from '../data/fpl.ts'
+import { getFplAtPercent } from './data/fpl.ts'
 import {
   getFoodShareStandardDeduction,
   getMaxAllotment,
@@ -17,7 +17,7 @@ import {
   REDUCED_MEAL_VALUE_PER_CHILD,
   HEATING_STANDARD_UTILITY_ALLOWANCE,
   MAX_EXCESS_SHELTER_DEDUCTION,
-} from '../data/programs.ts'
+} from './data/programs.ts'
 
 // ---------------------------------------------------------------------------
 // FoodShare

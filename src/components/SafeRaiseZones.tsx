@@ -1,6 +1,6 @@
 import type { ProgramResult } from '../types/index.ts'
 import { useI18n } from '../hooks/useI18n.ts'
-import { formatMoney } from '../utils/format.ts'
+import { formatMoney } from '../engine/format.ts'
 
 interface Props {
   programs: ProgramResult[]

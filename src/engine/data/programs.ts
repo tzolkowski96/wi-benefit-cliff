@@ -8,7 +8,7 @@
  * - Wisconsin DCF (Wisconsin Shares entry/exit thresholds)
  */
 
-import type { CliffType } from '../types/index.ts'
+import type { CliffType } from '../../types/index.ts'
 import { getFplAtPercent } from './fpl.ts'
 import { getSmi60, getSmi85 } from './smi.ts'
 
@@ -36,9 +36,9 @@ export const FOODSHARE_MAX_ALLOTMENT: Record<number, number> = {
 }
 
 export function getMaxAllotment(householdSize: number): number {
-  if (householdSize <= 8) return FOODSHARE_MAX_ALLOTMENT[householdSize] ?? FOODSHARE_MAX_ALLOTMENT[8]
+  if (householdSize <= 8) return FOODSHARE_MAX_ALLOTMENT[householdSize]!
   // Per-additional estimate: ~$220
-  return FOODSHARE_MAX_ALLOTMENT[8] + 220 * (householdSize - 8)
+  return FOODSHARE_MAX_ALLOTMENT[8]! + 220 * (householdSize - 8)
 }
 
 // ---------------------------------------------------------------------------

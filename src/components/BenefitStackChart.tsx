@@ -4,18 +4,15 @@ import {
 } from 'recharts'
 import type { FormState } from '../types/index.ts'
 import { useI18n } from '../hooks/useI18n.ts'
-import { formatMoney } from '../utils/format.ts'
-import { computeBenefitStack } from '../utils/sweep.ts'
-import { CHART_TICK_STYLE, CHART_AXIS_LABEL_STYLE, CHART_TOOLTIP_STYLE, CHART_LEGEND_STYLE } from '../utils/chartStyles.ts'
+import { formatMoney } from '../engine/format.ts'
+import { computeBenefitStack } from '../engine/sweep.ts'
+import { CHART_TICK_STYLE, CHART_AXIS_LABEL_STYLE, CHART_TOOLTIP_STYLE, CHART_LEGEND_STYLE, CHART_FONT_FAMILY } from '../utils/chartStyles.ts'
+import { COLOR, PROGRAM_COLOR } from '../tokens.ts'
+import ChartSection from './ChartSection.tsx'
 
 interface Props {
   state: FormState
 }
-
-const FOODSHARE_COLOR = '#2D6A4F'
-const SCHOOL_MEALS_COLOR = '#5F0F40'
-const WHEAP_COLOR = '#9B2226'
-const AMBER = '#E8A838'
 
 export default function BenefitStackChart({ state }: Props) {
   const { t } = useI18n()
@@ -30,19 +27,12 @@ export default function BenefitStackChart({ state }: Props) {
   }, [state.householdSize, state.numberOfChildren, state.monthlyRent, state.monthlyChildcareCosts])
 
   // Don't render if there are no benefits at the lowest income (nothing to show)
-  if (stackData.length === 0 || stackData[0].total === 0) return null
+  if (stackData.length === 0 || stackData[0]?.total === 0) return null
 
   const newIncome = state.currentMonthlyIncome + state.raiseMonthly
 
   return (
-    <section className="bg-white border border-[#ddd] rounded-sm p-6 mb-5">
-      <h2 className="text-xs font-semibold uppercase tracking-[0.08em] text-[#666] mb-1 font-mono">
-        {t('section.benefitStack')}
-      </h2>
-      <p className="text-[12px] text-[#767676] mb-4 leading-relaxed">
-        {t('stack.description')}
-      </p>
-
+    <ChartSection title={t('section.benefitStack')} description={t('stack.description')}>
       <div aria-hidden="true">
         <ResponsiveContainer width="100%" height={300}>
           <AreaChart data={stackData} margin={{ top: 10, right: 10, left: 10, bottom: 5 }}>
@@ -67,9 +57,9 @@ export default function BenefitStackChart({ state }: Props) {
               type="stepAfter"
               dataKey="wheap"
               stackId="benefits"
-              fill={WHEAP_COLOR}
+              fill={PROGRAM_COLOR.wheap}
               fillOpacity={0.25}
-              stroke={WHEAP_COLOR}
+              stroke={PROGRAM_COLOR.wheap}
               strokeWidth={1.5}
               isAnimationActive={false}
               name={t('print.wheapLoss')}
@@ -79,9 +69,9 @@ export default function BenefitStackChart({ state }: Props) {
                 type="stepAfter"
                 dataKey="schoolMeals"
                 stackId="benefits"
-                fill={SCHOOL_MEALS_COLOR}
+                fill={PROGRAM_COLOR.school_meals_free}
                 fillOpacity={0.25}
-                stroke={SCHOOL_MEALS_COLOR}
+                stroke={PROGRAM_COLOR.school_meals_free}
                 strokeWidth={1.5}
                 isAnimationActive={false}
                 name={t('print.schoolMealLoss')}
@@ -91,9 +81,9 @@ export default function BenefitStackChart({ state }: Props) {
               type="monotone"
               dataKey="foodshare"
               stackId="benefits"
-              fill={FOODSHARE_COLOR}
+              fill={PROGRAM_COLOR.foodshare}
               fillOpacity={0.25}
-              stroke={FOODSHARE_COLOR}
+              stroke={PROGRAM_COLOR.foodshare}
               strokeWidth={1.5}
               isAnimationActive={false}
               name={t('print.foodshareLoss')}
@@ -102,15 +92,15 @@ export default function BenefitStackChart({ state }: Props) {
             {/* Current income marker */}
             <ReferenceLine
               x={state.currentMonthlyIncome}
-              stroke="#1a1a1a"
+              stroke={COLOR.text}
               strokeWidth={2}
               label={{
                 value: t('stack.currentIncome'),
                 position: 'top',
                 fontSize: 10,
-                fill: '#1a1a1a',
+                fill: COLOR.text,
                 fontWeight: 600,
-                fontFamily: "'IBM Plex Mono', monospace",
+                fontFamily: CHART_FONT_FAMILY,
               }}
             />
 
@@ -118,16 +108,16 @@ export default function BenefitStackChart({ state }: Props) {
             {state.raiseMonthly > 0 && (
               <ReferenceLine
                 x={newIncome}
-                stroke={AMBER}
+                stroke={COLOR.accent}
                 strokeWidth={2}
                 strokeDasharray="6 3"
                 label={{
                   value: t('stack.afterRaise'),
                   position: 'top',
                   fontSize: 10,
-                  fill: AMBER,
+                  fill: COLOR.accent,
                   fontWeight: 600,
-                  fontFamily: "'IBM Plex Mono', monospace",
+                  fontFamily: CHART_FONT_FAMILY,
                 }}
               />
             )}
@@ -171,6 +161,6 @@ export default function BenefitStackChart({ state }: Props) {
           ))}
         </tbody>
       </table>
-    </section>
+    </ChartSection>
   )
 }

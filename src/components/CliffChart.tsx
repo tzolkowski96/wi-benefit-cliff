@@ -1,6 +1,7 @@
 import type { ProgramResult } from '../types/index.ts'
 import { useI18n } from '../hooks/useI18n.ts'
-import { formatMoney } from '../utils/format.ts'
+import { formatMoney } from '../engine/format.ts'
+import ChartSection from './ChartSection.tsx'
 
 interface Props {
   programs: ProgramResult[]
@@ -26,11 +27,7 @@ export default function CliffChart({ programs, currentMonthlyIncome, newMonthlyI
   const pct = (val: number) => Math.min((val / maxIncome) * 100, 100)
 
   return (
-    <section className="bg-white border border-[#ddd] rounded-sm p-6 mb-5">
-      <h2 className="text-xs font-semibold uppercase tracking-[0.08em] text-[#666] mb-4 font-mono m-0">
-        {t('section.chart')}
-      </h2>
-
+    <ChartSection title={t('section.chart')}>
       {/* Visual chart */}
       <div className="relative pb-3" aria-hidden="true">
         {displayPrograms.map((prog) => {
@@ -149,6 +146,6 @@ export default function CliffChart({ programs, currentMonthlyIncome, newMonthlyI
           ))}
         </tbody>
       </table>
-    </section>
+    </ChartSection>
   )
 }

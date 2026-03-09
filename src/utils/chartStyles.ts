@@ -7,8 +7,9 @@
  */
 
 import type { CSSProperties } from 'react'
+import { FONT, NEUTRAL } from '../tokens.ts'
 
-export const CHART_FONT_FAMILY = "'IBM Plex Mono', monospace"
+export const CHART_FONT_FAMILY = FONT.mono
 
 /** Default tick style for XAxis / YAxis `tick` prop (spread + override `fill`). */
 export const CHART_TICK_STYLE = {
@@ -26,7 +27,7 @@ export const CHART_AXIS_LABEL_STYLE = {
 export const CHART_TOOLTIP_STYLE: CSSProperties = {
   fontFamily: CHART_FONT_FAMILY,
   fontSize: 12,
-  border: '1px solid #ddd',
+  border: `1px solid ${NEUTRAL[300]}`,
   borderRadius: 2,
 }
 

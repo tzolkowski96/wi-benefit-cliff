@@ -69,10 +69,10 @@ describe('computeBreakEvenData', () => {
     )
 
     expect(result.rows).toHaveLength(1)
-    expect(result.rows[0].cliffDistance).toBe(80)
+    expect(result.rows[0]!.cliffDistance).toBe(80)
     // Break-even: raise $81 causes FoodShare reduction + school meal loss
     // The break-even should be relatively small since loss ($42) < cliff distance ($80)
-    expect(result.rows[0].breakEvenMonthly).toBeLessThanOrEqual(200)
+    expect(result.rows[0]!.breakEvenMonthly).toBeLessThanOrEqual(200)
     expect(result.clearAllRaise).not.toBeNull()
   })
 
@@ -98,9 +98,9 @@ describe('computeBreakEvenData', () => {
     )
 
     expect(result.rows).toHaveLength(1)
-    expect(result.rows[0].name).toBe('BadgerCare Plus (Adults)')
+    expect(result.rows[0]!.name).toBe('BadgerCare Plus (Adults)')
     // Break-even for $400 custom value: need a raise >= $400 + any FoodShare reduction
-    expect(result.rows[0].breakEvenMonthly).toBeGreaterThanOrEqual(400)
+    expect(result.rows[0]!.breakEvenMonthly).toBeGreaterThanOrEqual(400)
   })
 
   it('sorts rows by cliff distance (nearest first)', () => {
@@ -127,7 +127,7 @@ describe('computeBreakEvenData', () => {
       { householdSize: 4, numberOfChildren: 0, currentMonthlyIncome: 5000, monthlyRent: 0, monthlyChildcareCosts: 0 },
     )
 
-    expect(result.rows[0].name).toBe('FoodShare')
-    expect(result.rows[1].name).toBe('WHEAP')
+    expect(result.rows[0]!.name).toBe('FoodShare')
+    expect(result.rows[1]!.name).toBe('WHEAP')
   })
 })

@@ -9,13 +9,13 @@
 import type { FormState, CliffAnalysis, ProgramResult } from '../types/index.ts'
 import type { I18nKey } from '../i18n/en.ts'
 import { DATE_LOCALE, type Lang } from '../hooks/useI18n.ts'
-import { computeBreakEvenData } from './breakeven.ts'
-import { computeRaiseSweep, computeBenefitStack } from './sweep.ts'
-import { monthlyToHourly } from './wage.ts'
+import { computeBreakEvenData } from '../engine/breakeven.ts'
+import { computeRaiseSweep, computeBenefitStack } from '../engine/sweep.ts'
+import { monthlyToHourly } from '../engine/wage.ts'
 import { toBreakEvenInputs, toCustomBenefitValues } from './formHelpers.ts'
-import { PROGRAMS, FOODSHARE_MAX_ALLOTMENT, FREE_MEAL_VALUE_PER_CHILD, REDUCED_MEAL_VALUE_PER_CHILD, WHEAP_MONTHLY_VALUE, getFoodShareStandardDeduction } from '../data/programs.ts'
-import { FPL_100 } from '../data/fpl.ts'
-import { SMI_60, SMI_85 } from '../data/smi.ts'
+import { PROGRAMS, FOODSHARE_MAX_ALLOTMENT, FREE_MEAL_VALUE_PER_CHILD, REDUCED_MEAL_VALUE_PER_CHILD, WHEAP_MONTHLY_VALUE, getFoodShareStandardDeduction } from '../engine/data/programs.ts'
+import { FPL_100 } from '../engine/data/fpl.ts'
+import { SMI_60, SMI_85 } from '../engine/data/smi.ts'
 
 // ---------------------------------------------------------------------------
 // Public API
@@ -317,7 +317,7 @@ function addReferenceSheet(
   // Section: FPL 100%
   rows.push([t('excel.fplTitle')])
   const fplRow: (string | number)[] = [t('excel.fpl100Label'), '']
-  for (let hh = 1; hh <= 8; hh++) fplRow.push(FPL_100[hh])
+  for (let hh = 1; hh <= 8; hh++) fplRow.push(FPL_100[hh] ?? 0)
   rows.push(['', '', ...hhHeaders])
   rows.push(fplRow)
 
@@ -327,7 +327,7 @@ function addReferenceSheet(
   rows.push([t('excel.smiTitle')])
   rows.push(['', '', ...hhHeaders])
   const smi60Row: (string | number)[] = [t('excel.smi60Label'), '']
-  for (let hh = 1; hh <= 8; hh++) smi60Row.push(SMI_60[hh])
+  for (let hh = 1; hh <= 8; hh++) smi60Row.push(SMI_60[hh] ?? 0)
   rows.push(smi60Row)
   const smi85Row: (string | number)[] = [t('excel.smi85Label'), '']
   for (let hh = 1; hh <= 8; hh++) smi85Row.push(SMI_85[hh] ?? '')
@@ -339,7 +339,7 @@ function addReferenceSheet(
   rows.push([t('excel.foodshareTitle')])
   rows.push([t('excel.maxAllotments'), '', ...hhHeaders])
   const allotRow: (string | number)[] = [t('excel.maxAllotment'), '']
-  for (let hh = 1; hh <= 8; hh++) allotRow.push(FOODSHARE_MAX_ALLOTMENT[hh])
+  for (let hh = 1; hh <= 8; hh++) allotRow.push(FOODSHARE_MAX_ALLOTMENT[hh] ?? 0)
   rows.push(allotRow)
 
   const dedRow: (string | number)[] = [t('excel.standardDeduction'), '']

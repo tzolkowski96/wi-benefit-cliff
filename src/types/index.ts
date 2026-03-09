@@ -2,6 +2,8 @@
  * Core TypeScript interfaces for the Wisconsin Benefit Cliff Calculator.
  */
 
+import type { FullFormState } from '../engine/derive.ts'
+
 // ---------------------------------------------------------------------------
 // Inputs
 // ---------------------------------------------------------------------------
@@ -17,18 +19,11 @@ export interface HouseholdInputs {
 
 export type IncomeType = 'hourly' | 'monthly'
 
-export interface FormState extends HouseholdInputs {
-  incomeType: IncomeType
-  hourlyWage: number
-  monthlyIncome: number
-  raiseAmount: number // in the unit matching incomeType
-  monthlyRent: number        // optional deduction input, default 0
-  monthlyChildcareCosts: number // optional deduction input, default 0
-  // User-entered monthly values for eligibility-only programs
-  customBadgerCareAdultValue: number | null
-  customBadgerCareChildValue: number | null
-  customWisconsinSharesValue: number | null
-}
+/**
+ * Full form state = canonical user inputs + derived values.
+ * Use `deriveState()` from `src/engine/derive.ts` to construct.
+ */
+export type FormState = FullFormState
 
 // ---------------------------------------------------------------------------
 // Cliff types

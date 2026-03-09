@@ -1,9 +1,9 @@
 import type { FormState, CliffAnalysis } from '../types/index.ts'
-import type { BreakEvenData } from '../utils/breakeven.ts'
+import type { BreakEvenData } from '../engine/breakeven.ts'
 import { useI18n, DATE_LOCALE } from '../hooks/useI18n.ts'
 import type { I18nKey } from '../i18n/en.ts'
-import { formatMoney, formatMoneyWithSign } from '../utils/format.ts'
-import { monthlyToHourly } from '../utils/wage.ts'
+import { formatMoney, formatMoneyWithSign } from '../engine/format.ts'
+import { monthlyToHourly } from '../engine/wage.ts'
 
 interface Props {
   state: FormState

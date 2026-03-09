@@ -4,8 +4,10 @@ import {
 } from 'recharts'
 import type { MonthlyImpact } from '../types/index.ts'
 import { useI18n } from '../hooks/useI18n.ts'
-import { formatMoney } from '../utils/format.ts'
+import { formatMoney } from '../engine/format.ts'
 import { CHART_TICK_STYLE, CHART_TOOLTIP_STYLE } from '../utils/chartStyles.ts'
+import { COLOR } from '../tokens.ts'
+import ChartSection from './ChartSection.tsx'
 
 interface Props {
   impact: MonthlyImpact
@@ -19,9 +21,6 @@ interface WaterfallBar {
   label: string
 }
 
-const GREEN = '#2D6A4F'
-const RED = '#9B2226'
-
 export default function WaterfallChart({ impact }: Props) {
   const { t } = useI18n()
   const { raise, foodshareLoss, schoolMealLoss, wheapLoss, customLosses, netMonthly, totalCalculableLoss } = impact
@@ -33,7 +32,7 @@ export default function WaterfallChart({ impact }: Props) {
     let running = raise
 
     // First bar: the raise
-    result.push({ name: t('waterfall.raise'), base: 0, value: raise, color: GREEN, label: `+${formatMoney(raise)}` })
+    result.push({ name: t('waterfall.raise'), base: 0, value: raise, color: COLOR.positive, label: `+${formatMoney(raise)}` })
 
     // Loss bars (only include non-zero losses)
     const losses: { name: string; loss: number }[] = []
@@ -44,7 +43,7 @@ export default function WaterfallChart({ impact }: Props) {
 
     for (const { name, loss } of losses) {
       running -= loss
-      result.push({ name, base: running, value: loss, color: RED, label: `-${formatMoney(loss)}` })
+      result.push({ name, base: running, value: loss, color: COLOR.negative, label: `-${formatMoney(loss)}` })
     }
 
     // Net impact bar
@@ -52,7 +51,7 @@ export default function WaterfallChart({ impact }: Props) {
       name: t('waterfall.net'),
       base: 0,
       value: Math.abs(netMonthly),
-      color: netMonthly >= 0 ? GREEN : RED,
+      color: netMonthly >= 0 ? COLOR.positive : COLOR.negative,
       label: (netMonthly >= 0 ? '+' : '-') + formatMoney(Math.abs(netMonthly)),
     })
 
@@ -62,11 +61,7 @@ export default function WaterfallChart({ impact }: Props) {
   if (bars.length === 0) return null
 
   return (
-    <section className="bg-white border border-[#ddd] rounded-sm p-6 mb-5 print:hidden">
-      <h2 className="text-xs font-semibold uppercase tracking-[0.08em] text-[#666] mb-4 font-mono">
-        {t('section.waterfall')}
-      </h2>
-
+    <ChartSection title={t('section.waterfall')} className="print:hidden">
       <div aria-hidden="true">
         <ResponsiveContainer width="100%" height={240}>
           <BarChart data={bars} margin={{ top: 20, right: 10, left: 10, bottom: 5 }}>
@@ -121,6 +116,6 @@ export default function WaterfallChart({ impact }: Props) {
           ))}
         </tbody>
       </table>
-    </section>
+    </ChartSection>
   )
 }

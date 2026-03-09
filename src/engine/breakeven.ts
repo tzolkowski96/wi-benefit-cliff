@@ -7,8 +7,8 @@
  */
 
 import type { ProgramResult } from '../types/index.ts'
-import { getCustomValue, type CustomBenefitValues } from '../hooks/useCliffAnalysis.ts'
-import { PROGRAMS, WHEAP_MONTHLY_VALUE } from '../data/programs.ts'
+import type { CustomBenefitValues } from './types.ts'
+import { PROGRAMS, WHEAP_MONTHLY_VALUE } from './data/programs.ts'
 import { calculateFoodShareBenefit, getSchoolMealTier, getSchoolMealLoss, isEligible } from './calculations.ts'
 
 // ---------------------------------------------------------------------------
@@ -170,4 +170,18 @@ export function computeBreakEvenData(
   }
 
   return { rows, clearAllRaise }
+}
+
+// ---------------------------------------------------------------------------
+// Helper: look up user-entered custom value for an eligibility-only program
+// ---------------------------------------------------------------------------
+
+export function getCustomValue(programKey: string, customValues?: CustomBenefitValues): number | null {
+  if (!customValues) return null
+  switch (programKey) {
+    case 'badgercare_adult': return customValues.customBadgerCareAdultValue
+    case 'badgercare_children': return customValues.customBadgerCareChildValue
+    case 'wisconsin_shares': return customValues.customWisconsinSharesValue
+    default: return null
+  }
 }

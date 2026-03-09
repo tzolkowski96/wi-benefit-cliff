@@ -6,8 +6,8 @@
  */
 
 import type { FormState } from '../types/index.ts'
-import type { BreakEvenInputs } from './breakeven.ts'
-import type { CustomBenefitValues } from '../hooks/useCliffAnalysis.ts'
+import type { BreakEvenInputs } from '../engine/breakeven.ts'
+import type { CustomBenefitValues } from '../engine/types.ts'
 
 export function toBreakEvenInputs(state: FormState): BreakEvenInputs {
   return {

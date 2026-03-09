@@ -1,6 +1,6 @@
 import type { MonthlyImpact } from '../types/index.ts'
 import { useI18n } from '../hooks/useI18n.ts'
-import { formatMoney, formatMoneyWithSign } from '../utils/format.ts'
+import { formatMoney, formatMoneyWithSign } from '../engine/format.ts'
 
 interface Props {
   impact: MonthlyImpact
