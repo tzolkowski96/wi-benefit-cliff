@@ -23,7 +23,7 @@ export interface BreakEvenInputs {
   monthlyChildcareCosts: number
 }
 
-export interface BreakEvenRow {
+interface BreakEvenRow {
   name: string
   cliffDistance: number
   breakEvenMonthly: number

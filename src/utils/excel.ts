@@ -7,12 +7,12 @@
  */
 
 import type { FormState, CliffAnalysis, ProgramResult } from '../types/index.ts'
-import type { CustomBenefitValues } from '../hooks/useCliffAnalysis.ts'
 import type { I18nKey } from '../i18n/en.ts'
 import { DATE_LOCALE, type Lang } from '../hooks/useI18n.ts'
 import { computeBreakEvenData } from './breakeven.ts'
 import { computeRaiseSweep, computeBenefitStack } from './sweep.ts'
 import { monthlyToHourly } from './wage.ts'
+import { toBreakEvenInputs, toCustomBenefitValues } from './formHelpers.ts'
 import { PROGRAMS, FOODSHARE_MAX_ALLOTMENT, FREE_MEAL_VALUE_PER_CHILD, REDUCED_MEAL_VALUE_PER_CHILD, WHEAP_MONTHLY_VALUE, getFoodShareStandardDeduction } from '../data/programs.ts'
 import { FPL_100 } from '../data/fpl.ts'
 import { SMI_60, SMI_85 } from '../data/smi.ts'
@@ -43,11 +43,10 @@ export async function exportToExcel(
 }
 
 // ---------------------------------------------------------------------------
-// Helper: create typed XLSX reference
+// Helper: typed XLSX reference
 // ---------------------------------------------------------------------------
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type XLSXModule = any
+type XLSXModule = typeof import('xlsx')
 
 // ---------------------------------------------------------------------------
 // Sheet 1: Scenario Summary
@@ -55,8 +54,7 @@ type XLSXModule = any
 
 function addSummarySheet(
   XLSX: XLSXModule,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  wb: any,
+  wb: import('xlsx').WorkBook,
   state: FormState,
   analysis: CliffAnalysis,
   t: (key: I18nKey) => string,
@@ -106,8 +104,7 @@ function addSummarySheet(
 
 function addProgramStatusSheet(
   XLSX: XLSXModule,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  wb: any,
+  wb: import('xlsx').WorkBook,
   programs: ProgramResult[],
   t: (key: I18nKey) => string,
 ) {
@@ -155,28 +152,15 @@ function addProgramStatusSheet(
 
 function addBreakEvenSheet(
   XLSX: XLSXModule,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  wb: any,
+  wb: import('xlsx').WorkBook,
   state: FormState,
   analysis: CliffAnalysis,
   t: (key: I18nKey) => string,
 ) {
-  const cv: CustomBenefitValues = {
-    customBadgerCareAdultValue: state.customBadgerCareAdultValue,
-    customBadgerCareChildValue: state.customBadgerCareChildValue,
-    customWisconsinSharesValue: state.customWisconsinSharesValue,
-  }
-
   const { rows, clearAllRaise } = computeBreakEvenData(
     analysis.programs,
-    {
-      householdSize: state.householdSize,
-      numberOfChildren: state.numberOfChildren,
-      currentMonthlyIncome: state.currentMonthlyIncome,
-      monthlyRent: state.monthlyRent,
-      monthlyChildcareCosts: state.monthlyChildcareCosts,
-    },
-    cv,
+    toBreakEvenInputs(state),
+    toCustomBenefitValues(state),
   )
 
   const header = [
@@ -215,28 +199,15 @@ function addBreakEvenSheet(
 
 function addSensitivitySheet(
   XLSX: XLSXModule,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  wb: any,
+  wb: import('xlsx').WorkBook,
   state: FormState,
   analysis: CliffAnalysis,
   t: (key: I18nKey) => string,
 ) {
-  const cv: CustomBenefitValues = {
-    customBadgerCareAdultValue: state.customBadgerCareAdultValue,
-    customBadgerCareChildValue: state.customBadgerCareChildValue,
-    customWisconsinSharesValue: state.customWisconsinSharesValue,
-  }
-
   const { points } = computeRaiseSweep(
-    {
-      householdSize: state.householdSize,
-      numberOfChildren: state.numberOfChildren,
-      currentMonthlyIncome: state.currentMonthlyIncome,
-      monthlyRent: state.monthlyRent,
-      monthlyChildcareCosts: state.monthlyChildcareCosts,
-    },
+    toBreakEvenInputs(state),
     analysis.programs,
-    cv,
+    toCustomBenefitValues(state),
   )
 
   const header = [
@@ -265,8 +236,7 @@ function addSensitivitySheet(
 
 function addBenefitLevelsSheet(
   XLSX: XLSXModule,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  wb: any,
+  wb: import('xlsx').WorkBook,
   state: FormState,
   t: (key: I18nKey) => string,
 ) {
@@ -305,8 +275,7 @@ function addBenefitLevelsSheet(
 
 function addReferenceSheet(
   XLSX: XLSXModule,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  wb: any,
+  wb: import('xlsx').WorkBook,
   t: (key: I18nKey) => string,
 ) {
   const rows: (string | number)[][] = []

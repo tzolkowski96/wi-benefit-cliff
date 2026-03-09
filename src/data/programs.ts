@@ -80,7 +80,6 @@ type ProgramKey =
 export interface ProgramConfig {
   key: ProgramKey
   name: string
-  description: string
   cliffType: CliffType
   basis: string
   color: string
@@ -98,7 +97,6 @@ export const PROGRAMS: ProgramConfig[] = [
   {
     key: 'foodshare',
     name: 'FoodShare',
-    description: 'Food assistance (Wisconsin SNAP)',
     cliffType: 'gradual',
     basis: '200% FPL',
     color: '#2D6A4F',
@@ -110,7 +108,6 @@ export const PROGRAMS: ProgramConfig[] = [
   {
     key: 'badgercare_adult',
     name: 'BadgerCare Plus (Adults)',
-    description: 'Health insurance for adults 19-64',
     cliffType: 'hard',
     basis: '100% FPL',
     color: '#1B4965',
@@ -122,7 +119,6 @@ export const PROGRAMS: ProgramConfig[] = [
   {
     key: 'badgercare_children',
     name: 'BadgerCare Plus (Children)',
-    description: 'Health insurance for children under 19',
     cliffType: 'hard',
     basis: '306% FPL',
     color: '#3D5A80',
@@ -134,7 +130,6 @@ export const PROGRAMS: ProgramConfig[] = [
   {
     key: 'wisconsin_shares',
     name: 'Wisconsin Shares',
-    description: 'Child care subsidy',
     cliffType: 'hard',
     basis: '85% SMI (exit)',
     color: '#774936',
@@ -147,7 +142,6 @@ export const PROGRAMS: ProgramConfig[] = [
   {
     key: 'wheap',
     name: 'WHEAP',
-    description: 'Heating & electric bill assistance',
     cliffType: 'hard',
     basis: '60% SMI',
     color: '#9B2226',
@@ -159,7 +153,6 @@ export const PROGRAMS: ProgramConfig[] = [
   {
     key: 'school_meals_free',
     name: 'Free School Meals',
-    description: 'Free breakfast and lunch for children',
     cliffType: 'tier_shift',
     basis: '130% FPL',
     color: '#5F0F40',
@@ -171,7 +164,6 @@ export const PROGRAMS: ProgramConfig[] = [
   {
     key: 'school_meals_reduced',
     name: 'Reduced School Meals',
-    description: 'Reduced-price breakfast and lunch for children',
     cliffType: 'hard',
     basis: '185% FPL',
     color: '#823038',

@@ -3,10 +3,10 @@ import {
   ComposedChart, Area, XAxis, YAxis, ReferenceLine, ResponsiveContainer, Tooltip, Legend,
 } from 'recharts'
 import type { ProgramResult, FormState } from '../types/index.ts'
-import type { CustomBenefitValues } from '../hooks/useCliffAnalysis.ts'
 import { useI18n } from '../hooks/useI18n.ts'
 import { formatMoney } from '../utils/format.ts'
 import { computeRaiseSweep } from '../utils/sweep.ts'
+import { toBreakEvenInputs, toCustomBenefitValues } from '../utils/formHelpers.ts'
 
 interface Props {
   programs: ProgramResult[]
@@ -21,19 +21,7 @@ export default function IncomeSweepChart({ programs, state }: Props) {
   const { t } = useI18n()
 
   const { data, cliffs } = useMemo(() => {
-    const inputs = {
-      householdSize: state.householdSize,
-      numberOfChildren: state.numberOfChildren,
-      currentMonthlyIncome: state.currentMonthlyIncome,
-      monthlyRent: state.monthlyRent,
-      monthlyChildcareCosts: state.monthlyChildcareCosts,
-    }
-    const cv: CustomBenefitValues = {
-      customBadgerCareAdultValue: state.customBadgerCareAdultValue,
-      customBadgerCareChildValue: state.customBadgerCareChildValue,
-      customWisconsinSharesValue: state.customWisconsinSharesValue,
-    }
-    const { points, cliffPoints } = computeRaiseSweep(inputs, programs, cv)
+    const { points, cliffPoints } = computeRaiseSweep(toBreakEvenInputs(state), programs, toCustomBenefitValues(state))
     return {
       data: points.map((p) => ({
         raise: p.raiseMonthly,

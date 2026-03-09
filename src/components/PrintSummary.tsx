@@ -5,6 +5,7 @@ import type { I18nKey } from '../i18n/en.ts'
 import { formatMoney, formatMoneyWithSign } from '../utils/format.ts'
 import { monthlyToHourly } from '../utils/wage.ts'
 import { computeBreakEvenData } from '../utils/breakeven.ts'
+import { toBreakEvenInputs, toCustomBenefitValues } from '../utils/formHelpers.ts'
 
 interface Props {
   state: FormState
@@ -18,18 +19,8 @@ export default function PrintSummary({ state, analysis }: Props) {
 
   const breakEvenData = useMemo(() => computeBreakEvenData(
     programs,
-    {
-      householdSize: state.householdSize,
-      numberOfChildren: state.numberOfChildren,
-      currentMonthlyIncome: state.currentMonthlyIncome,
-      monthlyRent: state.monthlyRent,
-      monthlyChildcareCosts: state.monthlyChildcareCosts,
-    },
-    {
-      customBadgerCareAdultValue: state.customBadgerCareAdultValue,
-      customBadgerCareChildValue: state.customBadgerCareChildValue,
-      customWisconsinSharesValue: state.customWisconsinSharesValue,
-    },
+    toBreakEvenInputs(state),
+    toCustomBenefitValues(state),
   ), [programs, state])
 
   return (

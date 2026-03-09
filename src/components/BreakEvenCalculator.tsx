@@ -4,6 +4,7 @@ import { useI18n } from '../hooks/useI18n.ts'
 import { computeBreakEvenData } from '../utils/breakeven.ts'
 import { formatMoney } from '../utils/format.ts'
 import { monthlyToHourly } from '../utils/wage.ts'
+import { toBreakEvenInputs, toCustomBenefitValues } from '../utils/formHelpers.ts'
 
 interface Props {
   programs: ProgramResult[]
@@ -22,18 +23,13 @@ function formatHourly(monthly: number): string {
 
 export default function BreakEvenCalculator({ programs, state }: Props) {
   const { t } = useI18n()
-  const {
-    householdSize, numberOfChildren, currentMonthlyIncome,
-    monthlyRent, monthlyChildcareCosts, raiseMonthly,
-    customBadgerCareAdultValue, customBadgerCareChildValue, customWisconsinSharesValue,
-  } = state
+  const { raiseMonthly } = state
 
-  const { rows, clearAllRaise } = useMemo(() => {
-    const inputs = { householdSize, numberOfChildren, currentMonthlyIncome, monthlyRent, monthlyChildcareCosts }
-    const cv = { customBadgerCareAdultValue, customBadgerCareChildValue, customWisconsinSharesValue }
-    return computeBreakEvenData(programs, inputs, cv)
-  }, [programs, householdSize, numberOfChildren, currentMonthlyIncome, monthlyRent, monthlyChildcareCosts,
-    customBadgerCareAdultValue, customBadgerCareChildValue, customWisconsinSharesValue])
+  const { rows, clearAllRaise } = useMemo(() => computeBreakEvenData(
+    programs,
+    toBreakEvenInputs(state),
+    toCustomBenefitValues(state),
+  ), [programs, state])
 
   if (rows.length === 0) return null
 

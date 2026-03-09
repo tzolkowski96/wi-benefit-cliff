@@ -3,10 +3,10 @@ import {
   BarChart, Bar, XAxis, YAxis, ReferenceLine, Cell, ResponsiveContainer, Tooltip,
 } from 'recharts'
 import type { ProgramResult, FormState } from '../types/index.ts'
-import type { CustomBenefitValues } from '../hooks/useCliffAnalysis.ts'
 import { useI18n } from '../hooks/useI18n.ts'
 import { formatMoney } from '../utils/format.ts'
 import { computeBreakEvenData } from '../utils/breakeven.ts'
+import { toBreakEvenInputs, toCustomBenefitValues } from '../utils/formHelpers.ts'
 
 interface Props {
   programs: ProgramResult[]
@@ -18,24 +18,11 @@ const AMBER = '#E8A838'
 export default function BreakEvenDotPlot({ programs, state }: Props) {
   const { t } = useI18n()
 
-  const { rows } = useMemo(() => {
-    const cv: CustomBenefitValues = {
-      customBadgerCareAdultValue: state.customBadgerCareAdultValue,
-      customBadgerCareChildValue: state.customBadgerCareChildValue,
-      customWisconsinSharesValue: state.customWisconsinSharesValue,
-    }
-    return computeBreakEvenData(
-      programs,
-      {
-        householdSize: state.householdSize,
-        numberOfChildren: state.numberOfChildren,
-        currentMonthlyIncome: state.currentMonthlyIncome,
-        monthlyRent: state.monthlyRent,
-        monthlyChildcareCosts: state.monthlyChildcareCosts,
-      },
-      cv,
-    )
-  }, [programs, state])
+  const { rows } = useMemo(() => computeBreakEvenData(
+    programs,
+    toBreakEvenInputs(state),
+    toCustomBenefitValues(state),
+  ), [programs, state])
 
   if (rows.length === 0) return null
 
