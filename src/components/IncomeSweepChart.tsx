@@ -32,12 +32,31 @@ export default function IncomeSweepChart({ programs, state }: Props) {
     }
   }, [programs, state]) // safeRaiseMax excluded — derived from programs, not an input to the sweep
 
+  // Dynamic title: find the zero crossing
+  const dynamicTitle = useMemo(() => {
+    // Check if net starts negative
+    if (data.length > 0 && data[0]!.net < 0) return t('title.sweepAllNegative')
+    // Find first point where net goes negative
+    const zeroCrossing = data.find((d) => d.net < 0)
+    if (!zeroCrossing) return t('title.sweepAllPositive')
+    return t('title.sweepNegAbove').replace('{amount}', `$${formatMoney(zeroCrossing.raise)}`)
+  }, [data, t])
+
   // Don't render if no programs are eligible (nothing interesting to show)
   const hasEligiblePrograms = programs.some((p) => p.currentlyEligible)
   if (!hasEligiblePrograms) return null
 
+  // Filter cliff labels to avoid overlapping when two are within 5% of range
+  const maxRaise = data.length > 0 ? data[data.length - 1]!.raise : 1
+  const filteredCliffs = cliffs.filter((cliff, i) => {
+    if (i === 0) return true
+    const prev = cliffs[i - 1]!
+    const gap = Math.abs(cliff.raiseMonthly - prev.raiseMonthly)
+    return gap / maxRaise > 0.05
+  })
+
   return (
-    <ChartSection title={t('section.incomeSweep')} description={t('sweep.description')}>
+    <ChartSection title={dynamicTitle} description={t('sweep.description')}>
       <div aria-hidden="true">
         <ResponsiveContainer width="100%" height={280}>
           <ComposedChart data={data} margin={{ top: 10, right: 10, left: 10, bottom: 5 }}>
@@ -73,7 +92,7 @@ export default function IncomeSweepChart({ programs, state }: Props) {
               name={t('sweep.positiveZone')}
             />
 
-            {/* Red negative zone */}
+            {/* Red negative zone — dashed stroke for colorblind differentiation */}
             <Area
               type="monotone"
               dataKey="negative"
@@ -81,13 +100,14 @@ export default function IncomeSweepChart({ programs, state }: Props) {
               fillOpacity={0.15}
               stroke={COLOR.negative}
               strokeWidth={2}
+              strokeDasharray="6 3"
               isAnimationActive={false}
               dot={false}
               name={t('sweep.negativeZone')}
             />
 
-            {/* Cliff markers */}
-            {cliffs.map((cliff, i) => (
+            {/* Cliff markers — filtered to avoid label overlap */}
+            {filteredCliffs.map((cliff, i) => (
               <ReferenceLine
                 key={i}
                 x={cliff.raiseMonthly}

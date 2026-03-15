@@ -1,11 +1,11 @@
 import { useMemo } from 'react'
 import {
-  BarChart, Bar, XAxis, YAxis, ReferenceLine, Cell, ResponsiveContainer, Tooltip,
+  BarChart, Bar, XAxis, YAxis, ReferenceLine, Cell, ResponsiveContainer, Tooltip, LabelList,
 } from 'recharts'
 import type { MonthlyImpact } from '../types/index.ts'
 import { useI18n } from '../hooks/useI18n.ts'
 import { formatMoney } from '../engine/format.ts'
-import { CHART_TICK_STYLE, CHART_TOOLTIP_STYLE } from '../utils/chartStyles.ts'
+import { CHART_TICK_STYLE, CHART_TOOLTIP_STYLE, CHART_FONT_FAMILY } from '../utils/chartStyles.ts'
 import { COLOR } from '../tokens.ts'
 import ChartSection from './ChartSection.tsx'
 
@@ -58,13 +58,22 @@ export default function WaterfallChart({ impact }: Props) {
     return result
   }, [raise, foodshareLoss, schoolMealLoss, wheapLoss, customLosses, netMonthly, totalCalculableLoss, t])
 
+  // Dynamic title: state the finding, not the topic
+  const dynamicTitle = useMemo(() => {
+    if (bars.length === 0) return t('section.waterfall')
+    if (netMonthly >= 0) {
+      return t('title.waterfallPositive').replace('{amount}', `$${formatMoney(Math.abs(netMonthly))}`)
+    }
+    return t('title.waterfallNegative').replace('{amount}', `$${formatMoney(Math.abs(netMonthly))}`)
+  }, [bars.length, netMonthly, t])
+
   if (bars.length === 0) return null
 
   return (
-    <ChartSection title={t('section.waterfall')} className="print:hidden">
+    <ChartSection title={dynamicTitle} className="print:hidden">
       <div aria-hidden="true">
         <ResponsiveContainer width="100%" height={240}>
-          <BarChart data={bars} margin={{ top: 20, right: 10, left: 10, bottom: 5 }}>
+          <BarChart data={bars} margin={{ top: 30, right: 10, left: 10, bottom: 5 }}>
             <XAxis
               dataKey="name"
               tick={{ ...CHART_TICK_STYLE, fill: '#666' }}
@@ -88,11 +97,34 @@ export default function WaterfallChart({ impact }: Props) {
             />
             {/* Invisible base bar */}
             <Bar dataKey="base" stackId="waterfall" fill="transparent" isAnimationActive={false} />
-            {/* Visible value bar */}
+            {/* Visible value bar — loss bars use reduced opacity for colorblind differentiation */}
             <Bar dataKey="value" stackId="waterfall" isAnimationActive={false} radius={[2, 2, 0, 0]}>
               {bars.map((bar, i) => (
-                <Cell key={i} fill={bar.color} />
+                <Cell key={i} fill={bar.color} fillOpacity={bar.color === COLOR.negative ? 0.7 : 1} />
               ))}
+              <LabelList
+                dataKey="label"
+                position="top"
+                content={({ x, y, width, index }: any) => { // eslint-disable-line @typescript-eslint/no-explicit-any
+                  const bar = bars[index]
+                  if (!bar) return null
+                  // Hide labels on small bars (under $15) to prevent overlap
+                  if (bar.value < 15 && bar.color === COLOR.negative) return null
+                  return (
+                    <text
+                      x={(x ?? 0) + (width ?? 0) / 2}
+                      y={(y ?? 0) - 6}
+                      textAnchor="middle"
+                      fontSize={11}
+                      fontFamily={CHART_FONT_FAMILY}
+                      fill={bar.color}
+                      fontWeight={600}
+                    >
+                      {bar.label}
+                    </text>
+                  )
+                }}
+              />
             </Bar>
           </BarChart>
         </ResponsiveContainer>

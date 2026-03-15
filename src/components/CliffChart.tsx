@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import type { ProgramResult } from '../types/index.ts'
 import { useI18n } from '../hooks/useI18n.ts'
 import { formatMoney } from '../engine/format.ts'
@@ -17,6 +18,17 @@ export default function CliffChart({ programs, currentMonthlyIncome, newMonthlyI
     .filter((p) => p.key !== 'school_meals_reduced' || p.currentlyEligible)
     .sort((a, b) => a.limit - b.limit)
 
+  // Dynamic title: state the finding
+  const dynamicTitle = useMemo(() => {
+    const eligible = programs.filter((p) => p.currentlyEligible)
+    const lost = programs.filter((p) => p.lost)
+    if (eligible.length === 0) return t('section.chart')
+    if (lost.length === 0) return t('title.cliffAllSafe')
+    return t('title.cliffSomeLost')
+      .replace('{count}', String(lost.length))
+      .replace('{total}', String(eligible.length))
+  }, [programs, t])
+
   if (displayPrograms.length === 0) return null
 
   const maxIncome = Math.max(
@@ -27,7 +39,7 @@ export default function CliffChart({ programs, currentMonthlyIncome, newMonthlyI
   const pct = (val: number) => Math.min((val / maxIncome) * 100, 100)
 
   return (
-    <ChartSection title={t('section.chart')}>
+    <ChartSection title={dynamicTitle}>
       {/* Visual chart */}
       <div className="relative pb-3" aria-hidden="true">
         {displayPrograms.map((prog) => {

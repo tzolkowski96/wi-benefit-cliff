@@ -1,11 +1,12 @@
+import { useMemo } from 'react'
 import {
-  BarChart, Bar, XAxis, YAxis, ReferenceLine, Cell, ResponsiveContainer, Tooltip,
+  BarChart, Bar, XAxis, YAxis, ReferenceLine, Cell, ResponsiveContainer, Tooltip, LabelList,
 } from 'recharts'
 import type { BreakEvenData } from '../engine/breakeven.ts'
 import { useI18n } from '../hooks/useI18n.ts'
 import { formatMoney } from '../engine/format.ts'
-import { CHART_TICK_STYLE, CHART_TOOLTIP_STYLE, CHART_AXIS_LABEL_STYLE } from '../utils/chartStyles.ts'
-import { COLOR } from '../tokens.ts'
+import { CHART_TICK_STYLE, CHART_TOOLTIP_STYLE, CHART_AXIS_LABEL_STYLE, CHART_FONT_FAMILY } from '../utils/chartStyles.ts'
+import { COLOR, NEUTRAL } from '../tokens.ts'
 import ChartSection from './ChartSection.tsx'
 
 interface Props {
@@ -16,6 +17,19 @@ interface Props {
 export default function BreakEvenDotPlot({ breakEvenData, raiseMonthly }: Props) {
   const { t } = useI18n()
   const { rows } = breakEvenData
+
+  // Dynamic title
+  const dynamicTitle = useMemo(() => {
+    if (rows.length === 0) return t('section.breakEvenPlot')
+    if (rows.length === 1) {
+      return t('title.dotPlotSingle')
+        .replace('{amount}', `$${formatMoney(rows[0]!.breakEvenMonthly)}`)
+        .replace('{program}', rows[0]!.name)
+    }
+    const maxBreakEven = Math.max(...rows.map((r) => r.breakEvenMonthly))
+    return t('title.dotPlotMultiple')
+      .replace('{amount}', `$${formatMoney(maxBreakEven)}`)
+  }, [rows, t])
 
   if (rows.length === 0) return null
 
@@ -31,7 +45,7 @@ export default function BreakEvenDotPlot({ breakEvenData, raiseMonthly }: Props)
   const chartHeight = rows.length * 56 + 60
 
   return (
-    <ChartSection title={t('section.breakEvenPlot')} className="print:hidden">
+    <ChartSection title={dynamicTitle} className="print:hidden">
       <div aria-hidden="true">
         <ResponsiveContainer width="100%" height={chartHeight}>
           <BarChart
@@ -53,7 +67,7 @@ export default function BreakEvenDotPlot({ breakEvenData, raiseMonthly }: Props)
               tick={{ fontSize: 11, fontFamily: "'IBM Plex Sans', sans-serif", fill: '#333', fontWeight: 500 }}
               axisLine={false}
               tickLine={false}
-              width={120}
+              width={100}
             />
 
             {/* Current raise marker */}
@@ -85,33 +99,80 @@ export default function BreakEvenDotPlot({ breakEvenData, raiseMonthly }: Props)
               }}
             />
 
-            {/* Invisible base bar */}
-            <Bar dataKey="base" stackId="dotplot" fill="transparent" isAnimationActive={false} />
+            {/* Invisible base bar — with cliff distance label */}
+            <Bar dataKey="base" stackId="dotplot" fill="transparent" isAnimationActive={false}>
+              <LabelList
+                dataKey="cliffDistance"
+                position="right"
+                content={({ x, y, width, height, value, index }: any) => { // eslint-disable-line @typescript-eslint/no-explicit-any
+                  const d = chartData[index]
+                  if (!d) return null
+                  // Hide cliff label when range is very small (< $50) to avoid overlap with break-even label
+                  if (d.range < 50) return null
+                  return (
+                    <text
+                      x={(x ?? 0) + (width ?? 0) + 4}
+                      y={(y ?? 0) + (height ?? 0) / 2 + 4}
+                      fontSize={10}
+                      fontFamily={CHART_FONT_FAMILY}
+                      fill={NEUTRAL[600]}
+                    >
+                      +${formatMoney(Number(value))}
+                    </text>
+                  )
+                }}
+              />
+            </Bar>
 
-            {/* Range bar: cliff → break-even */}
+            {/* Range bar: cliff → break-even — with break-even label */}
             <Bar dataKey="range" stackId="dotplot" isAnimationActive={false} radius={[0, 4, 4, 0]} barSize={12}>
               {chartData.map((d, i) => (
                 <Cell key={i} fill={d.color} fillOpacity={0.5} stroke={d.color} strokeWidth={1} />
               ))}
+              <LabelList
+                dataKey="breakEvenMonthly"
+                position="right"
+                content={({ x, y, width, height, value, index }: any) => { // eslint-disable-line @typescript-eslint/no-explicit-any
+                  const d = chartData[index]
+                  if (!d) return null
+                  return (
+                    <text
+                      x={(x ?? 0) + (width ?? 0) + 4}
+                      y={(y ?? 0) + (height ?? 0) / 2 + 4}
+                      fontSize={10}
+                      fontFamily={CHART_FONT_FAMILY}
+                      fill={d.color}
+                      fontWeight={600}
+                    >
+                      +${formatMoney(Number(value))}
+                    </text>
+                  )
+                }}
+              />
             </Bar>
           </BarChart>
         </ResponsiveContainer>
       </div>
 
-      {/* Legend — NEUTRAL.600 */}
-      <div className="flex items-center gap-4 text-[11px] text-[#767676] font-mono mt-1 mb-0 pl-[130px]" aria-hidden="true">
-        <span className="flex items-center gap-1">
+      {/* Legend — matches actual chart elements */}
+      {/* NEUTRAL.600 */}
+      <div className="flex items-center gap-4 text-[11px] text-[#767676] font-mono mt-2 mb-0" aria-hidden="true">
+        <span className="flex items-center gap-1.5">
           {/* NEUTRAL.650 */}
-          <span className="inline-block w-2 h-2 rounded-full bg-[#666]" /> {t('dotPlot.cliffDistance')}
+          <span className="inline-block w-[3px] h-3 bg-[#666] rounded-sm" />
+          {t('dotPlot.cliffDistance')}
         </span>
-        <span className="flex items-center gap-1">
+        <span className="flex items-center gap-1.5">
           {/* NEUTRAL.650 */}
-          <span className="inline-block w-4 h-1.5 rounded-sm bg-[#666] opacity-50" /> {t('dotPlot.gap')}
+          <span className="inline-block w-5 h-2 rounded-sm bg-[#666] opacity-50" />
+          {t('dotPlot.gap')}
         </span>
-        <span className="flex items-center gap-1">
-          {/* NEUTRAL.650 */}
-          <span className="inline-block w-2 h-2 rounded-full border border-[#666] bg-white" /> {t('dotPlot.breakEven')}
-        </span>
+        {raiseMonthly > 0 && (
+          <span className="flex items-center gap-1.5">
+            <span className="inline-block w-[2px] h-3" style={{ backgroundColor: COLOR.accent }} />
+            {t('dotPlot.yourRaise')}
+          </span>
+        )}
       </div>
 
       {/* Screen reader table fallback */}

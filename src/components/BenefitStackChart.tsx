@@ -31,8 +31,28 @@ export default function BenefitStackChart({ state }: Props) {
 
   const newIncome = state.currentMonthlyIncome + state.raiseMonthly
 
+  // Dynamic title: compare total benefit at current vs post-raise income
+  const dynamicTitle = useMemo(() => {
+    const findNearest = (income: number) => {
+      let best = stackData[0]!
+      for (const pt of stackData) {
+        if (Math.abs(pt.monthlyIncome - income) < Math.abs(best.monthlyIncome - income)) best = pt
+      }
+      return best.total
+    }
+    const before = findNearest(state.currentMonthlyIncome)
+    const after = findNearest(newIncome)
+    if (before === after) return t('title.stackUnchanged')
+    return t('title.stackDrop')
+      .replace('{before}', `$${formatMoney(before)}`)
+      .replace('{after}', `$${formatMoney(after)}`)
+  }, [stackData, state.currentMonthlyIncome, newIncome, t])
+
+  // When raise is very small (<$100/mo), merge the labels to avoid overlap
+  const smallRaise = state.raiseMonthly > 0 && state.raiseMonthly < 100
+
   return (
-    <ChartSection title={t('section.benefitStack')} description={t('stack.description')}>
+    <ChartSection title={dynamicTitle} description={t('stack.description')}>
       <div aria-hidden="true">
         <ResponsiveContainer width="100%" height={300}>
           <AreaChart data={stackData} margin={{ top: 10, right: 10, left: 10, bottom: 5 }}>
@@ -52,7 +72,7 @@ export default function BenefitStackChart({ state }: Props) {
               label={{ ...CHART_AXIS_LABEL_STYLE, value: t('stack.yAxis'), angle: -90, position: 'insideLeft', offset: 5, fill: '#767676' }}
             />
 
-            {/* Stacked benefit areas */}
+            {/* Stacked benefit areas — WHEAP uses dashed stroke for colorblind differentiation */}
             <Area
               type="stepAfter"
               dataKey="wheap"
@@ -61,8 +81,9 @@ export default function BenefitStackChart({ state }: Props) {
               fillOpacity={0.25}
               stroke={PROGRAM_COLOR.wheap}
               strokeWidth={1.5}
+              strokeDasharray="4 2"
               isAnimationActive={false}
-              name={t('print.wheapLoss')}
+              name={t('stack.legendWheap')}
             />
             {state.numberOfChildren > 0 && (
               <Area
@@ -74,7 +95,7 @@ export default function BenefitStackChart({ state }: Props) {
                 stroke={PROGRAM_COLOR.school_meals_free}
                 strokeWidth={1.5}
                 isAnimationActive={false}
-                name={t('print.schoolMealLoss')}
+                name={t('stack.legendSchoolMeals')}
               />
             )}
             <Area
@@ -86,7 +107,7 @@ export default function BenefitStackChart({ state }: Props) {
               stroke={PROGRAM_COLOR.foodshare}
               strokeWidth={1.5}
               isAnimationActive={false}
-              name={t('print.foodshareLoss')}
+              name={t('stack.legendFoodshare')}
             />
 
             {/* Current income marker */}
@@ -95,7 +116,9 @@ export default function BenefitStackChart({ state }: Props) {
               stroke={COLOR.text}
               strokeWidth={2}
               label={{
-                value: t('stack.currentIncome'),
+                value: smallRaise
+                  ? `${t('stack.currentIncome')} → ${t('stack.afterRaise')}`
+                  : t('stack.currentIncome'),
                 position: 'top',
                 fontSize: 10,
                 fill: COLOR.text,
@@ -104,8 +127,8 @@ export default function BenefitStackChart({ state }: Props) {
               }}
             />
 
-            {/* Post-raise income marker */}
-            {state.raiseMonthly > 0 && (
+            {/* Post-raise income marker — hidden when raise is very small to avoid overlap */}
+            {state.raiseMonthly > 0 && !smallRaise && (
               <ReferenceLine
                 x={newIncome}
                 stroke={COLOR.accent}
@@ -143,9 +166,9 @@ export default function BenefitStackChart({ state }: Props) {
         <thead>
           <tr>
             <th scope="col">{t('stack.xAxis')}</th>
-            <th scope="col">{t('print.foodshareLoss')}</th>
-            {state.numberOfChildren > 0 && <th scope="col">{t('print.schoolMealLoss')}</th>}
-            <th scope="col">{t('print.wheapLoss')}</th>
+            <th scope="col">{t('stack.legendFoodshare')}</th>
+            {state.numberOfChildren > 0 && <th scope="col">{t('stack.legendSchoolMeals')}</th>}
+            <th scope="col">{t('stack.legendWheap')}</th>
             <th scope="col">{t('label.total')}</th>
           </tr>
         </thead>

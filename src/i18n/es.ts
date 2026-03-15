@@ -262,4 +262,25 @@ export const es: Record<I18nKey, string> = {
 
   // Accessibility
   'a11y.skipToContent': 'Saltar al contenido',
+
+  // Dynamic chart titles
+  'title.waterfallPositive': 'Este aumento le da +{amount}/mes después de las pérdidas de beneficios',
+  'title.waterfallNegative': 'Este aumento le cuesta {amount}/mes más de lo que agrega',
+  'title.cliffAllSafe': 'Todos los beneficios seguros con este aumento',
+  'title.cliffSomeLost': 'Este aumento cruza {count} de {total} umbrales de beneficios',
+  'title.sweepNegAbove': 'El impacto neto se vuelve negativo por encima de +{amount}/mes',
+  'title.sweepAllPositive': 'Cada monto de aumento se mantiene neto positivo',
+  'title.sweepAllNegative': 'Cualquier aumento pierde más en beneficios de lo que agrega',
+  'title.stackDrop': 'Los beneficios bajan de {before} a {after} con este aumento',
+  'title.stackUnchanged': 'Los beneficios no cambian con este aumento',
+  'title.dotPlotSingle': 'Necesita +{amount}/mes para recuperar lo perdido de {program}',
+  'title.dotPlotMultiple': 'Supere todos los límites con un aumento de +{amount}/mes o más',
+
+  // Chart source
+  'chart.source': 'Fuente: UW-Madison Extension, WI DHS, USDA FNS (2025)',
+
+  // Benefit stack legend
+  'stack.legendFoodshare': 'Beneficio FoodShare',
+  'stack.legendSchoolMeals': 'Valor de comidas escolares',
+  'stack.legendWheap': 'Beneficio WHEAP',
 }

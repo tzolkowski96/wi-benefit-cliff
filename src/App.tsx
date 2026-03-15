@@ -141,12 +141,12 @@ export default function App() {
         <HouseholdForm state={formState} update={updateForm} />
         <NetImpactBanner impact={analysis.calculableImpact} />
         <CliffWarning analysis={analysis} />
-        <WaterfallChart impact={analysis.calculableImpact} />
         <CliffChart
           programs={analysis.programs}
           currentMonthlyIncome={formState.currentMonthlyIncome}
           newMonthlyIncome={newMonthlyIncome}
         />
+        <WaterfallChart impact={analysis.calculableImpact} />
         <IncomeSweepChart programs={analysis.programs} state={formState} />
         <BenefitStackChart state={formState} />
         <ProgramBreakdown programs={analysis.programs} state={formState} update={updateForm} />

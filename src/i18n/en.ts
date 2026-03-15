@@ -256,6 +256,27 @@ export const en = {
 
   // Accessibility
   'a11y.skipToContent': 'Skip to content',
+
+  // Dynamic chart titles
+  'title.waterfallPositive': 'This raise nets you {amount}/mo after benefit losses',
+  'title.waterfallNegative': 'This raise costs you {amount}/mo more than it adds',
+  'title.cliffAllSafe': 'All benefits safe at this raise',
+  'title.cliffSomeLost': 'This raise crosses {count} of {total} benefit thresholds',
+  'title.sweepNegAbove': 'Net impact turns negative above +{amount}/mo',
+  'title.sweepAllPositive': 'Every raise amount stays net positive',
+  'title.sweepAllNegative': 'Any raise loses more in benefits than it adds',
+  'title.stackDrop': 'Benefits drop from {before} to {after} across this raise',
+  'title.stackUnchanged': 'Benefits unchanged across this raise',
+  'title.dotPlotSingle': 'You need +{amount}/mo to break even past {program}',
+  'title.dotPlotMultiple': 'Clear all cliffs with a raise of +{amount}/mo or more',
+
+  // Chart source
+  'chart.source': 'Source: UW-Madison Extension, WI DHS, USDA FNS (2025)',
+
+  // Benefit stack legend
+  'stack.legendFoodshare': 'FoodShare benefit',
+  'stack.legendSchoolMeals': 'School meal value',
+  'stack.legendWheap': 'WHEAP benefit',
 } as const
 
 export type I18nKey = keyof typeof en
