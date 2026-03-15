@@ -39,7 +39,7 @@ export default function IncomeSweepChart({ programs, state }: Props) {
     // Find first point where net goes negative
     const zeroCrossing = data.find((d) => d.net < 0)
     if (!zeroCrossing) return t('title.sweepAllPositive')
-    return t('title.sweepNegAbove').replace('{amount}', `$${formatMoney(zeroCrossing.raise)}`)
+    return t('title.sweepNegAbove').replace('{amount}', formatMoney(zeroCrossing.raise))
   }, [data, t])
 
   // Don't render if no programs are eligible (nothing interesting to show)

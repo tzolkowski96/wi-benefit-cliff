@@ -44,8 +44,8 @@ export default function BenefitStackChart({ state }: Props) {
     const after = findNearest(newIncome)
     if (before === after) return t('title.stackUnchanged')
     return t('title.stackDrop')
-      .replace('{before}', `$${formatMoney(before)}`)
-      .replace('{after}', `$${formatMoney(after)}`)
+      .replace('{before}', formatMoney(before))
+      .replace('{after}', formatMoney(after))
   }, [stackData, state.currentMonthlyIncome, newIncome, t])
 
   // When raise is very small (<$100/mo), merge the labels to avoid overlap

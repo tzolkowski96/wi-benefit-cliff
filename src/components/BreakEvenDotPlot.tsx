@@ -23,12 +23,12 @@ export default function BreakEvenDotPlot({ breakEvenData, raiseMonthly }: Props)
     if (rows.length === 0) return t('section.breakEvenPlot')
     if (rows.length === 1) {
       return t('title.dotPlotSingle')
-        .replace('{amount}', `$${formatMoney(rows[0]!.breakEvenMonthly)}`)
+        .replace('{amount}', formatMoney(rows[0]!.breakEvenMonthly))
         .replace('{program}', rows[0]!.name)
     }
     const maxBreakEven = Math.max(...rows.map((r) => r.breakEvenMonthly))
     return t('title.dotPlotMultiple')
-      .replace('{amount}', `$${formatMoney(maxBreakEven)}`)
+      .replace('{amount}', formatMoney(maxBreakEven))
   }, [rows, t])
 
   if (rows.length === 0) return null

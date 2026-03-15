@@ -62,9 +62,9 @@ export default function WaterfallChart({ impact }: Props) {
   const dynamicTitle = useMemo(() => {
     if (bars.length === 0) return t('section.waterfall')
     if (netMonthly >= 0) {
-      return t('title.waterfallPositive').replace('{amount}', `$${formatMoney(Math.abs(netMonthly))}`)
+      return t('title.waterfallPositive').replace('{amount}', formatMoney(Math.abs(netMonthly)))
     }
-    return t('title.waterfallNegative').replace('{amount}', `$${formatMoney(Math.abs(netMonthly))}`)
+    return t('title.waterfallNegative').replace('{amount}', formatMoney(Math.abs(netMonthly)))
   }, [bars.length, netMonthly, t])
 
   if (bars.length === 0) return null
