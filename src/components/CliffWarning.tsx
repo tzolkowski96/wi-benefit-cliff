@@ -20,10 +20,12 @@ export default function CliffWarning({ analysis }: Props) {
   // Negative net: red warning
   if (cliffWarning) {
     return (
+      /* ALERT.negativeBg, ALERT.negativeBorder */
       <div
         role="alert"
         className="bg-[#FDE8E8] border border-[#E5ADAD] rounded-sm px-5 py-4 mb-5 text-sm leading-relaxed"
       >
+        {/* COLOR.negative */}
         <strong className="text-[#9B2226]">
           <span aria-hidden="true">&#9888; </span>{t('warning.cliffTitle')}:
         </strong>{' '}
@@ -40,6 +42,7 @@ export default function CliffWarning({ analysis }: Props) {
   // Positive net but some programs lost: amber heads-up
   if (lostPrograms.length > 0 && netMonthly >= 0) {
     return (
+      /* ALERT.warningBg, ALERT.warningBorder, ALERT.warningText */
       <div role="alert" className="bg-[#FFF8E1] border border-[#E0C97B] rounded-sm px-5 py-4 mb-5 text-sm leading-relaxed">
         <strong className="text-[#8B6914]">
           <span aria-hidden="true">&#9888; </span>{t('warning.headsUp')}:

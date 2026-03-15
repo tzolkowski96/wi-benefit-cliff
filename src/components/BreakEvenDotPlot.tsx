@@ -5,6 +5,7 @@ import type { BreakEvenData } from '../engine/breakeven.ts'
 import { useI18n } from '../hooks/useI18n.ts'
 import { formatMoney } from '../engine/format.ts'
 import { CHART_TICK_STYLE, CHART_TOOLTIP_STYLE, CHART_AXIS_LABEL_STYLE } from '../utils/chartStyles.ts'
+import ChartSection from './ChartSection.tsx'
 
 interface Props {
   breakEvenData: BreakEvenData
@@ -31,11 +32,7 @@ export default function BreakEvenDotPlot({ breakEvenData, raiseMonthly }: Props)
   const chartHeight = rows.length * 56 + 60
 
   return (
-    <section className="bg-white border border-[#ddd] rounded-sm p-6 mb-5 print:hidden">
-      <h2 className="text-xs font-semibold uppercase tracking-[0.08em] text-[#666] mb-4 font-mono">
-        {t('section.breakEvenPlot')}
-      </h2>
-
+    <ChartSection title={t('section.breakEvenPlot')} className="print:hidden">
       <div aria-hidden="true">
         <ResponsiveContainer width="100%" height={chartHeight}>
           <BarChart
@@ -135,6 +132,6 @@ export default function BreakEvenDotPlot({ breakEvenData, raiseMonthly }: Props)
           ))}
         </tbody>
       </table>
-    </section>
+    </ChartSection>
   )
 }

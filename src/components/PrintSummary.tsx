@@ -19,11 +19,12 @@ export default function PrintSummary({ state, analysis, breakEvenData }: Props) 
   return (
     <div className="print-summary hidden print:block print:p-8 print:text-[12px] print:text-black print:bg-white">
       <h1 className="text-xl font-bold mb-1">{t('print.title')}</h1>
+      {/* NEUTRAL.650 */}
       <p className="text-[11px] text-[#666] mb-4">
         {t('print.generated')} {new Date().toLocaleDateString(DATE_LOCALE[lang] ?? 'en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
       </p>
 
-      {/* Household details */}
+      {/* Household details — NEUTRAL.300 */}
       <div className="mb-4 p-3 border border-[#ddd]">
         <h2 className="text-xs font-bold uppercase tracking-wider mb-2">{t('print.householdDetails')}</h2>
         <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-[12px]">
@@ -38,11 +39,13 @@ export default function PrintSummary({ state, analysis, breakEvenData }: Props) 
       </div>
 
       {/* Net Impact */}
+      {/* COLOR.positive, COLOR.negative */}
       <div className={`mb-4 p-3 border-2 ${netMonthly >= 0 ? 'border-[#2D6A4F]' : 'border-[#9B2226]'}`}>
         <h2 className="text-xs font-bold uppercase tracking-wider mb-2">{t('print.netImpact')}</h2>
         <div className="text-lg font-bold font-mono">
           {formatMoneyWithSign(netMonthly)}{t('unit.perMonth')} ({formatMoneyWithSign(netAnnual)}{t('unit.perYear')})
         </div>
+        {/* NEUTRAL.650 */}
         <div className="text-[11px] mt-1 text-[#666]">
           {t('result.raise')}: +{formatMoney(calculableImpact.raise)}{t('unit.perMonth')}
           {foodshareLoss > 0 && <> | {t('print.foodshareLoss')}: -{formatMoney(foodshareLoss)}</>}
@@ -55,6 +58,7 @@ export default function PrintSummary({ state, analysis, breakEvenData }: Props) 
       {/* Program statuses table */}
       <table className="w-full border-collapse mb-4 text-[11px]">
         <thead>
+          {/* NEUTRAL.900 */}
           <tr className="border-b-2 border-[#333]">
             <th className="text-left py-1 font-bold">{t('print.program')}</th>
             <th className="text-left py-1 font-bold">{t('print.threshold')}</th>
@@ -65,6 +69,7 @@ export default function PrintSummary({ state, analysis, breakEvenData }: Props) 
         </thead>
         <tbody>
           {programs.map((prog) => (
+            /* NEUTRAL.300 */
             <tr key={prog.key} className="border-b border-[#ddd]">
               <td className="py-1.5">{prog.name}</td>
               <td className="py-1.5 font-mono text-[10px]">
@@ -95,6 +100,7 @@ export default function PrintSummary({ state, analysis, breakEvenData }: Props) 
       </table>
 
       {/* Uncalculated losses */}
+      {/* ALERT.warningBorder, ALERT.warningBg */}
       {uncalculatedLosses.length > 0 && (
         <div className="mb-4 p-3 border border-[#E0C97B] bg-[#FFF8E1]">
           <h2 className="text-xs font-bold uppercase tracking-wider mb-1">{t('section.additionalRisks')}</h2>
@@ -104,7 +110,7 @@ export default function PrintSummary({ state, analysis, breakEvenData }: Props) 
         </div>
       )}
 
-      {/* Safe raise */}
+      {/* Safe raise — NEUTRAL.300 */}
       <div className="mb-4 p-3 border border-[#ddd]">
         <h2 className="text-xs font-bold uppercase tracking-wider mb-1">{t('print.safeRaise')}</h2>
         <p className="text-[12px]">
@@ -115,11 +121,13 @@ export default function PrintSummary({ state, analysis, breakEvenData }: Props) 
       </div>
 
       {/* Break-even raises */}
+      {/* NEUTRAL.300 */}
       {breakEvenData.rows.length > 0 && (
         <div className="mb-4 p-3 border border-[#ddd]">
           <h2 className="text-xs font-bold uppercase tracking-wider mb-2">{t('print.breakEven')}</h2>
           <table className="w-full border-collapse text-[11px] mb-2">
             <thead>
+              {/* NEUTRAL.500 */}
               <tr className="border-b border-[#999]">
                 <th className="text-left py-1 font-bold">{t('print.program')}</th>
                 <th className="text-right py-1 font-bold">{t('print.cliffAt')}</th>
@@ -129,6 +137,7 @@ export default function PrintSummary({ state, analysis, breakEvenData }: Props) 
             </thead>
             <tbody>
               {breakEvenData.rows.map((row) => (
+                /* NEUTRAL.200 */
                 <tr key={row.name} className="border-b border-[#eee]">
                   <td className="py-1">{row.name}</td>
                   <td className="py-1 font-mono text-right">+{formatMoney(row.cliffDistance)}{t('unit.perMonth')}</td>
@@ -148,7 +157,7 @@ export default function PrintSummary({ state, analysis, breakEvenData }: Props) 
         </div>
       )}
 
-      {/* Disclaimer */}
+      {/* Disclaimer — NEUTRAL.600, NEUTRAL.300 */}
       <div className="text-[10px] text-[#767676] leading-relaxed border-t border-[#ddd] pt-3">
         <strong>{t('label.disclaimer')}:</strong> {t('disclaimer.text')}{' '}
         {t('disclaimer.contact')}

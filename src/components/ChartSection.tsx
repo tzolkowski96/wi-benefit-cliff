@@ -19,10 +19,13 @@ interface Props {
 
 export default function ChartSection({ title, description, className = '', children }: Props) {
   return (
+    /* NEUTRAL.300 */
     <section className={`bg-white border border-[#ddd] rounded-sm p-6 mb-5 ${className}`.trim()}>
+      {/* NEUTRAL.650 */}
       <h2 className="text-xs font-semibold uppercase tracking-[0.08em] text-[#666] mb-1 font-mono">
         {title}
       </h2>
+      {/* NEUTRAL.600 */}
       {description && (
         <p className="text-[12px] text-[#767676] mb-4 leading-relaxed">
           {description}

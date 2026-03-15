@@ -38,9 +38,11 @@ export default function CliffChart({ programs, currentMonthlyIncome, newMonthlyI
           return (
             <div key={prog.key} className="mb-2.5">
               <div className="flex justify-between items-center mb-1">
+                {/* COLOR.text, NEUTRAL.600 */}
                 <span className={`text-[13px] font-medium ${prog.currentlyEligible ? 'text-[#1a1a1a]' : 'text-[#767676]'}`}>
                   {prog.name}
                 </span>
+                {/* COLOR.negative, NEUTRAL.650, NEUTRAL.600 */}
                 <span className={`text-[11px] font-mono ${
                   prog.lost ? 'text-[#9B2226] font-bold'
                     : prog.currentlyEligible ? 'text-[#666]'
@@ -56,6 +58,7 @@ export default function CliffChart({ programs, currentMonthlyIncome, newMonthlyI
                   }
                 </span>
               </div>
+              {/* NEUTRAL.100 */}
               <div className="relative h-6 bg-[#f0f0f0] rounded-sm overflow-visible">
                 {/* Eligible zone fill */}
                 <div
@@ -72,6 +75,7 @@ export default function CliffChart({ programs, currentMonthlyIncome, newMonthlyI
                 />
                 {/* Current income marker */}
                 <div
+                  /* COLOR.text */
                   className="absolute top-0.5 bottom-0.5 w-[3px] bg-[#1a1a1a] rounded-sm z-[2]"
                   style={{ left: `${Math.min(currentPct, 99)}%` }}
                 />
@@ -81,7 +85,7 @@ export default function CliffChart({ programs, currentMonthlyIncome, newMonthlyI
                     className="absolute top-0.5 bottom-0.5 w-[3px] rounded-sm z-[2]"
                     style={{
                       left: `${Math.min(newPct, 99)}%`,
-                      backgroundColor: prog.lost ? '#9B2226' : '#E8A838',
+                      backgroundColor: prog.lost ? '#9B2226' : '#E8A838', // COLOR.negative / COLOR.accent
                     }}
                   />
                 )}
@@ -98,18 +102,22 @@ export default function CliffChart({ programs, currentMonthlyIncome, newMonthlyI
         })}
 
         {/* Legend */}
+        {/* NEUTRAL.600 */}
         <div className="flex flex-wrap gap-x-4 gap-y-1 mt-4 text-[11px] text-[#767676]">
           <div className="flex items-center gap-1">
+            {/* COLOR.text */}
             <div className="w-3 h-[3px] bg-[#1a1a1a] rounded-sm" />
             {t('chart.current')} ({formatMoney(currentMonthlyIncome)})
           </div>
           {newMonthlyIncome !== currentMonthlyIncome && (
             <div className="flex items-center gap-1">
+              {/* COLOR.accent */}
               <div className="w-3 h-[3px] bg-[#E8A838] rounded-sm" />
               {t('chart.afterRaise')} ({formatMoney(newMonthlyIncome)})
             </div>
           )}
           <div className="flex items-center gap-1">
+            {/* NEUTRAL.650 */}
             <div className="w-0.5 h-3 bg-[#666] rounded-sm" />
             {t('chart.cutoff')}
           </div>

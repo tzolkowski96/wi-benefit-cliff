@@ -19,6 +19,7 @@ function CliffTypeBadge({ type }: { type: string }) {
   const { t } = useI18n()
   const labelKey = `cliffType.${type}` as const
   const label = t(labelKey as 'cliffType.hard' | 'cliffType.gradual' | 'cliffType.tier_shift')
+  /* COLOR.negative, COLOR.positive, COLOR.accent + ALERT.warningText */
   const colors: Record<string, string> = {
     hard: 'bg-[#9B2226]/10 text-[#9B2226]',
     gradual: 'bg-[#2D6A4F]/10 text-[#2D6A4F]',
@@ -36,6 +37,7 @@ function StatusBadge({ prog }: { prog: ProgramResult }) {
 
   if (!prog.currentlyEligible) {
     return (
+      /* NEUTRAL.50, NEUTRAL.600 */
       <span className="inline-flex items-center gap-1 text-xs font-bold font-mono px-2.5 py-1 rounded-sm bg-[#f5f5f5] text-[#767676]">
         {t('result.na')}
       </span>
@@ -45,6 +47,7 @@ function StatusBadge({ prog }: { prog: ProgramResult }) {
   // Tier shift: show tier transition
   if (prog.cliffType === 'tier_shift' && prog.lost && prog.currentTier && prog.newTier) {
     return (
+      /* ALERT.warningBg, ALERT.warningText */
       <span className="inline-flex items-center gap-1 text-xs font-bold font-mono px-2.5 py-1 rounded-sm bg-[#FFF8E1] text-[#8B6914]">
         <span aria-hidden="true">&darr;</span>
         {prog.currentTier.toUpperCase()} &rarr; {prog.newTier.toUpperCase()}
@@ -54,6 +57,7 @@ function StatusBadge({ prog }: { prog: ProgramResult }) {
 
   if (prog.lost) {
     return (
+      /* ALERT.negativeBg, COLOR.negative */
       <span className="inline-flex items-center gap-1 text-xs font-bold font-mono px-2.5 py-1 rounded-sm bg-[#FDE8E8] text-[#9B2226]">
         <span aria-hidden="true">&darr;</span> {t('result.lost')}
       </span>
@@ -61,6 +65,7 @@ function StatusBadge({ prog }: { prog: ProgramResult }) {
   }
 
   return (
+    /* ALERT.positiveBg, COLOR.positive */
     <span className="inline-flex items-center gap-1 text-xs font-bold font-mono px-2.5 py-1 rounded-sm bg-[#EDF6ED] text-[#2D6A4F]">
       <span aria-hidden="true">&#10003;</span> {t('result.keep')}
     </span>
@@ -73,7 +78,9 @@ export default function ProgramBreakdown({ programs, state, update }: Props) {
   if (programs.length === 0) return null
 
   return (
+    /* NEUTRAL.300 */
     <section className="bg-white border border-[#ddd] rounded-sm p-6 mb-5">
+      {/* NEUTRAL.650 */}
       <h2 className="text-xs font-semibold uppercase tracking-[0.08em] text-[#666] mb-4 font-mono m-0">
         {t('section.breakdown')}
       </h2>
@@ -86,6 +93,7 @@ export default function ProgramBreakdown({ programs, state, update }: Props) {
           return (
             <div
               key={prog.key}
+              /* NEUTRAL.200 */
               className={`py-3 border-b border-[#eee] last:border-b-0 ${
                 !prog.currentlyEligible ? 'opacity-60' : ''
               }`}
@@ -96,6 +104,7 @@ export default function ProgramBreakdown({ programs, state, update }: Props) {
                   <div className="text-sm font-semibold" style={{ color: prog.color }}>
                     {prog.name}
                   </div>
+                  {/* NEUTRAL.600 */}
                   <div className="text-[11px] text-[#767676]">
                     {prog.key === 'wisconsin_shares' && prog.entryLimit && prog.exitLimit ? (
                       <>
@@ -113,6 +122,7 @@ export default function ProgramBreakdown({ programs, state, update }: Props) {
               </div>
 
               {/* Value impact line */}
+              {/* NEUTRAL.650 */}
               {prog.currentlyEligible && (
                 <div className="text-xs font-mono text-[#666] mt-1">
                   {prog.calculable ? (
@@ -120,23 +130,27 @@ export default function ProgramBreakdown({ programs, state, update }: Props) {
                       <>
                         {formatMoney(prog.currentMonthlyValue)}{t('unit.perMonth')} &rarr; {formatMoney(prog.newMonthlyValue ?? 0)}{t('unit.perMonth')}
                         {prog.monthlyLoss !== null && prog.monthlyLoss > 0 && (
+                          /* COLOR.negative */
                           <span className="text-[#9B2226] font-semibold ml-1">
                             (-{formatMoney(prog.monthlyLoss)})
                           </span>
                         )}
                         {prog.monthlyLoss === 0 && (
+                          /* COLOR.positive */
                           <span className="text-[#2D6A4F] ml-1">{t('result.noChange')}</span>
                         )}
                       </>
                     ) : null
                   ) : (
                     <div>
+                      {/* NEUTRAL.600 */}
                       <span className="text-[#767676] italic">
                         {t('program.eligibilityOnly')}
                       </span>
                       {/* Inline custom value input */}
                       {customKey && (
                         <div className="mt-1.5 flex items-center gap-1.5">
+                          {/* NEUTRAL.600 */}
                           <span className="text-[11px] text-[#767676] font-sans not-italic">{t('form.customValuePrompt')}</span>
                           <span className="text-[#767676]">$</span>
                           <input
@@ -149,6 +163,7 @@ export default function ProgramBreakdown({ programs, state, update }: Props) {
                               const val = e.target.value
                               update({ [customKey]: val === '' ? null : Math.max(0, Math.round(Number(val))) })
                             }}
+                            /* NEUTRAL.300, COLOR.text (focus) */
                             className="w-[72px] py-0.5 px-1.5 border border-[#ddd] rounded-sm text-xs font-mono outline-none focus:border-[#1a1a1a] focus:ring-1 focus:ring-[#1a1a1a]"
                             aria-label={t('a11y.customValueFor').replace('{name}', prog.name)}
                           />
@@ -164,6 +179,7 @@ export default function ProgramBreakdown({ programs, state, update }: Props) {
       </div>
 
       {/* Tier 2 note */}
+      {/* NEUTRAL.200, NEUTRAL.600 */}
       {programs.some((p) => !p.calculable && p.currentlyEligible) && (
         <div className="mt-4 pt-3 border-t border-[#eee] text-[11px] text-[#767676] leading-relaxed">
           {t('tier2.note')}

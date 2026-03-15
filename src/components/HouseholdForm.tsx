@@ -18,7 +18,9 @@ export default function HouseholdForm({ state, update }: Props) {
   const maxChildren = Math.max(0, householdSize - 1)
 
   return (
+    /* NEUTRAL.300 */
     <section className="bg-white border border-[#ddd] rounded-sm p-6 mb-5">
+      {/* NEUTRAL.650 */}
       <h2 className="text-xs font-semibold uppercase tracking-[0.08em] text-[#666] mb-4 font-mono m-0">
         {t('form.sectionLabel')}
       </h2>
@@ -26,6 +28,7 @@ export default function HouseholdForm({ state, update }: Props) {
       {/* Row 1: Household size + Children */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
         <fieldset className="border-0 p-0 m-0">
+          {/* NEUTRAL.800 */}
           <legend className="text-xs font-semibold uppercase tracking-[0.05em] text-[#555] mb-1.5 font-mono">
             {t('form.householdSize')}
           </legend>
@@ -37,6 +40,7 @@ export default function HouseholdForm({ state, update }: Props) {
                 role="radio"
                 aria-checked={householdSize === n}
                 onClick={() => update({ householdSize: n })}
+                /* COLOR.text (active), NEUTRAL.900 + NEUTRAL.400 + NEUTRAL.500 (inactive) */
                 className={`w-[38px] h-[38px] rounded-sm text-sm font-semibold font-mono cursor-pointer
                   ${householdSize === n
                     ? 'bg-[#1a1a1a] text-white border-2 border-[#1a1a1a]'
@@ -50,6 +54,7 @@ export default function HouseholdForm({ state, update }: Props) {
         </fieldset>
 
         <fieldset className="border-0 p-0 m-0">
+          {/* NEUTRAL.800 */}
           <legend className="text-xs font-semibold uppercase tracking-[0.05em] text-[#555] mb-1.5 font-mono">
             {t('form.numberOfChildren')}
           </legend>
@@ -62,6 +67,7 @@ export default function HouseholdForm({ state, update }: Props) {
                 aria-checked={numberOfChildren === n}
                 onClick={() => update({ numberOfChildren: n })}
                 disabled={householdSize === 1 && n > 0}
+                /* COLOR.text (active), NEUTRAL.900 + NEUTRAL.400 + NEUTRAL.500 (inactive), NEUTRAL.700 (disabled) */
                 className={`w-[38px] h-[38px] rounded-sm text-sm font-semibold font-mono cursor-pointer
                   ${numberOfChildren === n
                     ? 'bg-[#1a1a1a] text-white border-2 border-[#1a1a1a]'
@@ -78,6 +84,7 @@ export default function HouseholdForm({ state, update }: Props) {
 
       {/* Income type toggle */}
       <div className="mb-4">
+        {/* NEUTRAL.800 */}
         <span className="block text-xs font-semibold uppercase tracking-[0.05em] text-[#555] mb-1.5 font-mono">
           {t('form.incomeType')}
         </span>
@@ -89,6 +96,7 @@ export default function HouseholdForm({ state, update }: Props) {
               role="radio"
               aria-checked={incomeType === type}
               onClick={() => update({ incomeType: type })}
+              /* COLOR.text (active), NEUTRAL.900 + NEUTRAL.400 + NEUTRAL.500 (inactive) */
               className={`px-5 py-2 rounded-sm text-sm font-medium cursor-pointer
                 ${incomeType === type
                   ? 'bg-[#1a1a1a] text-white border-2 border-[#1a1a1a]'
@@ -104,10 +112,12 @@ export default function HouseholdForm({ state, update }: Props) {
       {/* Row 2: Income + Raise */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
+          {/* NEUTRAL.800 */}
           <label htmlFor="income-input" className="block text-xs font-semibold uppercase tracking-[0.05em] text-[#555] mb-1.5 font-mono">
             {incomeType === 'hourly' ? t('form.hourlyWage') : t('form.monthlyIncome')}
           </label>
           <div className="relative">
+            {/* NEUTRAL.600 */}
             <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#767676] text-base font-semibold">$</span>
             <input
               id="income-input"
@@ -120,6 +130,7 @@ export default function HouseholdForm({ state, update }: Props) {
                 if (incomeType === 'hourly') update({ hourlyWage: val })
                 else update({ monthlyIncome: val })
               }}
+              /* NEUTRAL.400, COLOR.text (focus) */
               className="w-full py-2.5 pl-7 pr-3 border border-[#ccc] rounded-sm text-lg font-semibold font-mono outline-none focus:border-[#1a1a1a] focus:ring-1 focus:ring-[#1a1a1a]"
             />
           </div>
@@ -135,8 +146,10 @@ export default function HouseholdForm({ state, update }: Props) {
               else update({ monthlyIncome: val })
             }}
             aria-label={incomeType === 'hourly' ? t('form.hourlyWage') : t('form.monthlyIncome')}
+            /* COLOR.text */
             className="w-full mt-1.5 accent-[#1a1a1a]"
           />
+          {/* NEUTRAL.600 */}
           <div className="text-xs text-[#767676] mt-0.5 font-mono">
             {incomeType === 'hourly'
               ? `\u2248 ${formatMoney(hourlyToMonthly(hourlyWage))}${t('unit.perMonth')}`
@@ -145,10 +158,12 @@ export default function HouseholdForm({ state, update }: Props) {
         </div>
 
         <div>
+          {/* NEUTRAL.800 */}
           <label htmlFor="raise-input" className="block text-xs font-semibold uppercase tracking-[0.05em] text-[#555] mb-1.5 font-mono">
             {incomeType === 'hourly' ? t('form.raise.hourly') : t('form.raise.monthly')}
           </label>
           <div className="relative">
+            {/* NEUTRAL.600 */}
             <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#767676] text-base font-semibold">$</span>
             <input
               id="raise-input"
@@ -157,6 +172,7 @@ export default function HouseholdForm({ state, update }: Props) {
               step={incomeType === 'hourly' ? 0.25 : 25}
               value={raiseAmount}
               onChange={(e) => update({ raiseAmount: Math.max(0, Number(e.target.value) || 0) })}
+              /* NEUTRAL.400, COLOR.text (focus) */
               className="w-full py-2.5 pl-7 pr-3 border border-[#ccc] rounded-sm text-lg font-semibold font-mono outline-none focus:border-[#1a1a1a] focus:ring-1 focus:ring-[#1a1a1a]"
             />
           </div>
@@ -168,8 +184,10 @@ export default function HouseholdForm({ state, update }: Props) {
             value={raiseAmount}
             onChange={(e) => update({ raiseAmount: Number(e.target.value) || 0 })}
             aria-label={incomeType === 'hourly' ? t('form.raise.hourly') : t('form.raise.monthly')}
+            /* COLOR.text */
             className="w-full mt-1.5 accent-[#1a1a1a]"
           />
+          {/* NEUTRAL.600 */}
           <div className="text-xs text-[#767676] mt-0.5 font-mono">
             {incomeType === 'hourly'
               ? `\u2248 ${formatMoney(hourlyToMonthly(raiseAmount))}${t('unit.perMonth')}`
@@ -179,10 +197,12 @@ export default function HouseholdForm({ state, update }: Props) {
       </div>
 
       {/* Collapsible deduction inputs */}
+      {/* NEUTRAL.200 */}
       <div className="mt-4 border-t border-[#eee] pt-4">
         <button
           type="button"
           onClick={() => setDeductionsOpen(!deductionsOpen)}
+          /* NEUTRAL.600, NEUTRAL.800 (hover) */
           className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.05em] text-[#767676] font-mono cursor-pointer hover:text-[#555] bg-transparent border-0 p-0"
           aria-expanded={deductionsOpen}
           aria-controls="deduction-inputs"
@@ -193,16 +213,19 @@ export default function HouseholdForm({ state, update }: Props) {
 
         {deductionsOpen && (
           <div id="deduction-inputs" className="mt-3">
+            {/* NEUTRAL.600 */}
             <p className="text-[12px] text-[#767676] mb-3 leading-relaxed">
               {t('form.deductionsHelp')}
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
+                {/* NEUTRAL.800 */}
                 <label htmlFor="rent-input" className="block text-xs font-semibold uppercase tracking-[0.05em] text-[#555] mb-1.5 font-mono">
                   {t('form.rent')}
                 </label>
                 <div className="relative">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#767676] text-base font-semibold">$</span>
+                  {/* NEUTRAL.600 */}
+            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#767676] text-base font-semibold">$</span>
                   <input
                     id="rent-input"
                     type="number"
@@ -210,16 +233,19 @@ export default function HouseholdForm({ state, update }: Props) {
                     step={50}
                     value={monthlyRent}
                     onChange={(e) => update({ monthlyRent: Math.max(0, Math.round(Number(e.target.value) || 0)) })}
-                    className="w-full py-2.5 pl-7 pr-3 border border-[#ccc] rounded-sm text-lg font-semibold font-mono outline-none focus:border-[#1a1a1a] focus:ring-1 focus:ring-[#1a1a1a]"
+                    /* NEUTRAL.400, COLOR.text (focus) */
+              className="w-full py-2.5 pl-7 pr-3 border border-[#ccc] rounded-sm text-lg font-semibold font-mono outline-none focus:border-[#1a1a1a] focus:ring-1 focus:ring-[#1a1a1a]"
                   />
                 </div>
               </div>
               <div>
+                {/* NEUTRAL.800 */}
                 <label htmlFor="childcare-input" className="block text-xs font-semibold uppercase tracking-[0.05em] text-[#555] mb-1.5 font-mono">
                   {t('form.childcare')}
                 </label>
                 <div className="relative">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#767676] text-base font-semibold">$</span>
+                  {/* NEUTRAL.600 */}
+            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#767676] text-base font-semibold">$</span>
                   <input
                     id="childcare-input"
                     type="number"
@@ -227,11 +253,13 @@ export default function HouseholdForm({ state, update }: Props) {
                     step={50}
                     value={monthlyChildcareCosts}
                     onChange={(e) => update({ monthlyChildcareCosts: Math.max(0, Math.round(Number(e.target.value) || 0)) })}
-                    className="w-full py-2.5 pl-7 pr-3 border border-[#ccc] rounded-sm text-lg font-semibold font-mono outline-none focus:border-[#1a1a1a] focus:ring-1 focus:ring-[#1a1a1a]"
+                    /* NEUTRAL.400, COLOR.text (focus) */
+              className="w-full py-2.5 pl-7 pr-3 border border-[#ccc] rounded-sm text-lg font-semibold font-mono outline-none focus:border-[#1a1a1a] focus:ring-1 focus:ring-[#1a1a1a]"
                   />
                 </div>
               </div>
             </div>
+            {/* NEUTRAL.600 */}
             <p className="text-[11px] text-[#767676] mt-2 leading-relaxed">
               {t('form.deductionsNote')}
             </p>

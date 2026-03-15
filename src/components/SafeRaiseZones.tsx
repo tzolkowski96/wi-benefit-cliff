@@ -15,10 +15,13 @@ export default function SafeRaiseZones({ programs, raiseMonthly, safeRaiseMax }:
   if (eligiblePrograms.length === 0) return null
 
   return (
+    /* NEUTRAL.300 */
     <section className="bg-white border border-[#ddd] rounded-sm p-6 mb-5">
+      {/* NEUTRAL.650 */}
       <h2 className="text-xs font-semibold uppercase tracking-[0.08em] text-[#666] mb-3 font-mono m-0">
         {t('section.safeRaise')}
       </h2>
+      {/* NEUTRAL.650 */}
       <p className="text-[13px] text-[#666] mb-4 leading-relaxed">
         {t('safeRaise.description')}
       </p>
@@ -31,9 +34,11 @@ export default function SafeRaiseZones({ programs, raiseMonthly, safeRaiseMax }:
           return (
             <div
               key={prog.key}
+              /* NEUTRAL.100 */
               className="flex justify-between items-center py-2 border-b border-[#f0f0f0] last:border-b-0"
             >
               <span className="text-[13px] font-medium">{prog.name}</span>
+              {/* COLOR.negative, COLOR.positive */}
               <span className={`font-mono text-[13px] font-semibold ${isOver ? 'text-[#9B2226]' : 'text-[#2D6A4F]'}`}>
                 {isOver && <span aria-hidden="true">&times; </span>}
                 {t('safeRaise.upTo')} +{formatMoney(safeAmount)}{t('unit.perMonth')}
@@ -44,12 +49,14 @@ export default function SafeRaiseZones({ programs, raiseMonthly, safeRaiseMax }:
       </div>
 
       {/* Bottom line summary */}
+      {/* COLOR.bg */}
       <div className="mt-4 px-4 py-3 bg-[#F8F6F3] rounded-sm text-[13px] leading-relaxed">
         <strong>{t('safeRaise.bottomLine')}:</strong>{' '}
         {safeRaiseMax > 0 ? (
           <>
             {t('safeRaise.safeMessage').replace('{amount}', `+${formatMoney(safeRaiseMax)}`)}
             {raiseMonthly > safeRaiseMax && (
+              /* COLOR.negative */
               <span className="text-[#9B2226]"> {t('safeRaise.exceedsMessage')}</span>
             )}
           </>

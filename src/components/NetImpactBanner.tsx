@@ -14,6 +14,7 @@ export default function NetImpactBanner({ impact }: Props) {
   return (
     <div aria-live="polite" aria-atomic="true">
       <div
+        /* ALERT.positiveBg/COLOR.positive, ALERT.negativeBg/COLOR.negative */
         className={`border-2 rounded-sm p-5 mb-5 ${
           isPositive
             ? 'bg-[#EDF6ED] border-[#2D6A4F]'
@@ -23,26 +24,32 @@ export default function NetImpactBanner({ impact }: Props) {
         {/* Three-column metrics — semantic dl/dt/dd */}
         <dl className="grid grid-cols-1 sm:grid-cols-3 gap-3 m-0">
           <div>
+            {/* NEUTRAL.700 */}
             <dt className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[#595959] mb-1 font-mono">
               {t('result.raise')}
             </dt>
+            {/* COLOR.positive */}
             <dd className="text-xl font-bold font-mono text-[#2D6A4F] m-0">
               +{formatMoney(raise)}<span className="text-sm font-medium">{t('unit.perMonth')}</span>
             </dd>
           </div>
           <div>
+            {/* NEUTRAL.700 */}
             <dt className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[#595959] mb-1 font-mono">
               {t('result.lostBenefits')}
             </dt>
+            {/* COLOR.negative, NEUTRAL.650 */}
             <dd className={`text-xl font-bold font-mono m-0 ${totalCalculableLoss > 0 ? 'text-[#9B2226]' : 'text-[#666]'}`}>
               {totalCalculableLoss > 0 ? `-${formatMoney(totalCalculableLoss)}` : formatMoney(0)}
               <span className="text-sm font-medium">{t('unit.perMonth')}</span>
             </dd>
           </div>
           <div>
+            {/* NEUTRAL.700 */}
             <dt className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[#595959] mb-1 font-mono">
               {t('result.netImpact')}
             </dt>
+            {/* COLOR.positive, COLOR.negative */}
             <dd className={`text-2xl font-bold font-mono m-0 ${isPositive ? 'text-[#2D6A4F]' : 'text-[#9B2226]'}`}>
               {formatMoneyWithSign(netMonthly)}<span className="text-sm font-medium">{t('unit.perMonth')}</span>
             </dd>
@@ -50,6 +57,7 @@ export default function NetImpactBanner({ impact }: Props) {
         </dl>
 
         {/* Annual projection */}
+        {/* COLOR.positive, COLOR.negative */}
         <div className={`mt-3 pt-3 border-t text-sm font-mono ${
           isPositive ? 'border-[#2D6A4F]/20 text-[#2D6A4F]' : 'border-[#9B2226]/20 text-[#9B2226]'
         }`}>
@@ -59,6 +67,7 @@ export default function NetImpactBanner({ impact }: Props) {
       </div>
 
       {/* Uncalculated losses warning */}
+      {/* ALERT.warningBg, ALERT.warningBorder, ALERT.warningText */}
       {uncalculatedLosses.length > 0 && (
         <div className="bg-[#FFF8E1] border border-[#E0C97B] rounded-sm px-5 py-3 mb-5 text-sm leading-relaxed">
           <span className="font-semibold text-[#8B6914]" aria-hidden="true">&#9888; </span>

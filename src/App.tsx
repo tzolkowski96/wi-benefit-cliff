@@ -54,20 +54,23 @@ export default function App() {
 
   return (
     <ErrorBoundary fallbackTitle={t('error.title')} fallbackAction={t('error.reload')}>
+    {/* COLOR.bg, COLOR.text */}
     <div className="min-h-screen bg-[#F8F6F3] text-[#1a1a1a]">
       {/* Skip to content link */}
       <a
         href="#main-content"
+        /* COLOR.text */
         className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:p-2 focus:bg-white focus:text-[#1a1a1a]"
       >
         {t('a11y.skipToContent')}
       </a>
 
-      {/* Header */}
+      {/* Header — COLOR.text (bg), COLOR.bg (text) */}
       <header className="bg-[#1a1a1a] text-[#F8F6F3] px-6 py-7">
         <div className="max-w-[720px] mx-auto">
           <div className="flex items-start justify-between">
             <div>
+              {/* COLOR.accent */}
               <div className="text-[11px] font-semibold tracking-[0.12em] uppercase text-[#E8A838] font-mono mb-2">
                 {t('app.subtitle')}
               </div>
@@ -83,6 +86,7 @@ export default function App() {
                   role="radio"
                   aria-checked={lang === 'en'}
                   onClick={() => setLang('en')}
+                  /* COLOR.accent + COLOR.text (active), NEUTRAL.500 + NEUTRAL.800 + COLOR.bg (inactive) */
                   className={`px-2 py-1 border border-r-0 rounded-l-sm cursor-pointer ${
                     lang === 'en'
                       ? 'bg-[#E8A838] text-[#1a1a1a] border-[#E8A838]'
@@ -96,6 +100,7 @@ export default function App() {
                   role="radio"
                   aria-checked={lang === 'es'}
                   onClick={() => setLang('es')}
+                  /* COLOR.accent + COLOR.text (active), NEUTRAL.500 + NEUTRAL.800 + COLOR.bg (inactive) */
                   className={`px-2 py-1 border rounded-r-sm cursor-pointer ${
                     lang === 'es'
                       ? 'bg-[#E8A838] text-[#1a1a1a] border-[#E8A838]'
@@ -108,6 +113,7 @@ export default function App() {
               <button
                 type="button"
                 onClick={() => window.print()}
+                /* COLOR.bg, NEUTRAL.800, COLOR.accent (hover) */
                 className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono font-medium text-[#F8F6F3] border border-[#555] rounded-sm hover:border-[#E8A838] hover:text-[#E8A838] cursor-pointer"
               >
                 <span aria-hidden="true">&#9113;</span> {t('print.button')}
@@ -115,12 +121,14 @@ export default function App() {
               <button
                 type="button"
                 onClick={handleExcelExport}
+                /* COLOR.bg, NEUTRAL.800, COLOR.accent (hover) */
                 className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono font-medium text-[#F8F6F3] border border-[#555] rounded-sm hover:border-[#E8A838] hover:text-[#E8A838] cursor-pointer"
               >
                 <span aria-hidden="true">&#8615;</span> {t('export.button')}
               </button>
             </div>
           </div>
+          {/* NEUTRAL.950 */}
           <p className="text-sm text-[#aaa] mt-2 mb-0 leading-relaxed max-w-[600px]">
             {t('app.description')}{' '}
             {t('app.source')}
@@ -151,8 +159,10 @@ export default function App() {
         <BreakEvenDotPlot breakEvenData={breakEvenData} raiseMonthly={formState.raiseMonthly} />
 
         {/* Disclaimer */}
+        {/* NEUTRAL.700 */}
         <footer className="text-[11px] text-[#595959] leading-relaxed px-1 mt-4">
           <strong>{t('label.disclaimer')}:</strong> {t('disclaimer.text')}{' '}
+          {/* NEUTRAL.650 */}
           <a href="https://access.wisconsin.gov" target="_blank" rel="noopener noreferrer" className="text-[#666] underline">
             {t('disclaimer.accessWi')}
           </a>{' '}
@@ -164,6 +174,7 @@ export default function App() {
           <button
             type="button"
             onClick={() => window.print()}
+            /* COLOR.text, NEUTRAL.400 */
             className="flex-1 py-3 text-sm font-mono font-medium text-[#1a1a1a] border border-[#ccc] rounded-sm hover:border-[#1a1a1a] cursor-pointer"
           >
             <span aria-hidden="true">&#9113; </span>{t('print.button')}
@@ -171,6 +182,7 @@ export default function App() {
           <button
             type="button"
             onClick={handleExcelExport}
+            /* COLOR.text, NEUTRAL.400 */
             className="flex-1 py-3 text-sm font-mono font-medium text-[#1a1a1a] border border-[#ccc] rounded-sm hover:border-[#1a1a1a] cursor-pointer"
           >
             <span aria-hidden="true">&#8615; </span>{t('export.button')}
