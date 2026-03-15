@@ -21,9 +21,13 @@ export default function HouseholdForm({ state, update }: Props) {
     /* NEUTRAL.300 */
     <section className="bg-white border border-[#ddd] rounded-sm p-6 mb-5">
       {/* NEUTRAL.650 */}
-      <h2 className="text-xs font-semibold uppercase tracking-[0.08em] text-[#666] mb-4 font-mono m-0">
+      <h2 className="text-xs font-semibold uppercase tracking-[0.08em] text-[#666] mb-1 font-mono m-0">
         {t('form.sectionLabel')}
       </h2>
+      {/* NEUTRAL.600 */}
+      <p className="text-[13px] text-[#767676] mb-3 leading-relaxed">
+        {t('form.description')}
+      </p>
 
       {/* Row 1: Household size + Children */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
@@ -192,6 +196,10 @@ export default function HouseholdForm({ state, update }: Props) {
             {incomeType === 'hourly'
               ? `\u2248 ${formatMoney(hourlyToMonthly(raiseAmount))}${t('unit.perMonth')}`
               : `\u2248 $${monthlyToHourly(raiseAmount).toFixed(2)}${t('unit.perHour')}`}
+          </div>
+          {/* NEUTRAL.600 */}
+          <div className="text-xs text-[#767676] mt-0.5 font-sans">
+            {incomeType === 'hourly' ? t('form.raise.helpHourly') : t('form.raise.helpMonthly')}
           </div>
         </div>
       </div>

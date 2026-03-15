@@ -27,6 +27,9 @@ export const es: Record<I18nKey, string> = {
   'form.rent': 'Alquiler/hipoteca mensual',
   'form.childcare': 'Costos mensuales de cuidado infantil',
   'form.deductionsNote': 'Los costos de servicios p\u00fablicos se estiman usando la Asignaci\u00f3n Est\u00e1ndar de Calefacci\u00f3n de Wisconsin ($538/mes). La deducci\u00f3n por vivienda tiene un l\u00edmite de $712/mes.',
+  'form.description': 'Ingrese su pago actual y un posible aumento para ver c\u00f3mo afecta sus beneficios.',
+  'form.raise.helpHourly': 'Si su pago aument\u00f3, \u00bfcu\u00e1nto m\u00e1s por hora ganar\u00eda?',
+  'form.raise.helpMonthly': 'Si su pago aument\u00f3, \u00bfcu\u00e1nto m\u00e1s por mes ganar\u00eda?',
   'form.customValuePrompt': '\u00bfConoce su valor mensual?',
 
   // Results

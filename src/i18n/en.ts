@@ -21,6 +21,9 @@ export const en = {
   'form.rent': 'Monthly rent/mortgage',
   'form.childcare': 'Monthly childcare costs',
   'form.deductionsNote': 'Utility costs are estimated using Wisconsin\'s Heating Standard Utility Allowance ($538/mo). The shelter deduction is capped at $712/mo.',
+  'form.description': 'Enter your current pay and a potential raise to see how it affects your benefits.',
+  'form.raise.helpHourly': 'If your pay went up, how much more per hour would you earn?',
+  'form.raise.helpMonthly': 'If your pay went up, how much more per month would you earn?',
   'form.customValuePrompt': 'Know your monthly value?',
 
   // Results
