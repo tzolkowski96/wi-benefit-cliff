@@ -5,14 +5,13 @@ import type { BreakEvenData } from '../engine/breakeven.ts'
 import { useI18n } from '../hooks/useI18n.ts'
 import { formatMoney } from '../engine/format.ts'
 import { CHART_TICK_STYLE, CHART_TOOLTIP_STYLE, CHART_AXIS_LABEL_STYLE } from '../utils/chartStyles.ts'
+import { COLOR } from '../tokens.ts'
 import ChartSection from './ChartSection.tsx'
 
 interface Props {
   breakEvenData: BreakEvenData
   raiseMonthly: number
 }
-
-const AMBER = '#E8A838'
 
 export default function BreakEvenDotPlot({ breakEvenData, raiseMonthly }: Props) {
   const { t } = useI18n()
@@ -61,13 +60,13 @@ export default function BreakEvenDotPlot({ breakEvenData, raiseMonthly }: Props)
             {raiseMonthly > 0 && (
               <ReferenceLine
                 x={raiseMonthly}
-                stroke={AMBER}
+                stroke={COLOR.accent}
                 strokeWidth={2}
                 label={{
                   value: t('dotPlot.yourRaise'),
                   position: 'top',
                   ...CHART_AXIS_LABEL_STYLE,
-                  fill: AMBER,
+                  fill: COLOR.accent,
                   fontWeight: 600,
                 }}
               />
@@ -99,15 +98,18 @@ export default function BreakEvenDotPlot({ breakEvenData, raiseMonthly }: Props)
         </ResponsiveContainer>
       </div>
 
-      {/* Legend */}
+      {/* Legend — NEUTRAL.600 */}
       <div className="flex items-center gap-4 text-[11px] text-[#767676] font-mono mt-1 mb-0 pl-[130px]" aria-hidden="true">
         <span className="flex items-center gap-1">
+          {/* NEUTRAL.650 */}
           <span className="inline-block w-2 h-2 rounded-full bg-[#666]" /> {t('dotPlot.cliffDistance')}
         </span>
         <span className="flex items-center gap-1">
+          {/* NEUTRAL.650 */}
           <span className="inline-block w-4 h-1.5 rounded-sm bg-[#666] opacity-50" /> {t('dotPlot.gap')}
         </span>
         <span className="flex items-center gap-1">
+          {/* NEUTRAL.650 */}
           <span className="inline-block w-2 h-2 rounded-full border border-[#666] bg-white" /> {t('dotPlot.breakEven')}
         </span>
       </div>
